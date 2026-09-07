@@ -796,6 +796,26 @@ export function getLocalizedSubModuleName(subId: string, fallback: string, lang?
   return fallback;
 }
 
+/**
+ * Display label for a bare module id, for places that have an id and no source
+ * name of their own — the resource library's "related modules" chips, say.
+ *
+ * Unlike `getLocalizedSubModuleName` this resolves the app catalog in Korean
+ * too: there the caller's fallback is the raw id, not wording worth keeping.
+ */
+export function getLocalizedModuleLabel(moduleId: string, lang?: Language | string): string {
+  const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  const sub = SUBMODULE_LOCALIZATIONS[moduleId];
+  if (sub && sub.name && sub.name[l]) {
+    return sub.name[l];
+  }
+  const app = APP_LOCALIZATIONS[moduleId];
+  if (app && app.name && app.name[l]) {
+    return app.name[l];
+  }
+  return moduleId;
+}
+
 export function getLocalizedSubModuleDesc(subId: string, fallback: string, lang?: Language | string): string {
   const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
   const item = SUBMODULE_LOCALIZATIONS[subId];

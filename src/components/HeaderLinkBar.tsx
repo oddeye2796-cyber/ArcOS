@@ -1,9 +1,10 @@
 import React from 'react';
-import { ShieldCheck, Cloud, Server, ArrowRightLeft, Radio, Building2, Globe, Coins } from 'lucide-react';
+import { ShieldCheck, Cloud, Server, ArrowRightLeft, Radio, Building2, Globe, Coins, RefreshCw } from 'lucide-react';
 import { FACILITIES_LIST } from '../data/presetsData';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { getLocalizedFacilityName } from '../i18n/localizedData';
 import { CURRENCY_CODES, CurrencyCode } from '../lib/currency';
+import { useExchangeRates } from '../lib/useExchangeRates';
 
 interface HeaderLinkBarProps {
   selectedLocation: string;
@@ -24,6 +25,19 @@ export const HeaderLinkBar: React.FC<HeaderLinkBarProps> = ({
 }) => {
   const t = TRANSLATIONS[lang];
   const currentFacility = FACILITIES_LIST.find((f) => f.fullName === selectedLocation) || FACILITIES_LIST[0];
+  const { snapshot: rateSnapshot, status: rateStatus, refresh: refreshRates } = useExchangeRates();
+
+  // Only meaningful once a conversion is actually happening.
+  const showRateStatus = currency !== 'KRW';
+  const rateStatusLabel =
+    rateStatus === 'loading'
+      ? t.rateStatusLoading
+      : rateStatus === 'stale' || rateStatus === 'error'
+      ? t.rateStatusStale
+      : rateSnapshot.source === 'bundled'
+      ? t.rateStatusBundled
+      : t.rateStatusLive;
+  const rateIsLive = rateStatus === 'live' && rateSnapshot.source !== 'bundled';
 
   return (
     <header className="bg-white border-b border-slate-200 px-4 md:px-8 py-2.5 text-xs text-slate-700">
@@ -104,6 +118,32 @@ export const HeaderLinkBar: React.FC<HeaderLinkBarProps> = ({
                 </option>
               ))}
             </select>
+
+            {showRateStatus && (
+              <button
+                onClick={refreshRates}
+                disabled={rateStatus === 'loading'}
+                title={`${rateStatusLabel} · ${rateSnapshot.asOf}`}
+                aria-label={t.rateRefreshLabel}
+                className="flex items-center gap-1 pl-1 pr-1.5 py-0.5 rounded text-[10px] font-medium transition-colors hover:bg-slate-200/70 disabled:cursor-default"
+              >
+                <span
+                  aria-hidden="true"
+                  className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                    rateStatus === 'loading'
+                      ? 'bg-slate-400 animate-pulse'
+                      : rateIsLive
+                      ? 'bg-emerald-500'
+                      : 'bg-amber-500'
+                  }`}
+                />
+                <RefreshCw
+                  className={`w-2.5 h-2.5 text-slate-500 ${
+                    rateStatus === 'loading' ? 'animate-spin' : ''
+                  }`}
+                />
+              </button>
+            )}
           </div>
 
           {/* Language Switcher */}

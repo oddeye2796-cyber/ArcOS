@@ -20,8 +20,8 @@ const QuoteView = lazy(() =>
 const WorkspaceView = lazy(() =>
   import('./components/WorkspaceView').then((m) => ({ default: m.WorkspaceView }))
 );
-const ArchitectureView = lazy(() =>
-  import('./components/ArchitectureView').then((m) => ({ default: m.ArchitectureView }))
+const ResourcesView = lazy(() =>
+  import('./components/ResourcesView').then((m) => ({ default: m.ResourcesView }))
 );
 const PatchNotesView = lazy(() =>
   import('./components/PatchNotesView').then((m) => ({ default: m.PatchNotesView }))
@@ -40,6 +40,7 @@ import { applyDocumentLanguage, detectInitialLanguage, parseLanguage } from './l
 import { STORAGE_KEYS, readStored, usePersistentState, writeStored } from './lib/storage';
 import { parseCart } from './lib/scenarios';
 import { POC_EXTENSION_DAYS, canExtend } from './lib/poc';
+import { ExchangeRateProvider } from './lib/useExchangeRates';
 import {
   APPS_DATA,
   INITIAL_INSTALLED_MODULES,
@@ -59,6 +60,8 @@ import {
 
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState<NavRoute>('catalog');
+  /** Document the library should open on arrival, set by a contextual link. */
+  const [pendingResourceId, setPendingResourceId] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string>('[경남/사천] 항공·정밀가공 사업장');
   const [tenantName] = useState<string>('[경남/사천] 항공·정밀기계 제조연합');
   // Stored preference, else the browser's language, else Korean.
@@ -305,6 +308,13 @@ export default function App() {
     []
   );
 
+  /** Contextual entry point into the library: the document lives in one place,
+      but people reach it from wherever they are. */
+  const handleOpenResource = useCallback((docId: string) => {
+    setPendingResourceId(docId);
+    setCurrentRoute('resources');
+  }, []);
+
   const handleBatchDeploy = () => {
     if (cart.length === 0) return;
     const firstCartApp = APPS_DATA.find((a) => a.id === cart[0].appId) || APPS_DATA[0];
@@ -316,6 +326,7 @@ export default function App() {
   };
 
   return (
+    <ExchangeRateProvider>
     <div className="flex min-h-screen bg-slate-100 text-slate-900 font-sans antialiased">
       {/* Sidebar Navigation */}
       <Sidebar
@@ -383,6 +394,7 @@ export default function App() {
               onRemovePoCTrial={handleRemovePoCTrial}
               onExtendPoCTrial={handleExtendPoCTrial}
               onRequestPoCEngineer={handleRequestPoCEngineer}
+              onOpenResource={handleOpenResource}
               selectedLocation={selectedLocation}
               lang={lang}
               currency={currency}
@@ -396,7 +408,13 @@ export default function App() {
             />
           )}
 
-          {currentRoute === 'architecture' && <ArchitectureView lang={lang} />}
+          {currentRoute === 'resources' && (
+            <ResourcesView
+              lang={lang}
+              initialDocId={pendingResourceId}
+              onConsumeInitialDoc={() => setPendingResourceId(null)}
+            />
+          )}
           </Suspense>
         </main>
       </div>
@@ -414,6 +432,7 @@ export default function App() {
         onSelectRadioMES={handleSelectRadioMES}
         onDeployRequest={handleDeployRequest}
         onApplyPoC={handleOpenPoCModal}
+        onOpenResource={handleOpenResource}
         lang={lang}
         currency={currency}
       />
@@ -442,5 +461,6 @@ export default function App() {
       )}
       </Suspense>
     </div>
+    </ExchangeRateProvider>
   );
 }

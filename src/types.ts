@@ -138,7 +138,7 @@ export interface RecommendationPreset {
   recommendedModules: CartItem[];
 }
 
-export type NavRoute = 'catalog' | 'quote' | 'workspace' | 'architecture' | 'patches';
+export type NavRoute = 'catalog' | 'quote' | 'workspace' | 'patches' | 'resources';
 
 export interface PatchNoteItem {
   id: string;

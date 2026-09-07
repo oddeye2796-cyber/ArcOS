@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { CurrencyCode, exchangeRateNote, formatMoney } from '../lib/currency';
+import { useExchangeRates } from '../lib/useExchangeRates';
 import { BASE_PLATFORM_FEE, computeQuote, lineItemTotal } from '../lib/pricing';
 import { STORAGE_KEYS, parsers, usePersistentState } from '../lib/storage';
 import {
@@ -117,9 +118,17 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
     [cart, productionLines]
   );
 
+  const { snapshot: rateSnapshot } = useExchangeRates();
+
   /** Formats a 만원-denominated figure in the currently selected currency. */
-  const money = (units: number) => formatMoney(units, currency, lang);
-  const rateNote = exchangeRateNote(currency, lang);
+  const money = (units: number) => formatMoney(units, currency, lang, rateSnapshot.rates);
+  const rateNote = exchangeRateNote(
+    currency,
+    lang,
+    rateSnapshot.rates,
+    rateSnapshot.asOf,
+    rateSnapshot.source
+  );
 
   const isPresetActive = (preset: RecommendationPreset) => {
     if (cart.length !== preset.recommendedModules.length) return false;

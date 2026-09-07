@@ -4,7 +4,9 @@ import { PoCReportModal } from './PoCReportModal';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { getLocalizedLocationName, getLocalizedWorkspaceText } from '../i18n/localizedData';
 import { CurrencyCode, formatMoney } from '../lib/currency';
+import { useExchangeRates } from '../lib/useExchangeRates';
 import { POC_STAGES, PoCStageId, canExtend, getPoCProgress } from '../lib/poc';
+import { findDocForModule } from '../data/resourcesData';
 import {
   Server,
   RefreshCw,
@@ -26,7 +28,8 @@ import {
   Database,
   AlertTriangle,
   CalendarPlus,
-  Headset
+  Headset,
+  BookOpen
 } from 'lucide-react';
 
 interface WorkspaceViewProps {
@@ -39,6 +42,8 @@ interface WorkspaceViewProps {
   onRemovePoCTrial: (trialId: string) => void;
   onExtendPoCTrial: (trialId: string) => void;
   onRequestPoCEngineer: (trialId: string) => void;
+  /** Opens the resource library on a specific document. */
+  onOpenResource?: (docId: string) => void;
   selectedLocation: string;
   lang?: Language;
   currency?: CurrencyCode;
@@ -54,11 +59,13 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
   onRemovePoCTrial,
   onExtendPoCTrial,
   onRequestPoCEngineer,
+  onOpenResource,
   selectedLocation,
   lang = 'ko',
   currency = 'KRW'
 }) => {
   const t = TRANSLATIONS[lang];
+  const { snapshot: rateSnapshot } = useExchangeRates();
   const [upgradingId, setUpgradingId] = useState<string | null>(null);
   const [downloadSuccessToast, setDownloadSuccessToast] = useState<string | null>(null);
   const [selectedReportTrial, setSelectedReportTrial] = useState<PoCTrial | null>(null);
@@ -365,6 +372,20 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                         <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" />
                       </button>
 
+                      {(() => {
+                        const doc = findDocForModule(trial.appId);
+                        if (!doc || !onOpenResource) return null;
+                        return (
+                          <button
+                            onClick={() => onOpenResource(doc.id)}
+                            className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-medium text-xs flex items-center gap-1.5 transition-colors whitespace-nowrap"
+                          >
+                            <BookOpen className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                            <span>{t.resourcesOpenManual}</span>
+                          </button>
+                        );
+                      })()}
+
                       <button
                         onClick={() => handleDeleteTrial(trial)}
                         title={t.pocTerminateSandboxBtn}
@@ -545,6 +566,19 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                       <div className="text-[11px] text-slate-500">
                         {t.categoryLabels[item.category] || getLocalizedWorkspaceText(item.category, lang)}
                       </div>
+                      {(() => {
+                        const doc = findDocForModule(item.id);
+                        if (!doc || !onOpenResource) return null;
+                        return (
+                          <button
+                            onClick={() => onOpenResource(doc.id)}
+                            className="mt-1 inline-flex items-center gap-1 text-[10.5px] font-medium text-blue-700 hover:text-blue-800 hover:underline transition-colors"
+                          >
+                            <BookOpen className="w-3 h-3 flex-shrink-0" />
+                            <span>{t.resourcesOpenManual}</span>
+                          </button>
+                        );
+                      })()}
                     </td>
                     <td className="p-3.5 text-slate-700">
                       <div className="font-medium">{getLocalizedLocationName(item.location, lang)}</div>
@@ -649,7 +683,7 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                     </div>
                   </td>
                   <td className="p-3.5 font-mono text-slate-900 font-semibold">
-                    {t.monthPrefix} {formatMoney(item.retentionFee, currency, lang)}
+                    {t.monthPrefix} {formatMoney(item.retentionFee, currency, lang, rateSnapshot.rates)}
                   </td>
                   <td className="p-3.5 pr-5 text-right">
                     <button

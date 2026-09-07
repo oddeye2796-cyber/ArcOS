@@ -14,7 +14,8 @@ export const STORAGE_KEYS = {
   productionLines: `${PREFIX}quote.productionLines`,
   inferenceCalls: `${PREFIX}quote.inferenceCalls`,
   scenarios: `${PREFIX}quote.scenarios`,
-  pocTrials: `${PREFIX}poc.trials`
+  pocTrials: `${PREFIX}poc.trials`,
+  rates: `${PREFIX}fx.rates`
 } as const;
 
 /**

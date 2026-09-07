@@ -15,6 +15,7 @@ import {
 import { RECOMMENDATION_PRESETS } from '../data/presetsData';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { CurrencyCode, formatMoney } from '../lib/currency';
+import { useExchangeRates } from '../lib/useExchangeRates';
 import {
   getLocalizedAppName,
   getLocalizedAppCategory,
@@ -50,6 +51,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   currency
 }) => {
   const t = TRANSLATIONS[lang];
+  const { snapshot: rateSnapshot } = useExchangeRates();
   const [selectedCategory, setSelectedCategory] = useState<string>('전체');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>('all');
@@ -136,7 +138,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
     if (!app.price) {
       return t.cardIncludedInBase;
     }
-    return `${t.monthPrefix} ${formatMoney(app.price, currency, lang)}~`;
+    return `${t.monthPrefix} ${formatMoney(app.price, currency, lang, rateSnapshot.rates)}~`;
   };
 
   return (
