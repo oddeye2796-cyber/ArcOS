@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { AppItem, CartItem, SubModuleItem } from '../types';
 import { Language, TRANSLATIONS } from '../i18n/translations';
+import { CurrencyCode, formatMoney } from '../lib/currency';
+import { useModalDismiss } from '../lib/useModalDismiss';
 import {
   getLocalizedAppName,
   getLocalizedAppDesc,
@@ -46,6 +48,7 @@ interface AppDetailModalProps {
   onDeployRequest: (app: AppItem, targetLocation: string) => void;
   onApplyPoC?: (app: AppItem) => void;
   lang?: Language;
+  currency?: CurrencyCode;
 }
 
 export const AppDetailModal: React.FC<AppDetailModalProps> = ({
@@ -60,20 +63,22 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
   lang = 'ko'
 }) => {
   const t = TRANSLATIONS[lang];
-  if (!isOpen || !app) return null;
 
+  // Hooks run before the `isOpen` guard: bailing out first would change the hook
+  // count between renders of this same mounted instance.
   const [selectedLocation, setSelectedLocation] = useState<string>(
-    app.deploymentLocations[0]?.location || '[경남/사천] 항공·정밀가공 사업장'
+    () => app?.deploymentLocations[0]?.location || '[경남/사천] 항공·정밀가공 사업장'
   );
-  const [permissionStates, setPermissionStates] = useState<Record<string, boolean>>(
-    () => {
-      const initial: Record<string, boolean> = {};
-      app.permissions.forEach((p) => {
-        initial[p.scope] = p.granted;
-      });
-      return initial;
-    }
-  );
+  const [permissionStates, setPermissionStates] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    app?.permissions.forEach((perm) => {
+      initial[perm.scope] = perm.granted;
+    });
+    return initial;
+  });
+  const dismiss = useModalDismiss<HTMLDivElement>(isOpen, onClose);
+
+  if (!isOpen || !app) return null;
 
   const togglePermission = (scope: string) => {
     setPermissionStates((prev) => ({
@@ -93,8 +98,18 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
     : [];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-150">
+    <div
+      ref={dismiss.backdropRef}
+      onMouseDown={dismiss.onBackdropMouseDown}
+      onClick={dismiss.onBackdropClick}
+      role="presentation"
+      className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4"
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-150"
+      >
         {/* Modal Header */}
         <div className="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-start justify-between gap-4">
           <div>
@@ -138,7 +153,7 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
                 <span>{t.arcMindNoticeTitle}</span>
               </div>
               <p className="text-indigo-800 leading-relaxed text-xs break-keep">
-                {t.arcMindNoticeBody}
+                {t.arcMindNoticeDesc}
               </p>
             </div>
           )}
@@ -343,7 +358,7 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
                     >
                       {app.deploymentLocations.map((loc) => (
                         <option key={loc.location} value={loc.location}>
-                          {getLocalizedLocationName(loc.location, lang)} ({t.colRuntime} {loc.runtimeVersion} · {t.tunnelNormalStatus})
+                          {getLocalizedLocationName(loc.location, lang)} ({t.colRuntime} {loc.runtimeVersion} · {t.connectedStatus})
                         </option>
                       ))}
                     </select>

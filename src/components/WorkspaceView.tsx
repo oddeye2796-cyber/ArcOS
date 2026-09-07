@@ -3,6 +3,8 @@ import { WorkspaceInstalledModule, DecommissionedModule, PoCTrial } from '../typ
 import { PoCReportModal } from './PoCReportModal';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { getLocalizedLocationName, getLocalizedWorkspaceText } from '../i18n/localizedData';
+import { CurrencyCode, formatMoney } from '../lib/currency';
+import { POC_STAGES, PoCStageId, canExtend, getPoCProgress } from '../lib/poc';
 import {
   Server,
   RefreshCw,
@@ -21,7 +23,10 @@ import {
   Trash2,
   Sparkles,
   ArrowRight,
-  Database
+  Database,
+  AlertTriangle,
+  CalendarPlus,
+  Headset
 } from 'lucide-react';
 
 interface WorkspaceViewProps {
@@ -32,8 +37,11 @@ interface WorkspaceViewProps {
   onGoToCatalog: () => void;
   onConvertPoCToSub: (trial: PoCTrial) => void;
   onRemovePoCTrial: (trialId: string) => void;
+  onExtendPoCTrial: (trialId: string) => void;
+  onRequestPoCEngineer: (trialId: string) => void;
   selectedLocation: string;
   lang?: Language;
+  currency?: CurrencyCode;
 }
 
 export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
@@ -44,13 +52,39 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
   onGoToCatalog,
   onConvertPoCToSub,
   onRemovePoCTrial,
+  onExtendPoCTrial,
+  onRequestPoCEngineer,
   selectedLocation,
-  lang = 'ko'
+  lang = 'ko',
+  currency = 'KRW'
 }) => {
   const t = TRANSLATIONS[lang];
   const [upgradingId, setUpgradingId] = useState<string | null>(null);
   const [downloadSuccessToast, setDownloadSuccessToast] = useState<string | null>(null);
   const [selectedReportTrial, setSelectedReportTrial] = useState<PoCTrial | null>(null);
+
+  const stageLabels: Record<PoCStageId, string> = {
+    applied: t.pocStageApplied,
+    provisioned: t.pocStageProvisioned,
+    collecting: t.pocStageCollecting,
+    review: t.pocStageReview,
+    decision: t.pocStageDecision
+  };
+
+  const showToast = (message: string) => {
+    setDownloadSuccessToast(message);
+    setTimeout(() => setDownloadSuccessToast(null), 3800);
+  };
+
+  const handleExtendTrial = (trial: PoCTrial) => {
+    onExtendPoCTrial(trial.id);
+    showToast(t.pocExtendToast.replace('{name}', getLocalizedWorkspaceText(trial.name, lang)));
+  };
+
+  const handleRequestEngineer = (trial: PoCTrial) => {
+    onRequestPoCEngineer(trial.id);
+    showToast(t.pocContactToast.replace('{name}', getLocalizedWorkspaceText(trial.name, lang)));
+  };
 
   const handleUpgrade = (id: string) => {
     setUpgradingId(id);
@@ -269,8 +303,8 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
         ) : (
           <div className="divide-y divide-slate-100">
             {pocTrials.map((trial) => {
-              const daysElapsed = 14 - trial.daysRemaining;
-              const percentElapsed = Math.min(100, Math.round((daysElapsed / 14) * 100));
+              const progress = getPoCProgress(trial);
+              const { daysElapsed, percentElapsed } = progress;
 
               return (
                 <div key={trial.id} className="p-5 hover:bg-indigo-50/20 transition-colors space-y-4">
@@ -282,7 +316,7 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                           {t.categoryLabels[trial.category] || getLocalizedWorkspaceText(trial.category, lang)}
                         </span>
                         <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold border border-emerald-300">
-                          14{lang === 'ja' ? '日' : lang === 'en' ? '-Day ' : '일 '}PoC · {t.pocRemainingDaysBadge.replace('{days}', String(trial.daysRemaining))}
+                          {progress.totalDays}{lang === 'ja' ? '日' : lang === 'en' ? '-Day ' : '일 '}PoC · {t.pocRemainingDaysBadge.replace('{days}', String(progress.daysRemaining))}
                         </span>
                       </div>
                       <div className="text-xs text-slate-600 flex items-center gap-2 flex-wrap">
@@ -341,6 +375,97 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                     </div>
                   </div>
 
+                  {/* Expiry warning: the sandbox and its data are purged on expiry,
+                      so the decision point needs to be visible before it passes. */}
+                  {progress.isEndingSoon && (
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900">
+                      <div className="flex items-start gap-2 flex-1 min-w-0">
+                        <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                        <div className="min-w-0">
+                          <div className="text-xs font-bold break-keep">{t.pocEndingSoonTitle}</div>
+                          <p className="text-[11px] leading-relaxed break-keep">
+                            {t.pocEndingSoonDesc.replace('{days}', String(progress.daysRemaining))}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleExtendTrial(trial)}
+                        disabled={!canExtend(trial)}
+                        title={canExtend(trial) ? undefined : t.pocExtendUnavailable}
+                        className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 disabled:opacity-50 disabled:hover:bg-amber-600 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap flex-shrink-0"
+                      >
+                        <CalendarPlus className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>{t.pocExtendBtn}</span>
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Stage timeline */}
+                  <div className="rounded-xl border border-slate-200 bg-white p-3 space-y-2">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <span className="text-[11px] font-semibold text-slate-700">{t.pocStageTitle}</span>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        {(trial.extensionsUsed ?? 0) > 0 && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200 font-semibold">
+                            {t.pocExtendedBadge}
+                          </span>
+                        )}
+                        {trial.engineerRequested && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200 font-semibold">
+                            {t.pocContactRequestedBadge}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <ol className="flex flex-wrap items-stretch gap-1.5">
+                      {POC_STAGES.map((stage) => {
+                        const isDone = progress.completedStages.includes(stage);
+                        const isCurrent = progress.currentStage === stage;
+                        return (
+                          <li
+                            key={stage}
+                            aria-current={isCurrent ? 'step' : undefined}
+                            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[10.5px] font-medium break-keep ${
+                              isCurrent
+                                ? 'bg-indigo-600 text-white border-indigo-600 font-semibold'
+                                : isDone
+                                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                                : 'bg-slate-50 text-slate-400 border-slate-200'
+                            }`}
+                          >
+                            {isDone && !isCurrent && (
+                              <CheckCircle2 className="w-3 h-3 flex-shrink-0" />
+                            )}
+                            <span>{stageLabels[stage]}</span>
+                          </li>
+                        );
+                      })}
+                    </ol>
+
+                    <div className="pt-1 flex items-center gap-2 flex-wrap">
+                      <button
+                        onClick={() => handleRequestEngineer(trial)}
+                        disabled={trial.engineerRequested}
+                        className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:hover:bg-white text-slate-700 text-[11px] font-medium flex items-center gap-1.5 transition-colors"
+                      >
+                        <Headset className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
+                        <span className="break-keep">{t.pocContactBtn}</span>
+                      </button>
+                      {!progress.isEndingSoon && (
+                        <button
+                          onClick={() => handleExtendTrial(trial)}
+                          disabled={!canExtend(trial)}
+                          title={canExtend(trial) ? undefined : t.pocExtendUnavailable}
+                          className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:hover:bg-white text-slate-700 text-[11px] font-medium flex items-center gap-1.5 transition-colors"
+                        >
+                          <CalendarPlus className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                          <span className="break-keep">{t.pocExtendBtn}</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
                   {/* PoC Goal & Progress Bar */}
                   <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                     <div className="md:col-span-2 space-y-1.5">
@@ -357,7 +482,7 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                           {lang === 'ja' ? '評価期間進捗率:' : lang === 'en' ? 'Trial Progress:' : '평가 기간 진행률:'}
                         </span>
                         <span className="font-mono font-bold text-indigo-700">
-                          {daysElapsed}{lang === 'ja' ? '日' : lang === 'en' ? 'd' : '일'} / 14{lang === 'ja' ? '日' : lang === 'en' ? 'd' : '일'} ({percentElapsed}%)
+                          {daysElapsed}{lang === 'ja' ? '日' : lang === 'en' ? 'd' : '일'} / {progress.totalDays}{lang === 'ja' ? '日' : lang === 'en' ? 'd' : '일'} ({percentElapsed}%)
                         </span>
                       </div>
                       <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
@@ -524,7 +649,7 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                     </div>
                   </td>
                   <td className="p-3.5 font-mono text-slate-900 font-semibold">
-                    {t.monthPrefix} {item.retentionFee}{t.tenThousandWon}
+                    {t.monthPrefix} {formatMoney(item.retentionFee, currency, lang)}
                   </td>
                   <td className="p-3.5 pr-5 text-right">
                     <button

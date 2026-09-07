@@ -1,1 +1,78 @@
 @import "tailwindcss";
+
+/*
+ * Print rules.
+ *
+ * `window.print()` is triggered from the official quotation modal and the PoC
+ * evaluation report. Without these rules the whole application shell — dark
+ * sidebar, control-plane header, action buttons — ends up on the page, which
+ * makes the printed quotation unusable as a customer-facing document.
+ *
+ * The document to print marks itself with `data-print-root`. Everything else is
+ * hidden with `visibility` (rather than `display`) so the print root keeps its
+ * layout context and does not need to be re-parented into the body.
+ */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    height: auto !important;
+  }
+
+  /* Hide the shell, then reveal the print root and its subtree. */
+  body * {
+    visibility: hidden;
+    box-shadow: none !important;
+  }
+
+  [data-print-root],
+  [data-print-root] * {
+    visibility: visible;
+  }
+
+  /* Lift the document out of the modal viewport box onto the page. */
+  [data-print-root] {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+  }
+
+  /* Controls that make no sense on paper (close, print, pagination buttons). */
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  /* Keep filled backgrounds such as the total bar and status chips. */
+  [data-print-root] * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Avoid splitting a row or a summary block across two pages. */
+  [data-print-root] tr,
+  [data-print-root] [data-print-keep] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Animations leave elements mid-transform in the print snapshot. */
+  [data-print-root] * {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

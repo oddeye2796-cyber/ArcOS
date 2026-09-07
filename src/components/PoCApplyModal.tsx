@@ -20,6 +20,7 @@ import {
 import { AppItem, FacilityLocation, PoCTrial } from '../types';
 import { FACILITIES_LIST } from '../data/presetsData';
 import { Language, TRANSLATIONS } from '../i18n/translations';
+import { useModalDismiss } from '../lib/useModalDismiss';
 import { getLocalizedAppName, getLocalizedFacilityName, getLocalizedLocationName } from '../i18n/localizedData';
 
 interface PoCApplyModalProps {
@@ -48,8 +49,6 @@ export const PoCApplyModal: React.FC<PoCApplyModalProps> = ({
   lang = 'ko'
 }) => {
   const effectiveApp = targetApp || app;
-  if (!isOpen || !effectiveApp) return null;
-
   const t = TRANSLATIONS[lang];
   const getDefaultPocGoal = (currentLang: Language | string, cat: string) => {
     if (currentLang === 'ja') {
@@ -85,26 +84,32 @@ export const PoCApplyModal: React.FC<PoCApplyModalProps> = ({
     return '제조혁신팀 / 공정기술 파트';
   };
 
+  // All hooks run unconditionally; the `isOpen` guard comes after them.
   const [selectedFacility, setSelectedFacility] = useState<string>(
     initialLocation || selectedLocation || FACILITIES_LIST[0].fullName
   );
   const [pocGoal, setPocGoal] = useState<string>(() =>
-    getDefaultPocGoal(lang, effectiveApp.category)
+    getDefaultPocGoal(lang, effectiveApp?.category ?? '')
   );
-  const [leadDept, setLeadDept] = useState<string>(() =>
-    getDefaultLeadDept(lang)
-  );
+  const [leadDept, setLeadDept] = useState<string>(() => getDefaultLeadDept(lang));
 
+  const appCategory = effectiveApp?.category ?? '';
   useEffect(() => {
-    setPocGoal(getDefaultPocGoal(lang, effectiveApp.category));
+    setPocGoal(getDefaultPocGoal(lang, appCategory));
     setLeadDept(getDefaultLeadDept(lang));
-  }, [lang, effectiveApp.category]);
+  }, [lang, appCategory]);
   const [isolationMode, setIsolationMode] = useState<'sandbox_mirror' | 'synthetic_sample'>(
     'sandbox_mirror'
   );
   const [isDeploying, setIsDeploying] = useState<boolean>(false);
   const [deployStep, setDeployStep] = useState<number>(1);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
+  // Provisioning must not be interrupted; once it succeeds the modal is
+  // dismissible again.
+  const dismiss = useModalDismiss<HTMLDivElement>(isOpen, onClose, { locked: isDeploying });
+
+  if (!isOpen || !effectiveApp) return null;
 
   const goalPresets = lang === 'ja' ? [
     '製造ラインのリアルタイムデータ収集およびオントロジー連係整合性テスト',
@@ -181,7 +186,13 @@ export const PoCApplyModal: React.FC<PoCApplyModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
+    <div
+      ref={dismiss.backdropRef}
+      onMouseDown={dismiss.onBackdropMouseDown}
+      onClick={dismiss.onBackdropClick}
+      role="presentation"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in"
+    >
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Modal Header */}
         <div className="p-5 border-b border-slate-200 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white relative">

@@ -448,6 +448,71 @@ export interface Translations {
   // Accessibility labels
   ariaSelectFacility: string;
   ariaSelectDeployNode: string;
+
+  // Currency
+  currencyLabel: string;
+  ariaSelectCurrency: string;
+
+  // Quote scenarios (A/B comparison)
+  scenarioSectionTitle: string;
+  scenarioSectionSub: string;
+  scenarioSaveBtn: string;
+  scenarioCompareBtn: string;
+  scenarioNamePlaceholder: string;
+  scenarioSaveConfirm: string;
+  scenarioCancel: string;
+  scenarioEmptyHint: string;
+  scenarioLimitReached: string;
+  scenarioLoadBtn: string;
+  scenarioDeleteBtn: string;
+  scenarioNeedTwo: string;
+  scenarioDefaultName: string;
+  scenarioSavedAtLabel: string;
+  scenarioCompareTitle: string;
+  scenarioCompareSub: string;
+  scenarioColItem: string;
+  scenarioRowBaseFee: string;
+  scenarioRowSubtotal: string;
+  scenarioRowDiscount: string;
+  scenarioRowTotal: string;
+  scenarioRowLines: string;
+  scenarioRowModules: string;
+  scenarioNotIncluded: string;
+  scenarioLowestBadge: string;
+  scenarioDiffVsLowest: string;
+  scenarioLoadedToast: string;
+  scenarioSavedToast: string;
+
+  // PoC follow-up
+  pocStageTitle: string;
+  pocStageApplied: string;
+  pocStageProvisioned: string;
+  pocStageCollecting: string;
+  pocStageReview: string;
+  pocStageDecision: string;
+  pocEndingSoonTitle: string;
+  pocEndingSoonDesc: string;
+  pocExtendBtn: string;
+  pocExtendedBadge: string;
+  pocExtendUnavailable: string;
+  pocExtendToast: string;
+  pocContactBtn: string;
+  pocContactRequestedBadge: string;
+  pocContactToast: string;
+  pocNextStepsTitle: string;
+  pocNextStep1: string;
+  pocNextStep2: string;
+  pocNextStep3: string;
+
+  // Quote tiers, cart and report labels referenced by the views
+  tier2Title: string;
+  tier3Title: string;
+  clearCartBtn: string;
+  cartEmptyTitle: string;
+  browseModules: string;
+  callsUnit: string;
+  discountAppliedBadge: string;
+  reportBadge: string;
 }
 
 export const TRANSLATIONS: Record<Language, Translations> = {
@@ -909,7 +974,71 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archPolicy3Desc: '24시간 가동되는 제조 라인의 특성상 유지보수를 위한 다운타임은 허용되지 않습니다. Blue/Green 및 온프레미스 노드 롤링 업데이트로 **무중단 핫픽스**를 적용하며, 플랫폼 내 ‘무중단 패치노트’ 메뉴에서 변경 이력과 롤백 보증 상태를 즉시 추적합니다.',
 
     ariaSelectFacility: '사업장 선택 (지역 + 업종)',
-    ariaSelectDeployNode: '배포 대상 사업장 노드 선택'
+    ariaSelectDeployNode: '배포 대상 사업장 노드 선택',
+
+    // Currency
+    currencyLabel: '통화',
+    ariaSelectCurrency: '표시 통화 선택',
+
+    // Quote scenarios
+    scenarioSectionTitle: '견적안 저장 & 비교',
+    scenarioSectionSub: '구성이 다른 견적을 저장해 두고 월 구독료를 나란히 비교합니다.',
+    scenarioSaveBtn: '현재 견적 저장',
+    scenarioCompareBtn: '견적안 비교',
+    scenarioNamePlaceholder: '견적안 이름 (예: A안 · 최소 구성)',
+    scenarioSaveConfirm: '저장',
+    scenarioCancel: '취소',
+    scenarioEmptyHint: '아직 저장된 견적안이 없습니다. 모듈을 구성한 뒤 저장하면 다른 안과 비교할 수 있습니다.',
+    scenarioLimitReached: '견적안은 최대 {max}개까지 저장할 수 있습니다. 기존 안을 삭제한 후 저장하세요.',
+    scenarioLoadBtn: '불러오기',
+    scenarioDeleteBtn: '삭제',
+    scenarioNeedTwo: '비교하려면 견적안을 2개 이상 저장하세요.',
+    scenarioDefaultName: '견적안 {label}',
+    scenarioSavedAtLabel: '저장',
+    scenarioCompareTitle: '견적안 비교',
+    scenarioCompareSub: '동일한 과금 기준으로 재계산한 월 구독료입니다.',
+    scenarioColItem: '항목',
+    scenarioRowBaseFee: '플랫폼 기본료',
+    scenarioRowSubtotal: '모듈 소계',
+    scenarioRowDiscount: '볼륨 할인',
+    scenarioRowTotal: '월 구독료 합계',
+    scenarioRowLines: '생산 라인 수',
+    scenarioRowModules: '모듈 수',
+    scenarioNotIncluded: '미포함',
+    scenarioLowestBadge: '최저가',
+    scenarioDiffVsLowest: '최저가 대비',
+    scenarioLoadedToast: '[{name}] 견적안을 불러왔습니다.',
+    scenarioSavedToast: '[{name}] 견적안이 저장되었습니다.',
+
+    // PoC follow-up
+    pocStageTitle: '진행 단계',
+    pocStageApplied: '신청 접수',
+    pocStageProvisioned: '샌드박스 배포',
+    pocStageCollecting: '데이터 수집·검증',
+    pocStageReview: '중간 평가 리포트',
+    pocStageDecision: '전환 결정',
+    pocEndingSoonTitle: '평가 종료 임박',
+    pocEndingSoonDesc: '{days}일 후 샌드박스와 임시 데이터가 자동 파기됩니다. 정식 전환하거나 평가 기간을 연장하세요.',
+    pocExtendBtn: '평가 기간 7일 연장 요청',
+    pocExtendedBadge: '7일 연장됨',
+    pocExtendUnavailable: '연장은 1회만 가능합니다',
+    pocExtendToast: '[{name}] 평가 기간이 7일 연장되었습니다. 샌드박스는 그대로 유지됩니다.',
+    pocContactBtn: '담당 엔지니어 연결 요청',
+    pocContactRequestedBadge: '엔지니어 배정 요청됨',
+    pocContactToast: '[{name}] 담당 엔지니어 배정을 요청했습니다. 영업일 기준 1일 이내 연락드립니다.',
+    pocNextStepsTitle: '다음 단계',
+    pocNextStep1: '현장 담당자와 평가 지표 결과를 검토합니다.',
+    pocNextStep2: '정식 전환 시 샌드박스의 온톨로지 매핑과 튜닝 모델이 그대로 승계됩니다.',
+    pocNextStep3: '추가 검증이 필요하면 평가 기간을 1회 연장할 수 있습니다.',
+
+    tier2Title: '2층: 선택한 구독 모듈',
+    tier3Title: '3층: 자연 성장 축 시뮬레이터',
+    clearCartBtn: '전체 비우기',
+    cartEmptyTitle: '선택한 모듈이 없습니다.',
+    browseModules: '앱 마켓플레이스에서 모듈 둘러보기',
+    callsUnit: '건/월',
+    discountAppliedBadge: '할인 적용',
+    reportBadge: 'PoC 평가 보고서'
   },
   en: {
     brandName: 'ArcOS',
@@ -1369,7 +1498,71 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archPolicy3Desc: 'Production lines running around the clock cannot accept maintenance downtime. **Zero-downtime hotfixes** are applied through Blue/Green and on-premise node rolling updates, and the in-platform “Zero-Downtime Patch Notes” menu tracks change history and rollback guarantees instantly.',
 
     ariaSelectFacility: 'Select facility (region + industry)',
-    ariaSelectDeployNode: 'Select target facility node for deployment'
+    ariaSelectDeployNode: 'Select target facility node for deployment',
+
+    // Currency
+    currencyLabel: 'Currency',
+    ariaSelectCurrency: 'Select display currency',
+
+    // Quote scenarios
+    scenarioSectionTitle: 'Save & Compare Scenarios',
+    scenarioSectionSub: 'Save quotes with different module mixes and compare their monthly subscription side by side.',
+    scenarioSaveBtn: 'Save Current Quote',
+    scenarioCompareBtn: 'Compare Scenarios',
+    scenarioNamePlaceholder: 'Scenario name (e.g. Plan A · minimal set)',
+    scenarioSaveConfirm: 'Save',
+    scenarioCancel: 'Cancel',
+    scenarioEmptyHint: 'No saved scenarios yet. Configure your modules, then save to compare against another plan.',
+    scenarioLimitReached: 'You can save up to {max} scenarios. Delete one before saving another.',
+    scenarioLoadBtn: 'Load',
+    scenarioDeleteBtn: 'Delete',
+    scenarioNeedTwo: 'Save at least two scenarios to compare them.',
+    scenarioDefaultName: 'Plan {label}',
+    scenarioSavedAtLabel: 'Saved',
+    scenarioCompareTitle: 'Scenario Comparison',
+    scenarioCompareSub: 'Monthly subscription recalculated under identical pricing rules.',
+    scenarioColItem: 'Item',
+    scenarioRowBaseFee: 'Platform base fee',
+    scenarioRowSubtotal: 'Module subtotal',
+    scenarioRowDiscount: 'Volume discount',
+    scenarioRowTotal: 'Total monthly subscription',
+    scenarioRowLines: 'Production lines',
+    scenarioRowModules: 'Modules',
+    scenarioNotIncluded: 'Not included',
+    scenarioLowestBadge: 'Lowest',
+    scenarioDiffVsLowest: 'vs lowest',
+    scenarioLoadedToast: 'Loaded scenario [{name}].',
+    scenarioSavedToast: 'Scenario [{name}] saved.',
+
+    // PoC follow-up
+    pocStageTitle: 'Trial Stages',
+    pocStageApplied: 'Application received',
+    pocStageProvisioned: 'Sandbox deployed',
+    pocStageCollecting: 'Data ingestion & validation',
+    pocStageReview: 'Interim evaluation report',
+    pocStageDecision: 'Conversion decision',
+    pocEndingSoonTitle: 'Trial ending soon',
+    pocEndingSoonDesc: 'The sandbox and its temporary data are purged automatically in {days} days. Convert to a full subscription or extend the trial.',
+    pocExtendBtn: 'Request 7-day extension',
+    pocExtendedBadge: 'Extended by 7 days',
+    pocExtendUnavailable: 'Only one extension is available',
+    pocExtendToast: 'Trial [{name}] extended by 7 days. The sandbox stays as it is.',
+    pocContactBtn: 'Request a support engineer',
+    pocContactRequestedBadge: 'Engineer requested',
+    pocContactToast: 'Requested a support engineer for [{name}]. Expect contact within one business day.',
+    pocNextStepsTitle: 'Next steps',
+    pocNextStep1: 'Review the evaluation metrics with your on-site process owner.',
+    pocNextStep2: 'On conversion, the sandbox ontology mapping and tuned models carry over untouched.',
+    pocNextStep3: 'If further validation is needed, the trial can be extended once.',
+
+    tier2Title: 'Tier 2: Selected Subscription Modules',
+    tier3Title: 'Tier 3: Natural Growth Metric Simulator',
+    clearCartBtn: 'Clear all',
+    cartEmptyTitle: 'No modules selected yet.',
+    browseModules: 'Browse modules in the app marketplace',
+    callsUnit: 'calls/mo',
+    discountAppliedBadge: 'discount applied',
+    reportBadge: 'PoC Evaluation Report'
   },
   ja: {
     brandName: 'ArcOS',
@@ -1829,6 +2022,70 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archPolicy3Desc: '24時間稼働する製造ラインの特性上、保守のためのダウンタイムは許容されません。Blue/Greenおよびオンプレミスノードのローリングアップデートで**無停止ホットフィックス**を適用し、プラットフォーム内の「無停止パッチノート」メニューで変更履歴とロールバック保証状態を即座に追跡できます。',
 
     ariaSelectFacility: '事業所選択 (地域 + 業種)',
-    ariaSelectDeployNode: '展開対象の事業所ノード選択'
+    ariaSelectDeployNode: '展開対象の事業所ノード選択',
+
+    // Currency
+    currencyLabel: '通貨',
+    ariaSelectCurrency: '表示通貨の選択',
+
+    // Quote scenarios
+    scenarioSectionTitle: '見積案の保存 & 比較',
+    scenarioSectionSub: '構成の異なる見積を保存し、月額サブスクリプションを並べて比較します。',
+    scenarioSaveBtn: '現在の見積を保存',
+    scenarioCompareBtn: '見積案を比較',
+    scenarioNamePlaceholder: '見積案の名称 (例: A案 · 最小構成)',
+    scenarioSaveConfirm: '保存',
+    scenarioCancel: 'キャンセル',
+    scenarioEmptyHint: '保存済みの見積案はまだありません。モジュールを構成して保存すると、他の案と比較できます。',
+    scenarioLimitReached: '見積案は最大{max}件まで保存できます。既存の案を削除してから保存してください。',
+    scenarioLoadBtn: '読み込み',
+    scenarioDeleteBtn: '削除',
+    scenarioNeedTwo: '比較するには見積案を2件以上保存してください。',
+    scenarioDefaultName: '見積案 {label}',
+    scenarioSavedAtLabel: '保存',
+    scenarioCompareTitle: '見積案の比較',
+    scenarioCompareSub: '同一の課金基準で再計算した月額サブスクリプションです。',
+    scenarioColItem: '項目',
+    scenarioRowBaseFee: 'プラットフォーム基本料',
+    scenarioRowSubtotal: 'モジュール小計',
+    scenarioRowDiscount: 'ボリューム割引',
+    scenarioRowTotal: '月額サブスクリプション合計',
+    scenarioRowLines: '生産ライン数',
+    scenarioRowModules: 'モジュール数',
+    scenarioNotIncluded: '未含有',
+    scenarioLowestBadge: '最安',
+    scenarioDiffVsLowest: '最安との差',
+    scenarioLoadedToast: '見積案 [{name}] を読み込みました。',
+    scenarioSavedToast: '見積案 [{name}] を保存しました。',
+
+    // PoC follow-up
+    pocStageTitle: '進行ステージ',
+    pocStageApplied: '申請受付',
+    pocStageProvisioned: 'サンドボックス展開',
+    pocStageCollecting: 'データ収集・検証',
+    pocStageReview: '中間評価レポート',
+    pocStageDecision: '移行判断',
+    pocEndingSoonTitle: '評価終了が間近です',
+    pocEndingSoonDesc: '{days}日後にサンドボックスと一時データが自動破棄されます。正式移行するか、評価期間を延長してください。',
+    pocExtendBtn: '評価期間の7日延長を申請',
+    pocExtendedBadge: '7日延長済み',
+    pocExtendUnavailable: '延長は1回のみ可能です',
+    pocExtendToast: '[{name}] の評価期間を7日延長しました。サンドボックスはそのまま維持されます。',
+    pocContactBtn: '担当エンジニアの手配を依頼',
+    pocContactRequestedBadge: 'エンジニア手配を依頼済み',
+    pocContactToast: '[{name}] の担当エンジニア手配を依頼しました。営業日ベースで1日以内にご連絡します。',
+    pocNextStepsTitle: '次のステップ',
+    pocNextStep1: '現場の工程責任者と評価指標の結果をレビューします。',
+    pocNextStep2: '正式移行時は、サンドボックスのオントロジーマッピングとチューニング済みモデルがそのまま引き継がれます。',
+    pocNextStep3: '追加検証が必要な場合、評価期間を1回だけ延長できます。',
+
+    tier2Title: '第2層: 選択したサブスクモジュール',
+    tier3Title: '第3層: 自然成長軸シミュレータ',
+    clearCartBtn: 'すべて削除',
+    cartEmptyTitle: '選択されたモジュールがありません。',
+    browseModules: 'アプリマーケットプレイスでモジュールを見る',
+    callsUnit: '件/月',
+    discountAppliedBadge: '割引適用',
+    reportBadge: 'PoC 評価レポート'
   }
 };

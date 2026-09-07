@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { CartItem, RecommendationPreset } from '../types';
 import { RECOMMENDATION_PRESETS } from '../data/presetsData';
 import {
@@ -12,9 +12,24 @@ import {
   TrendingDown,
   Factory,
   Target,
-  AlertTriangle
+  AlertTriangle,
+  Save,
+  Columns3,
+  X
 } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../i18n/translations';
+import { CurrencyCode, exchangeRateNote, formatMoney } from '../lib/currency';
+import { BASE_PLATFORM_FEE, computeQuote, lineItemTotal } from '../lib/pricing';
+import { STORAGE_KEYS, parsers, usePersistentState } from '../lib/storage';
+import {
+  MAX_SCENARIOS,
+  QuoteScenario,
+  createScenarioId,
+  parseScenarios,
+  scenarioLabel,
+  unionModuleIds
+} from '../lib/scenarios';
+import { useModalDismiss } from '../lib/useModalDismiss';
 import {
   getLocalizedPresetTitle,
   getLocalizedPresetSubtitle,
@@ -37,6 +52,7 @@ interface QuoteViewProps {
   tenantName: string;
   selectedLocation: string;
   lang: Language;
+  currency: CurrencyCode;
 }
 
 export const QuoteView: React.FC<QuoteViewProps> = ({
@@ -48,15 +64,38 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
   onBatchDeploy,
   tenantName,
   selectedLocation,
-  lang
+  lang,
+  currency
 }) => {
   const t = TRANSLATIONS[lang];
   const [presetTab, setPresetTab] = useState<'industry' | 'requirement'>('industry');
-  const [productionLines, setProductionLines] = useState<number>(4);
-  const [inferenceCalls, setInferenceCalls] = useState<number>(10);
+  const [productionLines, setProductionLines] = usePersistentState<number>(
+    STORAGE_KEYS.productionLines,
+    4,
+    parsers.numberInRange(1, 20)
+  );
+  const [inferenceCalls, setInferenceCalls] = usePersistentState<number>(
+    STORAGE_KEYS.inferenceCalls,
+    10,
+    parsers.numberInRange(5, 100)
+  );
   const [showQuotationPrintModal, setShowQuotationPrintModal] = useState(false);
 
-  const BASE_PLATFORM_FEE = 400; // 400만원 고정 1층
+  // Saved quote scenarios (plan A vs plan B).
+  const [scenarios, setScenarios] = usePersistentState<QuoteScenario[]>(
+    STORAGE_KEYS.scenarios,
+    [],
+    parseScenarios
+  );
+  const [isNamingScenario, setIsNamingScenario] = useState(false);
+  const [scenarioName, setScenarioName] = useState('');
+  const [showComparison, setShowComparison] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+
+  const comparisonDismiss = useModalDismiss<HTMLDivElement>(showComparison, () => setShowComparison(false));
+  const quotationDismiss = useModalDismiss<HTMLDivElement>(showQuotationPrintModal, () =>
+    setShowQuotationPrintModal(false)
+  );
 
   // Conflict Check
   const hasMesApp = cart.some((item) => item.id === 'mes-pharma' || item.id === 'mes-semi' || item.id === 'mes-discrete');
@@ -73,28 +112,14 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
       .forEach((item) => onRemoveItem(item.id));
   };
 
-  // Module Subtotal (2층)
-  const moduleSubtotal = cart.reduce((acc, item) => {
-    if (item.per === 'line') {
-      return acc + item.price * productionLines;
-    }
-    return acc + item.price;
-  }, 0);
+  const { moduleCount, moduleSubtotal, discountRate, discountAmount, grandTotal } = useMemo(
+    () => computeQuote(cart, productionLines),
+    [cart, productionLines]
+  );
 
-  // Volume Discount Rule
-  const moduleCount = cart.length;
-  let discountRate = 0;
-  if (moduleCount >= 6) {
-    discountRate = 0.10;
-  } else if (moduleCount >= 4) {
-    discountRate = 0.05;
-  }
-
-  const discountAmount = Math.round(moduleSubtotal * discountRate);
-  const netModuleFee = moduleSubtotal - discountAmount;
-  const grandTotal = BASE_PLATFORM_FEE + netModuleFee;
-
-  const won = (val: number) => val.toLocaleString();
+  /** Formats a 만원-denominated figure in the currently selected currency. */
+  const money = (units: number) => formatMoney(units, currency, lang);
+  const rateNote = exchangeRateNote(currency, lang);
 
   const isPresetActive = (preset: RecommendationPreset) => {
     if (cart.length !== preset.recommendedModules.length) return false;
@@ -108,6 +133,81 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
     setProductionLines(preset.recommendedLines);
     onApplyPreset(preset);
   };
+
+  const flashToast = (message: string) => {
+    setToast(message);
+    window.setTimeout(() => setToast(null), 3200);
+  };
+
+  const atScenarioLimit = scenarios.length >= MAX_SCENARIOS;
+
+  const handleStartSaveScenario = () => {
+    setScenarioName(t.scenarioDefaultName.replace('{label}', scenarioLabel(scenarios.length)));
+    setIsNamingScenario(true);
+  };
+
+  const handleConfirmSaveScenario = () => {
+    const name = scenarioName.trim() || t.scenarioDefaultName.replace('{label}', scenarioLabel(scenarios.length));
+    setScenarios((prev) => [
+      ...prev,
+      {
+        id: createScenarioId(),
+        name,
+        savedAt: new Date().toISOString(),
+        cart,
+        productionLines,
+        inferenceCalls
+      }
+    ]);
+    setIsNamingScenario(false);
+    setScenarioName('');
+    flashToast(t.scenarioSavedToast.replace('{name}', name));
+  };
+
+  /** Restores a scenario into the live quote. */
+  const handleLoadScenario = (scenario: QuoteScenario) => {
+    onApplyPreset({
+      id: scenario.id,
+      title: scenario.name,
+      subtitle: '',
+      type: 'requirement',
+      targetAudience: '',
+      badge: '',
+      desc: '',
+      highlights: [],
+      recommendedLines: scenario.productionLines,
+      recommendedModules: scenario.cart
+    });
+    setProductionLines(scenario.productionLines);
+    setInferenceCalls(scenario.inferenceCalls);
+    flashToast(t.scenarioLoadedToast.replace('{name}', scenario.name));
+  };
+
+  const handleDeleteScenario = (id: string) => {
+    setScenarios((prev) => prev.filter((scenario) => scenario.id !== id));
+  };
+
+  /** Totals per scenario, recomputed under the current pricing rules. */
+  const scenarioTotals = useMemo(
+    () => scenarios.map((scenario) => computeQuote(scenario.cart, scenario.productionLines)),
+    [scenarios]
+  );
+  const lowestTotal = scenarioTotals.length
+    ? Math.min(...scenarioTotals.map((totals) => totals.grandTotal))
+    : 0;
+  // Only meaningful when the scenarios actually differ in price.
+  const hasDistinctTotals = new Set(scenarioTotals.map((totals) => totals.grandTotal)).size > 1;
+  const comparisonModuleIds = useMemo(() => unionModuleIds(scenarios), [scenarios]);
+  /** id → display name, so the comparison rows do not rescan every cart. */
+  const moduleNameById = useMemo(() => {
+    const names = new Map<string, string>();
+    for (const scenario of scenarios) {
+      for (const item of scenario.cart) {
+        if (!names.has(item.id)) names.set(item.id, item.name);
+      }
+    }
+    return names;
+  }, [scenarios]);
 
   return (
     <div className="p-6 md:p-8 max-w-6xl mx-auto space-y-6">
@@ -196,17 +296,9 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3.5">
           {filteredPresets.map((preset) => {
             const active = isPresetActive(preset);
-            const pModSubtotal = preset.recommendedModules.reduce((acc, m) => {
-              return acc + (m.per === 'line' ? m.price * preset.recommendedLines : m.price);
-            }, 0);
-            const pDiscountRate =
-              preset.recommendedModules.length >= 6
-                ? 0.10
-                : preset.recommendedModules.length >= 4
-                ? 0.05
-                : 0;
-            const pDiscountAmt = Math.round(pModSubtotal * pDiscountRate);
-            const pGrandTotal = BASE_PLATFORM_FEE + (pModSubtotal - pDiscountAmt);
+            const presetTotals = computeQuote(preset.recommendedModules, preset.recommendedLines);
+            const pDiscountRate = presetTotals.discountRate;
+            const pGrandTotal = presetTotals.grandTotal;
 
             return (
               <div
@@ -265,7 +357,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                   <div>
                     <span className="text-[10px] text-slate-400 block">{t.estimatedMonthlyTotal}</span>
                     <span className="font-mono font-bold text-slate-900 text-sm">
-                      {won(pGrandTotal)} {t.tenThousandWon}/{t.monthUnit}
+                      {money(pGrandTotal)}/{t.monthUnit}
                     </span>
                     {pDiscountRate > 0 && (
                       <span className="ml-1 text-[10px] text-emerald-600 font-medium">
@@ -315,7 +407,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                 </h2>
               </div>
               <span className="text-xs font-mono font-bold text-slate-900">
-                {t.monthPrefix} {won(BASE_PLATFORM_FEE)}{t.tenThousandWon}
+                {t.monthPrefix} {money(BASE_PLATFORM_FEE)}
               </span>
             </div>
             <div className="p-3 bg-slate-50 rounded-lg text-xs text-slate-600 space-y-1 border border-slate-100">
@@ -425,14 +517,14 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                         </div>
                         <div className="text-[11px] text-slate-500 mt-0.5 break-keep">
                           {item.per === 'line'
-                            ? `${item.price}${t.tenThousandWon} × ${productionLines}${t.linesCountUnit}`
+                            ? `${money(item.price)} × ${productionLines}${t.linesCountUnit}`
                             : getLocalizedSubModuleUnit(item.id, item.unitLabel, lang)}
                         </div>
                       </div>
 
                       <div className="flex items-center gap-3 flex-shrink-0">
                         <span className="font-mono font-bold text-slate-900 whitespace-nowrap">
-                          {won(itemTotal)}{t.tenThousandWon}/{t.monthUnit}
+                          {money(itemTotal)}/{t.monthUnit}
                         </span>
                         <button
                           onClick={() => onRemoveItem(item.id)}
@@ -546,14 +638,14 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
               <div className="flex justify-between text-slate-300">
                 <span className="break-keep">{t.platformBaseFeeLabel}</span>
                 <span className="font-mono text-white font-semibold">
-                  {won(BASE_PLATFORM_FEE)} {t.tenThousandWon}
+                  {money(BASE_PLATFORM_FEE)}
                 </span>
               </div>
 
               <div className="flex justify-between text-slate-300">
                 <span className="break-keep">{t.selectedModulesSubtotal} ({moduleCount}{t.itemsCountUnit})</span>
                 <span className="font-mono text-white font-semibold">
-                  {won(moduleSubtotal)} {t.tenThousandWon}
+                  {money(moduleSubtotal)}
                 </span>
               </div>
 
@@ -570,7 +662,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                     }`}
                   >
                     {discountRate > 0
-                      ? `-${won(discountAmount)} ${t.tenThousandWon} (${(discountRate * 100).toFixed(0)}%)`
+                      ? `-${money(discountAmount)} (${(discountRate * 100).toFixed(0)}%)`
                       : '0%'}
                   </span>
                 </div>
@@ -589,9 +681,9 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
               <div className="text-xs text-slate-400">{t.finalTotalMonthly}</div>
               <div className="flex items-baseline justify-between">
                 <span className="text-2xl font-black font-mono tracking-tight text-blue-400">
-                  {won(grandTotal)}
+                  {money(grandTotal)}
                 </span>
-                <span className="text-xs text-slate-300">{t.tenThousandWon} / {t.monthUnit}</span>
+                <span className="text-xs text-slate-300">/ {t.monthUnit}</span>
               </div>
               <p className="text-[10px] text-slate-500 pt-1 break-keep">
                 {t.quoteDisclaimers}
@@ -619,13 +711,290 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
               </button>
             </div>
           </div>
+
+          {/* Saved scenarios (plan A vs plan B) */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3">
+            <div>
+              <h3 className="text-xs font-bold text-slate-900 flex items-center gap-1.5 break-keep">
+                <Columns3 className="w-3.5 h-3.5 text-indigo-600 flex-shrink-0" />
+                <span>{t.scenarioSectionTitle}</span>
+              </h3>
+              <p className="text-[11px] text-slate-500 mt-0.5 break-keep">{t.scenarioSectionSub}</p>
+            </div>
+
+            {isNamingScenario ? (
+              <div className="space-y-2">
+                <input
+                  autoFocus
+                  value={scenarioName}
+                  onChange={(e) => setScenarioName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleConfirmSaveScenario();
+                    if (e.key === 'Escape') setIsNamingScenario(false);
+                  }}
+                  placeholder={t.scenarioNamePlaceholder}
+                  aria-label={t.scenarioNamePlaceholder}
+                  className="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                />
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleConfirmSaveScenario}
+                    className="flex-1 px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors"
+                  >
+                    {t.scenarioSaveConfirm}
+                  </button>
+                  <button
+                    onClick={() => setIsNamingScenario(false)}
+                    className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium hover:bg-slate-200 transition-colors"
+                  >
+                    {t.scenarioCancel}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleStartSaveScenario}
+                  disabled={cart.length === 0 || atScenarioLimit}
+                  title={atScenarioLimit ? t.scenarioLimitReached.replace('{max}', String(MAX_SCENARIOS)) : undefined}
+                  className="flex-1 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold hover:bg-slate-200 disabled:opacity-50 transition-colors flex items-center justify-center gap-1.5"
+                >
+                  <Save className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span className="break-keep">{t.scenarioSaveBtn}</span>
+                </button>
+                <button
+                  onClick={() => setShowComparison(true)}
+                  disabled={scenarios.length < 2}
+                  title={scenarios.length < 2 ? t.scenarioNeedTwo : undefined}
+                  className="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-500 disabled:opacity-50 transition-colors whitespace-nowrap"
+                >
+                  {t.scenarioCompareBtn}
+                </button>
+              </div>
+            )}
+
+            {atScenarioLimit && (
+              <p className="text-[10.5px] text-amber-700 bg-amber-50 border border-amber-200 rounded p-2 break-keep">
+                {t.scenarioLimitReached.replace('{max}', String(MAX_SCENARIOS))}
+              </p>
+            )}
+
+            {scenarios.length === 0 ? (
+              <p className="text-[11px] text-slate-500 border border-dashed border-slate-200 rounded-lg p-3 break-keep">
+                {t.scenarioEmptyHint}
+              </p>
+            ) : (
+              <ul className="space-y-1.5">
+                {scenarios.map((scenario, idx) => (
+                  <li
+                    key={scenario.id}
+                    className="flex items-center justify-between gap-2 p-2 rounded-lg border border-slate-200 bg-slate-50/70"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-4 h-4 rounded bg-indigo-600 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                          {scenarioLabel(idx)}
+                        </span>
+                        <span className="text-[11.5px] font-semibold text-slate-900 truncate">
+                          {scenario.name}
+                        </span>
+                      </div>
+                      <span className="text-[10.5px] text-slate-500 font-mono">
+                        {money(scenarioTotals[idx].grandTotal)}/{t.monthUnit}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <button
+                        onClick={() => handleLoadScenario(scenario)}
+                        className="px-2 py-1 rounded text-[10.5px] font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition-colors"
+                      >
+                        {t.scenarioLoadBtn}
+                      </button>
+                      <button
+                        onClick={() => handleDeleteScenario(scenario.id)}
+                        aria-label={t.scenarioDeleteBtn}
+                        className="p-1 rounded text-slate-400 hover:text-red-600 transition-colors"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
 
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-[60] max-w-sm bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-2xl border border-slate-700 animate-in fade-in slide-in-from-bottom-2 break-keep">
+          {toast}
+        </div>
+      )}
+
+      {/* Scenario Comparison Modal */}
+      {showComparison && (
+        <div
+          ref={comparisonDismiss.backdropRef}
+          onMouseDown={comparisonDismiss.onBackdropMouseDown}
+          onClick={comparisonDismiss.onBackdropClick}
+          role="presentation"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={t.scenarioCompareTitle}
+            className="bg-white rounded-2xl max-w-4xl w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex items-start justify-between gap-4 border-b border-slate-200 pb-4">
+              <div>
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 break-keep">
+                  <Columns3 className="w-4 h-4 text-indigo-600 flex-shrink-0" />
+                  <span>{t.scenarioCompareTitle}</span>
+                </h3>
+                <p className="text-[11px] text-slate-500 mt-0.5 break-keep">{t.scenarioCompareSub}</p>
+              </div>
+              <button
+                onClick={() => setShowComparison(false)}
+                aria-label={t.closeBtn}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors flex-shrink-0"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full text-left text-xs border border-slate-200 rounded-lg overflow-hidden">
+                <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+                  <tr>
+                    <th className="p-2.5 min-w-[10rem]">{t.scenarioColItem}</th>
+                    {scenarios.map((scenario, idx) => (
+                      <th key={scenario.id} className="p-2.5 min-w-[9rem]">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-4 h-4 rounded bg-indigo-600 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                            {scenarioLabel(idx)}
+                          </span>
+                          <span className="truncate">{scenario.name}</span>
+                        </div>
+                        {hasDistinctTotals && scenarioTotals[idx].grandTotal === lowestTotal && (
+                          <span className="mt-1 inline-block px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-semibold">
+                            {t.scenarioLowestBadge}
+                          </span>
+                        )}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  <tr>
+                    <td className="p-2.5 text-slate-500">{t.scenarioRowLines}</td>
+                    {scenarios.map((scenario) => (
+                      <td key={scenario.id} className="p-2.5 font-mono text-slate-800">
+                        {scenario.productionLines} {t.linesCountUnit}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td className="p-2.5 text-slate-500">{t.scenarioRowModules}</td>
+                    {scenarioTotals.map((totals, idx) => (
+                      <td key={scenarios[idx].id} className="p-2.5 font-mono text-slate-800">
+                        {totals.moduleCount} {t.itemsCountUnit}
+                      </td>
+                    ))}
+                  </tr>
+
+                  {comparisonModuleIds.map((moduleId) => (
+                    <tr key={moduleId}>
+                      <td className="p-2.5 font-medium text-slate-800">
+                        {getLocalizedSubModuleName(moduleId, moduleNameById.get(moduleId) ?? moduleId, lang)}
+                      </td>
+                      {scenarios.map((scenario) => {
+                        const item = scenario.cart.find((c) => c.id === moduleId);
+                        return (
+                          <td key={scenario.id} className="p-2.5 font-mono">
+                            {item ? (
+                              <span className="text-slate-800">
+                                {money(lineItemTotal(item, scenario.productionLines))}
+                              </span>
+                            ) : (
+                              <span className="text-slate-400">{t.scenarioNotIncluded}</span>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+
+                  <tr className="bg-slate-50">
+                    <td className="p-2.5 font-semibold text-slate-700">{t.scenarioRowBaseFee}</td>
+                    {scenarios.map((scenario) => (
+                      <td key={scenario.id} className="p-2.5 font-mono text-slate-800">
+                        {money(BASE_PLATFORM_FEE)}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="bg-slate-50">
+                    <td className="p-2.5 font-semibold text-slate-700">{t.scenarioRowSubtotal}</td>
+                    {scenarioTotals.map((totals, idx) => (
+                      <td key={scenarios[idx].id} className="p-2.5 font-mono text-slate-800">
+                        {money(totals.moduleSubtotal)}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="bg-emerald-50/60 text-emerald-800">
+                    <td className="p-2.5 font-semibold">{t.scenarioRowDiscount}</td>
+                    {scenarioTotals.map((totals, idx) => (
+                      <td key={scenarios[idx].id} className="p-2.5 font-mono font-semibold">
+                        {totals.discountRate > 0
+                          ? `-${money(totals.discountAmount)} (${(totals.discountRate * 100).toFixed(0)}%)`
+                          : '—'}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="bg-slate-900 text-white">
+                    <td className="p-3 font-bold">{t.scenarioRowTotal}</td>
+                    {scenarioTotals.map((totals, idx) => {
+                      const delta = totals.grandTotal - lowestTotal;
+                      return (
+                        <td key={scenarios[idx].id} className="p-3 font-mono font-bold">
+                          <div className="text-blue-300 text-sm">{money(totals.grandTotal)}</div>
+                          {delta > 0 && (
+                            <div className="text-[10px] text-slate-400 font-normal mt-0.5">
+                              +{money(delta)} {t.scenarioDiffVsLowest}
+                            </div>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {rateNote && (
+              <p className="mt-3 text-[10.5px] text-slate-500 break-keep">{rateNote}</p>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Official Quotation Modal */}
       {showQuotationPrintModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+        <div
+          ref={quotationDismiss.backdropRef}
+          onMouseDown={quotationDismiss.onBackdropMouseDown}
+          onClick={quotationDismiss.onBackdropClick}
+          role="presentation"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={t.quotationTitle}
+            data-print-root
+            className="bg-white rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto"
+          >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div className="flex items-center gap-2">
@@ -676,7 +1045,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                   <tr>
                     <td className="p-2.5 font-medium">{t.basePlatformRowDesc}</td>
                     <td className="p-2.5 text-slate-500">{t.basePlatformRowQty}</td>
-                    <td className="p-2.5 text-right font-mono">{won(BASE_PLATFORM_FEE)} {t.tenThousandWon}</td>
+                    <td className="p-2.5 text-right font-mono">{money(BASE_PLATFORM_FEE)}</td>
                   </tr>
                   {cart.map((c) => (
                     <tr key={c.id}>
@@ -685,7 +1054,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                         {c.per === 'line' ? `${productionLines} ${t.linesCountUnit}` : getLocalizedSubModuleUnit(c.id, c.unitLabel, lang)}
                       </td>
                       <td className="p-2.5 text-right font-mono">
-                        {won(c.per === 'line' ? c.price * productionLines : c.price)} {t.tenThousandWon}
+                        {money(lineItemTotal(c, productionLines))}
                       </td>
                     </tr>
                   ))}
@@ -693,7 +1062,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                     <tr className="bg-emerald-50 text-emerald-800">
                       <td className="p-2.5 font-semibold">{t.volumeDiscountRowTitle.replace('{count}', String(moduleCount))}</td>
                       <td className="p-2.5">{t.discountAppliedRate.replace('{rate}', (discountRate * 100).toFixed(0))}</td>
-                      <td className="p-2.5 text-right font-mono font-bold">-{won(discountAmount)} {t.tenThousandWon}</td>
+                      <td className="p-2.5 text-right font-mono font-bold">-{money(discountAmount)}</td>
                     </tr>
                   )}
                 </tbody>
@@ -701,14 +1070,18 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
             </div>
 
             {/* Grand Total Bar */}
-            <div className="mt-4 p-3.5 bg-slate-900 text-white rounded-lg flex items-center justify-between text-xs">
+            <div className="mt-4 p-3.5 bg-slate-900 text-white rounded-lg flex items-center justify-between text-xs" data-print-keep>
               <span className="font-semibold">{t.finalTotalMonthly} ({t.vatNotice})</span>
               <span className="text-lg font-bold font-mono text-blue-400">
-                {won(grandTotal)} {t.tenThousandWon} / {t.monthUnit}
+                {money(grandTotal)} / {t.monthUnit}
               </span>
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-2">
+            {rateNote && (
+              <p className="mt-3 text-[10.5px] text-slate-500 break-keep">{rateNote}</p>
+            )}
+
+            <div className="mt-6 flex items-center justify-end gap-2" data-print-hide>
               <button
                 onClick={() => setShowQuotationPrintModal(false)}
                 className="px-4 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg"

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { RECOMMENDATION_PRESETS } from '../data/presetsData';
 import { Language, TRANSLATIONS } from '../i18n/translations';
+import { CurrencyCode, formatMoney } from '../lib/currency';
 import {
   getLocalizedAppName,
   getLocalizedAppCategory,
@@ -33,6 +34,7 @@ interface CatalogViewProps {
   onGoToQuote: () => void;
   onApplyPreset?: (preset: RecommendationPreset) => void;
   lang: Language;
+  currency: CurrencyCode;
 }
 
 export const CatalogView: React.FC<CatalogViewProps> = ({
@@ -44,7 +46,8 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   onApplyPoC,
   onGoToQuote,
   onApplyPreset,
-  lang
+  lang,
+  currency
 }) => {
   const t = TRANSLATIONS[lang];
   const [selectedCategory, setSelectedCategory] = useState<string>('전체');
@@ -133,7 +136,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
     if (!app.price) {
       return t.cardIncludedInBase;
     }
-    return `${t.monthPrefix} ${app.price}${t.tenThousandWon}~`;
+    return `${t.monthPrefix} ${formatMoney(app.price, currency, lang)}~`;
   };
 
   return (

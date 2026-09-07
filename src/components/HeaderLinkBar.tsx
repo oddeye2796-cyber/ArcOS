@@ -1,21 +1,26 @@
 import React from 'react';
-import { ShieldCheck, Cloud, Server, ArrowRightLeft, Radio, Building2, Globe } from 'lucide-react';
+import { ShieldCheck, Cloud, Server, ArrowRightLeft, Radio, Building2, Globe, Coins } from 'lucide-react';
 import { FACILITIES_LIST } from '../data/presetsData';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { getLocalizedFacilityName } from '../i18n/localizedData';
+import { CURRENCY_CODES, CurrencyCode } from '../lib/currency';
 
 interface HeaderLinkBarProps {
   selectedLocation: string;
   onLocationChange: (loc: string) => void;
   lang: Language;
   onLangChange: (lang: Language) => void;
+  currency: CurrencyCode;
+  onCurrencyChange: (currency: CurrencyCode) => void;
 }
 
 export const HeaderLinkBar: React.FC<HeaderLinkBarProps> = ({
   selectedLocation,
   onLocationChange,
   lang,
-  onLangChange
+  onLangChange,
+  currency,
+  onCurrencyChange
 }) => {
   const t = TRANSLATIONS[lang];
   const currentFacility = FACILITIES_LIST.find((f) => f.fullName === selectedLocation) || FACILITIES_LIST[0];
@@ -84,11 +89,29 @@ export const HeaderLinkBar: React.FC<HeaderLinkBarProps> = ({
             </span>
           </div>
 
+          {/* Display Currency */}
+          <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+            <Coins className="w-3.5 h-3.5 text-slate-500 ml-1.5 mr-0.5" />
+            <select
+              aria-label={t.ariaSelectCurrency}
+              value={currency}
+              onChange={(e) => onCurrencyChange(e.target.value as CurrencyCode)}
+              className="bg-transparent font-medium text-slate-700 border-none outline-none cursor-pointer hover:text-blue-600 text-xs py-1 pr-1"
+            >
+              {CURRENCY_CODES.map((code) => (
+                <option key={code} value={code}>
+                  {code}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Language Switcher */}
           <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
             <Globe className="w-3.5 h-3.5 text-slate-500 ml-1.5 mr-0.5" />
             <button
               onClick={() => onLangChange('ko')}
+              aria-pressed={lang === 'ko'}
               className={`px-2 py-1 rounded font-medium transition-colors ${
                 lang === 'ko'
                   ? 'bg-white text-blue-700 shadow-xs font-semibold'
@@ -99,6 +122,7 @@ export const HeaderLinkBar: React.FC<HeaderLinkBarProps> = ({
             </button>
             <button
               onClick={() => onLangChange('en')}
+              aria-pressed={lang === 'en'}
               className={`px-2 py-1 rounded font-medium transition-colors ${
                 lang === 'en'
                   ? 'bg-white text-blue-700 shadow-xs font-semibold'
@@ -109,6 +133,7 @@ export const HeaderLinkBar: React.FC<HeaderLinkBarProps> = ({
             </button>
             <button
               onClick={() => onLangChange('ja')}
+              aria-pressed={lang === 'ja'}
               className={`px-2 py-1 rounded font-medium transition-colors ${
                 lang === 'ja'
                   ? 'bg-white text-blue-700 shadow-xs font-semibold'
