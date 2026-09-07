@@ -5,6 +5,7 @@ import { CurrencyCode, formatMoney } from '../lib/currency';
 import { getAppValueProp } from '../i18n/appValueData';
 import { findDocForModule } from '../data/resourcesData';
 import { useModalDismiss } from '../lib/useModalDismiss';
+import { CommitmentTerm, commitmentFor } from '../lib/commitment';
 import {
   getLocalizedAppName,
   getLocalizedAppDesc,
@@ -24,6 +25,7 @@ import {
 } from '../i18n/localizedData';
 import {
   X,
+  CalendarClock,
   CheckCircle2,
   Sparkles,
   BookOpen,
@@ -69,6 +71,11 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
   lang = 'ko'
 }) => {
   const t = TRANSLATIONS[lang];
+  const commitmentLabel: Record<CommitmentTerm, string> = {
+    annual: t.commitmentTermAnnual,
+    quarterly: t.commitmentTermQuarterly,
+    monthly: t.commitmentTermMonthly
+  };
 
   // Hooks run before the `isOpen` guard: bailing out first would change the hook
   // count between renders of this same mounted instance.
@@ -287,6 +294,11 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
                               <div className="flex items-start justify-between gap-1">
                                 <span className="font-semibold text-xs text-slate-900">
                                   {localizedSubName}
+                                  {item.landing && (
+                                    <span className="ml-1.5 text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 border border-emerald-200 whitespace-nowrap">
+                                      {t.landingBadge}
+                                    </span>
+                                  )}
                                 </span>
                                 <input
                                   type={group.type}
@@ -299,9 +311,15 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
                                 {localizedSubDesc}
                               </p>
                             </div>
-                            <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                              <span className="text-slate-500">{t.standardMapping} {item.tagMappingPercent}%</span>
-                              <span className="font-semibold text-slate-900">{localizedSubUnit}</span>
+                            <div className="mt-2.5 pt-2 border-t border-slate-100 space-y-1 text-[11px]">
+                              <div className="flex items-center justify-between gap-2">
+                                <span className="text-slate-500">{t.standardMapping} {item.tagMappingPercent}%</span>
+                                <span className="font-semibold text-slate-900 text-right break-keep">{localizedSubUnit}</span>
+                              </div>
+                              <div className="text-[10px] text-slate-500 inline-flex items-center gap-1">
+                                <CalendarClock className="w-2.5 h-2.5 flex-shrink-0" />
+                                {commitmentLabel[commitmentFor(item.id)]}
+                              </div>
                             </div>
                           </div>
                         );
@@ -511,7 +529,13 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
                 {t.suiteModulesSelected.replace('{count}', String(currentSuiteItemsInCart.length))}
               </span>
             ) : (
-              <span>{t.billingUnitLabel} {getLocalizedAppUnit(app, lang)}</span>
+              <div className="space-y-0.5">
+                <div>{t.billingUnitLabel} {getLocalizedAppUnit(app, lang)}</div>
+                <div className="inline-flex items-center gap-1 text-[11px] text-slate-500">
+                  <CalendarClock className="w-3 h-3 flex-shrink-0" />
+                  {t.commitmentSummaryLabel}: {commitmentLabel[commitmentFor(app.id)]}
+                </div>
+              </div>
             )}
           </div>
 

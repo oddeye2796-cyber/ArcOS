@@ -11,6 +11,9 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../i18n/translations';
+import { formatMoney } from '../lib/currency';
+import { FALLBACK_SNAPSHOT } from '../lib/exchangeRates';
+import { MONTHLY_MINIMUM_CHARGE } from '../lib/commitment';
 
 interface ArchitectureViewProps {
   lang: Language;
@@ -28,6 +31,9 @@ const rich = (text: string): React.ReactNode[] =>
 
 export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang }) => {
   const t = TRANSLATIONS[lang];
+  // The whitepaper states policy figures in the contractual currency (KRW),
+  // independent of whatever display currency the marketplace is set to.
+  const usageFloor = formatMoney(MONTHLY_MINIMUM_CHARGE, 'KRW', lang, FALLBACK_SNAPSHOT.rates);
   const [activeTab, setActiveTab] = useState<'hybrid' | 'suite' | 'plugandplay' | 'pricing' | 'policy'>('hybrid');
 
   return (
@@ -327,7 +333,7 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang }) => {
               <h3 className="text-sm font-bold text-slate-900">
                 {t.archPolicyTitle}
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                 <div className="p-4 bg-amber-50/70 rounded-xl border border-amber-200 space-y-2">
                   <span className="font-bold text-amber-900 text-xs block">
                     {t.archPolicy1Title}
@@ -350,6 +356,14 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang }) => {
                   </span>
                   <p className="text-slate-600 leading-relaxed">
                     {rich(t.archPolicy3Desc)}
+                  </p>
+                </div>
+                <div className="p-4 bg-emerald-50/70 rounded-xl border border-emerald-200 space-y-2">
+                  <span className="font-bold text-emerald-900 text-xs block">
+                    {t.archPolicy4Title}
+                  </span>
+                  <p className="text-slate-600 leading-relaxed">
+                    {rich(t.archPolicy4Desc.replace('{floor}', usageFloor))}
                   </p>
                 </div>
               </div>

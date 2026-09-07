@@ -12,6 +12,8 @@ export const STORAGE_KEYS = {
   currency: `${PREFIX}currency`,
   cart: `${PREFIX}cart`,
   productionLines: `${PREFIX}quote.productionLines`,
+  measurementPoints: `${PREFIX}quote.measurementPoints`,
+  supplyPartners: `${PREFIX}quote.supplyPartners`,
   inferenceCalls: `${PREFIX}quote.inferenceCalls`,
   scenarios: `${PREFIX}quote.scenarios`,
   pocTrials: `${PREFIX}poc.trials`,

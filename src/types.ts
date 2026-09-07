@@ -1,5 +1,13 @@
 export type AppStatus = 'sub' | 'ready' | 'need' | 'onprem';
 
+/**
+ * Billing unit a module is metered by. Three of these are wired to a growth
+ * axis the customer can move on the quote (see GROWTH_AXES in lib/pricing):
+ * 'line' for MES cores, 'point' for REMS measurement points, 'partner' for SCM
+ * supplier accounts. The rest bill at a fixed monthly rate.
+ */
+export type PerUnit = 'flat' | 'line' | 'batch' | 'point' | 'partner' | 'user';
+
 export interface AppDependency {
   name: string;
   ok: boolean;
@@ -12,10 +20,12 @@ export interface SubModuleItem {
   name: string;
   desc: string;
   price: number; // in 만원 (10,000 KRW)
-  per: 'flat' | 'line' | 'batch' | 'point' | 'user';
+  per: PerUnit;
   unitLabel: string;
   tagMappingPercent?: number;
   requiresArcTunnel?: boolean;
+  /** Featured as a recommended first module for a new tenant. */
+  landing?: boolean;
 }
 
 export interface ModuleGroup {
@@ -37,8 +47,10 @@ export interface AppItem {
   growthMetric: string; // e.g., "생산 라인 수", "배치 기록 건수", "계측점 수"
   growthUnit: string;
   price?: number;
-  per?: 'flat' | 'line' | 'batch' | 'point' | 'user';
+  per?: PerUnit;
   suite?: boolean;
+  /** Featured as a recommended first module for a new tenant. */
+  landing?: boolean;
   groups?: ModuleGroup[];
   deps: AppDependency[];
   dataScope: {
@@ -65,7 +77,7 @@ export interface CartItem {
   name: string;
   category: string;
   price: number;
-  per: 'flat' | 'line' | 'batch' | 'point' | 'user';
+  per: PerUnit;
   unitLabel: string;
 }
 

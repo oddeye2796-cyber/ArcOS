@@ -1,4 +1,5 @@
-import { CartItem } from '../types';
+import { CartItem, PerUnit } from '../types';
+import { DEFAULT_GROWTH_METRICS, GROWTH_METRIC_RANGES, GrowthMetrics } from './pricing';
 
 /**
  * A saved quote configuration. Only the inputs are stored; totals are recomputed
@@ -10,14 +11,40 @@ export interface QuoteScenario {
   name: string;
   savedAt: string;
   cart: CartItem[];
-  productionLines: number;
+  metrics: GrowthMetrics;
   inferenceCalls: number;
 }
 
 /** Comparing more than a handful of columns stops being readable on one screen. */
 export const MAX_SCENARIOS = 4;
 
-const PER_VALUES = ['flat', 'line', 'batch', 'point', 'user'] as const;
+const PER_VALUES: readonly PerUnit[] = ['flat', 'line', 'batch', 'point', 'partner', 'user'];
+
+/**
+ * Reads one growth quantity, clamped to the range the quote slider offers.
+ * A missing value falls back to the default rather than rejecting the whole
+ * scenario, so quotes saved before an axis existed still load.
+ */
+function readMetric(raw: Record<string, unknown>, key: keyof GrowthMetrics): number {
+  const value = raw[key];
+  if (typeof value !== 'number' || !Number.isFinite(value)) return DEFAULT_GROWTH_METRICS[key];
+  const { min, max } = GROWTH_METRIC_RANGES[key];
+  return Math.min(max, Math.max(min, Math.round(value)));
+}
+
+/** Accepts both the nested `metrics` shape and the older flat one. */
+function parseMetrics(raw: unknown): GrowthMetrics {
+  const source =
+    typeof raw === 'object' && raw !== null ? (raw as Record<string, unknown>) : {};
+  const nested = source.metrics;
+  const fields =
+    typeof nested === 'object' && nested !== null ? (nested as Record<string, unknown>) : source;
+  return {
+    productionLines: readMetric(fields, 'productionLines'),
+    measurementPoints: readMetric(fields, 'measurementPoints'),
+    supplyPartners: readMetric(fields, 'supplyPartners')
+  };
+}
 
 function parseCartItem(raw: unknown): CartItem | null {
   if (typeof raw !== 'object' || raw === null) return null;
@@ -66,8 +93,6 @@ function parseScenario(raw: unknown): QuoteScenario | null {
     typeof s.name !== 'string' ||
     typeof s.savedAt !== 'string' ||
     cart === null ||
-    typeof s.productionLines !== 'number' ||
-    !Number.isFinite(s.productionLines) ||
     typeof s.inferenceCalls !== 'number' ||
     !Number.isFinite(s.inferenceCalls)
   ) {
@@ -78,7 +103,7 @@ function parseScenario(raw: unknown): QuoteScenario | null {
     name: s.name,
     savedAt: s.savedAt,
     cart,
-    productionLines: s.productionLines,
+    metrics: parseMetrics(s),
     inferenceCalls: s.inferenceCalls
   };
 }

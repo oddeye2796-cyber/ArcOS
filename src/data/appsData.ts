@@ -11,11 +11,11 @@ export const APPS_DATA: AppItem[] = [
     desc: '업종에 맞는 MES와 품질·기록 모듈을 골라 구성하는 제조 운영 스위트',
     detail: '일반 제조, 식품·화장품, 제약 바이오 등 산업군별 규제 표준을 준수하는 모듈형 MES 스위트입니다. 생산 현장의 도메인 DB와 직접 연결되지 않고, B²LAB 온톨로지 계층을 경유하여 무중단 플러그앤플레이 연동을 지원합니다.',
     unit: '모듈별 개별 과금',
-    growthMetric: '생산 라인 수 / 배치 건수',
-    growthUnit: '라인 및 배치',
+    growthMetric: '생산 라인 수 / 계측점 수 / 협력사 수',
+    growthUnit: '라인 · 계측점 · 협력사',
     suite: true,
     deps: [
-      { name: 'B²LAB 온톨로지 데이터레이크', ok: true, desc: '플랫폼 기본료 포함 (구독 중)' },
+      { name: 'B²LAB 온톨로지 데이터레이크', ok: true, desc: '별도 구독 중 (공통 기반 모듈)' },
       { name: 'ArcTunnel mTLS 게이트웨이', ok: true, desc: '현장 온프레미스 노드 연결됨 (레이턴시 4ms)' },
       { name: 'KS X 9101 설비 데이터 규격', ok: true, desc: '사업장 생산라인 PLC 매핑 검증 완료' }
     ],
@@ -44,6 +44,7 @@ export const APPS_DATA: AppItem[] = [
           },
           {
             id: 'mes-general',
+            landing: true,
             name: '일반 제조 MES',
             desc: '생산 실행, LOT 실시간 추적, 설비 가동률 분석, N-POP 바코드 연동',
             price: 40,
@@ -71,8 +72,8 @@ export const APPS_DATA: AppItem[] = [
             name: 'REMS (청정실 환경 모니터링)',
             desc: '차압, 온습도, 미립자 부유 농도 실시간 수집 및 경보 발령',
             price: 90,
-            per: 'flat',
-            unitLabel: '기본 90만원/월 (계측점 연동)',
+            per: 'point',
+            unitLabel: '기본 90만원/월 (계측점 200개 포함, 100개당 15% 증분)',
             tagMappingPercent: 88
           },
           {
@@ -80,8 +81,8 @@ export const APPS_DATA: AppItem[] = [
             name: 'SCM (공급망 협업 연계)',
             desc: '원자재 발주, 실시간 납기 트래킹, 1·2차 외주 협력사 포털 연동',
             price: 100,
-            per: 'flat',
-            unitLabel: '기본 100만원/월 (협력사수 연동)',
+            per: 'partner',
+            unitLabel: '기본 100만원/월 (협력사 10개사 포함, 10개사당 20% 증분)',
             tagMappingPercent: 85
           }
         ]
@@ -174,6 +175,7 @@ export const APPS_DATA: AppItem[] = [
   },
   {
     id: 'consensbot',
+    landing: true,
     name: '컨센스봇 (ConsensBot)',
     category: 'LLM',
     categoryLabel: '온프레미스 sLM',
@@ -284,7 +286,7 @@ export const APPS_DATA: AppItem[] = [
     price: 90,
     per: 'flat',
     deps: [
-      { name: 'B²LAB 온톨로지 데이터레이크', ok: true, desc: '플랫폼 기본료 포함 (GraphQL / REST 온톨로지 연동)' },
+      { name: 'B²LAB 온톨로지 데이터레이크', ok: true, desc: '별도 구독 중 (GraphQL / REST 온톨로지 연동)' },
       { name: '자체 IT 전산 인력', ok: true, desc: '사내 No-Code/Low-Code 화면 및 비즈니스 로직 작성 주체' }
     ],
     dataScope: {
@@ -306,10 +308,12 @@ export const APPS_DATA: AppItem[] = [
     category: '기반',
     categoryLabel: '공통 필수 기반',
     status: 'sub',
-    statusLabel: '구독 중 (기본 포함)',
+    statusLabel: '구독 중 (별도 과금)',
     desc: '다양한 사내 도메인 DB를 표준 온톨로지 스키마로 가상화하여 앱에 제공하는 데이터 척추',
-    detail: '플랫폼 기본료(월 300만원)에 영구 포함되어 있습니다. AAS, OPC-UA, KS X 9101 표준을 기반으로 사내 이종 DB(MES, ERP, 설비 PLC)를 중계하여, 새 모듈 설치 시에도 기존 시스템 코드를 변경할 필요가 없습니다.',
-    unit: '플랫폼 기본료에 포함 (해지 불가)',
+    detail: '플랫폼 기본료와 별도로 책정되는 공통 기반 모듈입니다. AAS, OPC-UA, KS X 9101 표준을 기반으로 사내 이종 DB(MES, ERP, 설비 PLC)를 중계하여, 새 모듈 설치 시에도 기존 시스템 코드를 변경할 필요가 없습니다. 다른 모듈이 도메인 데이터를 조회하려면 이 계층이 먼저 있어야 합니다.',
+    unit: '월 80만원 (기본 1TB 포함)',
+    price: 80,
+    per: 'flat',
     growthMetric: '데이터 용량 구간 (기본 1TB 포함)',
     growthUnit: '용량',
     deps: [],
@@ -329,6 +333,22 @@ export const APPS_DATA: AppItem[] = [
     ]
   }
 ];
+
+/**
+ * Ids of the mutually exclusive MES core modules, derived from the radio groups
+ * rather than hand-listed: the quote's conflict check used to carry a stale
+ * copy of this list and silently missed two of the three cores.
+ */
+/**
+ * The no-code builder that conflicts with a packaged MES core. Named here for
+ * the same reason as above: the quote's conflict check referred to an
+ * 'arcmind-builder' id that has never existed in the catalog.
+ */
+export const ARCMIND_ID = 'arcmind';
+
+export const MES_CORE_IDS: readonly string[] = APPS_DATA.flatMap(
+  (app) => app.groups?.filter((g) => g.type === 'radio').flatMap((g) => g.items.map((i) => i.id)) ?? []
+);
 
 export const INITIAL_INSTALLED_MODULES: WorkspaceInstalledModule[] = [
   {
