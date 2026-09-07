@@ -53,7 +53,7 @@ export const HeaderLinkBar: React.FC<HeaderLinkBarProps> = ({
             <div className="flex items-center gap-1">
               <Building2 className="w-3 h-3 text-slate-400" />
               <select
-                aria-label="사업장 선택 (지역 + 업종)"
+                aria-label={t.ariaSelectFacility}
                 value={selectedLocation}
                 onChange={(e) => onLocationChange(e.target.value)}
                 className="bg-transparent font-medium text-slate-800 border-none outline-none cursor-pointer hover:text-blue-600 text-xs py-0"

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { WorkspaceInstalledModule, DecommissionedModule, PoCTrial } from '../types';
 import { PoCReportModal } from './PoCReportModal';
 import { Language, TRANSLATIONS } from '../i18n/translations';
-import { getLocalizedLocationName } from '../i18n/localizedData';
+import { getLocalizedLocationName, getLocalizedWorkspaceText } from '../i18n/localizedData';
 import {
   Server,
   RefreshCw,
@@ -69,7 +69,8 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
     }, 1500);
   };
 
-  const handleDownloadArchive = (name: string) => {
+  const handleDownloadArchive = (rawName: string) => {
+    const name = getLocalizedWorkspaceText(rawName, lang);
     const msg = lang === 'ja'
       ? `${name} 監査証跡(Audit Trail) 法的保管ダンプが生成されました。`
       : lang === 'en'
@@ -83,11 +84,12 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
 
   const handleDeleteTrial = (trial: PoCTrial) => {
     onRemovePoCTrial(trial.id);
+    const trialName = getLocalizedWorkspaceText(trial.name, lang);
     const msg = lang === 'ja'
-      ? `[PoCサンドボックス終了] ${trial.name} 一時コンテナおよびサンドボックスデータが安全に破棄されました。`
+      ? `[PoCサンドボックス終了] ${trialName} 一時コンテナおよびサンドボックスデータが安全に破棄されました。`
       : lang === 'en'
-      ? `[PoC Sandbox Terminated] ${trial.name} temporary container and sandbox data safely purged.`
-      : `[PoC 샌드박스 종료] ${trial.name} 임시 컨테이너 및 샌드박스 데이터가 안전하게 파기되었습니다.`;
+      ? `[PoC Sandbox Terminated] ${trialName} temporary container and sandbox data safely purged.`
+      : `[PoC 샌드박스 종료] ${trialName} 임시 컨테이너 및 샌드박스 데이터가 안전하게 파기되었습니다.`;
     setDownloadSuccessToast(msg);
     setTimeout(() => {
       setDownloadSuccessToast(null);
@@ -275,9 +277,9 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-bold text-slate-900 text-sm">{trial.name}</span>
+                        <span className="font-bold text-slate-900 text-sm">{getLocalizedWorkspaceText(trial.name, lang)}</span>
                         <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-bold border border-indigo-200">
-                          {trial.category}
+                          {t.categoryLabels[trial.category] || getLocalizedWorkspaceText(trial.category, lang)}
                         </span>
                         <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold border border-emerald-300">
                           14{lang === 'ja' ? '日' : lang === 'en' ? '-Day ' : '일 '}PoC · {t.pocRemainingDaysBadge.replace('{days}', String(trial.daysRemaining))}
@@ -343,9 +345,9 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                   <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                     <div className="md:col-span-2 space-y-1.5">
                       <div className="text-[11px] text-slate-500 font-medium">{t.pocGoalLabel}</div>
-                      <div className="font-semibold text-slate-800 leading-snug">{trial.pocGoal}</div>
+                      <div className="font-semibold text-slate-800 leading-snug">{getLocalizedWorkspaceText(trial.pocGoal, lang)}</div>
                       <div className="text-[11px] text-slate-500">
-                        {t.pocDeptLeadLabel} <span className="font-medium text-slate-700">{trial.leadDepartment}</span>
+                        {t.pocDeptLeadLabel} <span className="font-medium text-slate-700">{getLocalizedWorkspaceText(trial.leadDepartment, lang)}</span>
                       </div>
                     </div>
 
@@ -414,12 +416,14 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                 return (
                   <tr key={item.id} className="hover:bg-slate-50/60 transition-colors">
                     <td className="p-3.5 pl-5">
-                      <div className="font-bold text-slate-900">{item.name}</div>
-                      <div className="text-[11px] text-slate-500">{item.category}</div>
+                      <div className="font-bold text-slate-900">{getLocalizedWorkspaceText(item.name, lang)}</div>
+                      <div className="text-[11px] text-slate-500">
+                        {t.categoryLabels[item.category] || getLocalizedWorkspaceText(item.category, lang)}
+                      </div>
                     </td>
                     <td className="p-3.5 text-slate-700">
                       <div className="font-medium">{getLocalizedLocationName(item.location, lang)}</div>
-                      <div className="text-[11px] text-slate-400 font-mono">Ping: {item.lastPing}</div>
+                      <div className="text-[11px] text-slate-400 font-mono">Ping: {getLocalizedWorkspaceText(item.lastPing, lang)}</div>
                     </td>
                     <td className="p-3.5">
                       <span
@@ -435,7 +439,7 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                     <td className="p-3.5">
                       <div className="flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                        <span className="text-slate-800 font-medium">{item.dataLakeBinding}</span>
+                        <span className="text-slate-800 font-medium">{getLocalizedWorkspaceText(item.dataLakeBinding, lang)}</span>
                       </div>
                       <div className="text-[11px] text-slate-400 mt-0.5">
                         {t.datalakeNormalStatus}
@@ -503,18 +507,18 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                 <tr key={item.id} className="hover:bg-slate-50/60">
                   <td className="p-3.5 pl-5">
                     <div className="font-bold text-slate-900 flex items-center gap-1.5">
-                      <span>{item.name}</span>
+                      <span>{getLocalizedWorkspaceText(item.name, lang)}</span>
                       <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200">
                         {t.readOnlyPreservedBadge}
                       </span>
                     </div>
-                    <div className="text-[11px] text-slate-400 mt-0.5">{item.reason}</div>
+                    <div className="text-[11px] text-slate-400 mt-0.5">{getLocalizedWorkspaceText(item.reason, lang)}</div>
                   </td>
                   <td className="p-3.5 text-slate-700 font-medium">
-                    {item.retainedData}
+                    {getLocalizedWorkspaceText(item.retainedData, lang)}
                   </td>
                   <td className="p-3.5 font-mono text-slate-800">
-                    <div className="font-semibold text-amber-900">{item.retentionExpiry}</div>
+                    <div className="font-semibold text-amber-900">{getLocalizedWorkspaceText(item.retentionExpiry, lang)}</div>
                     <div className="text-[10px] text-slate-400">
                       {lang === 'ja' ? '満了前の自動破棄案内を送信' : lang === 'en' ? 'Auto-deletion notice sent prior' : '만료 전 자동 파기 안내 발송'}
                     </div>

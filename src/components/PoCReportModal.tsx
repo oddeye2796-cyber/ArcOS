@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { PoCTrial } from '../types';
 import { Language, TRANSLATIONS } from '../i18n/translations';
-import { getLocalizedLocationName } from '../i18n/localizedData';
+import { getLocalizedLocationName, getLocalizedWorkspaceText } from '../i18n/localizedData';
 
 interface PoCReportModalProps {
   isOpen: boolean;
@@ -60,7 +60,7 @@ export const PoCReportModal: React.FC<PoCReportModalProps> = ({
                 </span>
               </div>
               <h2 className="text-base font-bold text-white tracking-tight break-keep">
-                {trial.name} — {t.pocReportTitle}
+                {getLocalizedWorkspaceText(trial.name, lang)} — {t.pocReportTitle}
               </h2>
             </div>
           </div>
@@ -87,7 +87,7 @@ export const PoCReportModal: React.FC<PoCReportModalProps> = ({
               </div>
               <div>
                 <span className="text-[11px] text-slate-500 block">{t.pocReportDeptLead}</span>
-                <span className="font-semibold text-slate-800">{trial.leadDepartment}</span>
+                <span className="font-semibold text-slate-800">{getLocalizedWorkspaceText(trial.leadDepartment, lang)}</span>
               </div>
               <div>
                 <span className="text-[11px] text-slate-500 block">{t.pocReportPeriod}</span>
@@ -99,7 +99,7 @@ export const PoCReportModal: React.FC<PoCReportModalProps> = ({
 
             <div>
               <span className="text-[11px] text-slate-500 block font-medium">{t.pocReportGoalTitle}</span>
-              <p className="text-slate-800 font-semibold text-xs mt-0.5">{trial.pocGoal}</p>
+              <p className="text-slate-800 font-semibold text-xs mt-0.5">{getLocalizedWorkspaceText(trial.pocGoal, lang)}</p>
             </div>
           </div>
 
@@ -191,7 +191,7 @@ export const PoCReportModal: React.FC<PoCReportModalProps> = ({
                     {t.pocReportCriterion3Title}
                   </span>
                   <p className="text-[11px] text-slate-500">
-                    {t.pocReportCriterion3Desc.replace('{goal}', trial.pocGoal)}
+                    {t.pocReportCriterion3Desc.replace('{goal}', getLocalizedWorkspaceText(trial.pocGoal, lang))}
                   </p>
                 </div>
                 <span className="px-2 py-1 rounded bg-emerald-100 text-emerald-800 font-bold text-[11px] flex-shrink-0">

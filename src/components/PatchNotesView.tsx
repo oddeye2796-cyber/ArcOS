@@ -13,6 +13,12 @@ import {
   ChevronUp
 } from 'lucide-react';
 import { PATCH_NOTES_DATA, ZERO_DOWNTIME_PRINCIPLES } from '../data/patchNotesData';
+import {
+  getLocalizedPatchNote,
+  getLocalizedPrincipleTitle,
+  getLocalizedPrincipleDesc,
+  getLocalizedPrincipleBenefit
+} from '../i18n/localizedData';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 
 interface PatchNotesViewProps {
@@ -42,7 +48,9 @@ export const PatchNotesView: React.FC<PatchNotesViewProps> = ({
   const [isSimulating, setIsSimulating] = useState(false);
   const [simLogs, setSimLogs] = useState<string[]>([]);
 
-  const filteredPatches = PATCH_NOTES_DATA.filter((p) => {
+  const localizedPatches = PATCH_NOTES_DATA.map((p) => getLocalizedPatchNote(p, lang));
+
+  const filteredPatches = localizedPatches.filter((p) => {
     const matchesType = selectedType === 'all' || p.type === selectedType;
     const matchesQuery =
       searchQuery.trim() === '' ||
@@ -445,15 +453,15 @@ export const PatchNotesView: React.FC<PatchNotesViewProps> = ({
                     {lang === 'ja' ? `原則 ${principle.step}` : lang === 'en' ? `Principle ${principle.step}` : `원칙 ${principle.step}`}
                   </span>
                   <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    {principle.benefit}
+                    {getLocalizedPrincipleBenefit(principle.id, principle.benefit, lang)}
                   </span>
                 </div>
 
                 <h3 className="text-base font-bold text-slate-900 break-keep">
-                  {principle.title}
+                  {getLocalizedPrincipleTitle(principle.id, principle.title, lang)}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed break-keep">
-                  {principle.desc}
+                  {getLocalizedPrincipleDesc(principle.id, principle.desc, lang)}
                 </p>
 
                 <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex items-center gap-1.5">

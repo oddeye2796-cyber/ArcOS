@@ -18,7 +18,9 @@ import {
   getLocalizedAppName,
   getLocalizedAppCategory,
   getLocalizedAppDesc,
-  getLocalizedPresetTitle
+  getLocalizedPresetTitle,
+  getLocalizedGrowthMetric,
+  getLocalizedDataScopeStd
 } from '../i18n/localizedData';
 
 interface CatalogViewProps {
@@ -381,7 +383,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                     <span className="text-slate-500">
                       {t.cardScalingMetric}
                     </span>
-                    <span className="font-medium text-slate-700">{app.growthMetric}</span>
+                    <span className="font-medium text-slate-700">{getLocalizedGrowthMetric(app.growthMetric, lang)}</span>
                   </div>
 
                   {/* ArcMind Special Distinction Badge */}
@@ -418,7 +420,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                     <div className="text-slate-600 truncate">
                       {t.cardSchemaMapping}{' '}
                       <strong>{app.dataScope.mappingProgress}% {t.cardComplete}</strong> (
-                      {app.dataScope.schemaStd})
+                      {getLocalizedDataScopeStd(app.dataScope.schemaStd, lang)})
                     </div>
                   </div>
                 </div>

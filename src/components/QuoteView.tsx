@@ -420,7 +420,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                         <div className="font-semibold text-slate-900 flex items-center gap-2">
                           <span className="break-keep">{getLocalizedSubModuleName(item.id, item.name, lang)}</span>
                           <span className="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded font-normal whitespace-nowrap">
-                            {item.category}
+                            {t.categoryLabels[item.category] || item.category}
                           </span>
                         </div>
                         <div className="text-[11px] text-slate-500 mt-0.5 break-keep">

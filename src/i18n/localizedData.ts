@@ -1,5 +1,5 @@
 import { Language } from './translations';
-import { AppItem, RecommendationPreset, FacilityLocation } from '../types';
+import { AppItem, RecommendationPreset, FacilityLocation, PatchNoteItem } from '../types';
 
 interface LocalizedString {
   ko: string;
@@ -305,6 +305,31 @@ const DEP_LOCALIZATIONS: Record<string, { name: LocalizedString; desc: Localized
       ja: '社内ノーコード/ローコード画面および業務ロジック作成主体'
     }
   }
+,
+  'A²LAB (선행 모듈)': {
+    name: { ko: 'A²LAB (선행 모듈)', en: 'A²LAB (Prerequisite Module)', ja: 'A²LAB (前提モジュール)' },
+    desc: {
+      ko: '선행 에이전트 제작 도구 필요 (함께 담기 권장)',
+      en: 'Requires the prerequisite agent authoring tool (bundling recommended)',
+      ja: '前提となるエージェント作成ツールが必要 (同時追加を推奨)'
+    }
+  },
+  '등록된 에이전트 모듈 3개 이상': {
+    name: { ko: '등록된 에이전트 모듈 3개 이상', en: 'At Least 3 Registered Agent Modules', ja: '登録済みエージェントモジュール3個以上' },
+    desc: {
+      ko: '현재 사업장에 1개 등록됨 (A²LAB 설치 후 생성 가능)',
+      en: '1 registered at this facility (more can be created after installing A²LAB)',
+      ja: '当事業所に1個登録済み (A²LABインストール後に作成可能)'
+    }
+  },
+  'MLOps 실행엔진': {
+    name: { ko: 'MLOps 실행엔진', en: 'MLOps Execution Engine', ja: 'MLOps 実行エンジン' },
+    desc: {
+      ko: '온프레미스 도커 런타임 기본 탑재',
+      en: 'Bundled with the on-premise Docker runtime',
+      ja: 'オンプレミスDockerランタイムに標準搭載'
+    }
+  }
 };
 
 const DATASCOPE_LOCALIZATIONS: Record<string, LocalizedString> = {
@@ -368,6 +393,27 @@ const DATASCOPE_LOCALIZATIONS: Record<string, LocalizedString> = {
     en: 'AAS / OPC-UA / KS X 9101',
     ja: 'AAS / OPC-UA / KS X 9101'
   }
+,
+  'ArcOS 공통 이벤트 버스 (Pub/Sub)': {
+    ko: 'ArcOS 공통 이벤트 버스 (Pub/Sub)',
+    en: 'ArcOS Shared Event Bus (Pub/Sub)',
+    ja: 'ArcOS 共通イベントバス (Pub/Sub)'
+  },
+  'OPC-UA / Parquet Lakehouse': {
+    ko: 'OPC-UA / Parquet Lakehouse',
+    en: 'OPC-UA / Parquet Lakehouse',
+    ja: 'OPC-UA / Parquet Lakehouse'
+  },
+  '학습 데이터는 사내 로컬 GPU 클러스터 내부에서만 순환': {
+    ko: '학습 데이터는 사내 로컬 GPU 클러스터 내부에서만 순환',
+    en: 'Training data circulates only inside the in-house local GPU cluster',
+    ja: '学習データは社内ローカルGPUクラスタ内部でのみ循環'
+  },
+  '에이전트 판단 신뢰도 벡터 및 결정 로그 (사내)': {
+    ko: '에이전트 판단 신뢰도 벡터 및 결정 로그 (사내)',
+    en: 'Agent confidence vectors and decision logs (on-premises)',
+    ja: 'エージェント判断信頼度ベクトルおよび決定ログ (社内)'
+  }
 };
 
 const PERMISSION_LOCALIZATIONS: Record<string, LocalizedString> = {
@@ -415,6 +461,32 @@ const PERMISSION_LOCALIZATIONS: Record<string, LocalizedString> = {
     ko: '사내 온톨로지 메타데이터 카탈로그 관리',
     en: 'Manage in-house ontology metadata catalog',
     ja: '社内オントロジーメタデータカタログ管理'
+  }
+,
+  '생산 라인 설비 PLC 읽기': {
+    ko: '생산 라인 설비 PLC 읽기',
+    en: 'Production line equipment PLC read',
+    ja: '生産ライン設備PLCの読み取り'
+  },
+  '배치 완료 승인 및 전자 서명': {
+    ko: '배치 완료 승인 및 전자 서명',
+    en: 'Batch completion approval and e-signature',
+    ja: 'バッチ完了承認および電子署名'
+  },
+  '공정 레시피 제어 명령(Write)': {
+    ko: '공정 레시피 제어 명령(Write)',
+    en: 'Process recipe control command (Write)',
+    ja: '工程レシピ制御コマンド(Write)'
+  },
+  '센서 시계열 데이터 학습용 Read': {
+    ko: '센서 시계열 데이터 학습용 Read',
+    en: 'Sensor time-series data read for training',
+    ja: 'センサー時系列データの学習用Read'
+  },
+  '새 에이전트 컨테이너 기동': {
+    ko: '새 에이전트 컨테이너 기동',
+    en: 'Launch new agent container',
+    ja: '新規エージェントコンテナの起動'
   }
 };
 
@@ -498,6 +570,41 @@ const LOCATION_LOCALIZATIONS: Record<string, LocalizedString> = {
     ko: '[경남/사천] 항공·정밀가공 사업장 온프레미스',
     en: '[Sacheon] Aerospace Plant On-Premises',
     ja: '[慶南/泗川] 航空・精密加工事業所 オンプレミス'
+  },
+  '[충북/오송] 제약·바이오 GMP 사업장 온프레미스': {
+    ko: '[충북/오송] 제약·바이오 GMP 사업장 온프레미스',
+    en: '[Osong] Pharma/Bio GMP Plant On-Premises',
+    ja: '[忠北/五松] 製薬・バイオ GMP事業所 オンプレミス'
+  },
+  '[충북/오송] 제약·바이오 GMP 사업장 (라인 #1~#4)': {
+    ko: '[충북/오송] 제약·바이오 GMP 사업장 (라인 #1~#4)',
+    en: '[Osong] Pharma/Bio GMP Plant (Lines #1-#4)',
+    ja: '[忠北/五松] 製薬・バイオ GMP事業所 (ライン #1〜#4)'
+  },
+  '[경남/사천] 항공·정밀가공 사업장 AI 노드': {
+    ko: '[경남/사천] 항공·정밀가공 사업장 AI 노드',
+    en: '[Sacheon] Aerospace Plant AI Node',
+    ja: '[慶南/泗川] 航空・精密加工事業所 AIノード'
+  },
+  '[경남/창원] 기계·특수제조 사업장 AI 노드': {
+    ko: '[경남/창원] 기계·특수제조 사업장 AI 노드',
+    en: '[Changwon] Machinery Plant AI Node',
+    ja: '[慶南/昌原] 機械・特殊製造事業所 AIノード'
+  },
+  '[충북/오송] 제약·바이오 GMP 사업장 AI 노드': {
+    ko: '[충북/오송] 제약·바이오 GMP 사업장 AI 노드',
+    en: '[Osong] Pharma/Bio GMP Plant AI Node',
+    ja: '[忠北/五松] 製薬・バイオ GMP事業所 AIノード'
+  },
+  '[경남/사천] 항공·정밀가공 사업장 엣지 노드': {
+    ko: '[경남/사천] 항공·정밀가공 사업장 엣지 노드',
+    en: '[Sacheon] Aerospace Plant Edge Node',
+    ja: '[慶南/泗川] 航空・精密加工事業所 エッジノード'
+  },
+  '[경기/화성] 전자·반도체 부품 사업장 엣지 노드': {
+    ko: '[경기/화성] 전자·반도체 부품 사업장 엣지 노드',
+    en: '[Hwaseong] Electronics Plant Edge Node',
+    ja: '[京畿/華城] 電子・半導体部品事業所 エッジノード'
   }
 };
 
@@ -571,36 +678,47 @@ const PRESET_LOCALIZATIONS: Record<string, {
     },
     targetAudience: { ko: '스마트공장 신규 도입 중소·중견 제조사', en: 'SMEs Adopting Smart Manufacturing For First Time', ja: 'スマート工場を新規導入する中小・中堅メーカー' }
   },
-  'preset-ai': {
-    title: { ko: '자율제조 AI 에이전트 오케스트레이션형', en: 'Autonomous Manufacturing AI Agent Orchestration', ja: '自律製造 AIエージェント オーケストレーション型' },
-    subtitle: { ko: 'A²LAB 모델 생성 · 멀티 에이전트 협업 · 이상 탐지', en: 'A²LAB Model Generator · Multi-Agent Collaboration · Anomaly Detection', ja: 'A²LABモデル生成・マルチエージェント協調・異常検知' },
-    badge: { ko: 'AI 자율화', en: 'AI Autonomous', ja: 'AI自律化' },
+  'preset-autonomous': {
+    title: { ko: 'AI 자율제조 고도화 (Full Agent Architecture)', en: 'Autonomous AI Manufacturing (Full Agent Architecture)', ja: 'AI自律製造の高度化 (Full Agent Architecture)' },
+    subtitle: { ko: 'AI 에이전트 생성 · 슈퍼바이저 지휘 · sLM 규정 분석', en: 'AI agent generation · Supervisor orchestration · sLM regulatory analysis', ja: 'AIエージェント生成・スーパーバイザー指揮・sLM規程分析' },
+    badge: { ko: 'AI 자율제조', en: 'Autonomous AI', ja: 'AI自律製造' },
     desc: {
-      ko: '생산라인 데이터 수집부터 A²LAB 기반 도메인 특화 경량 AI 모델 파인튜닝, 멀티 에이전트 자동 제어까지 일체형으로 구축합니다.',
-      en: 'End-to-end autonomous suite from ingestion to A²LAB lightweight model tuning and multi-agent closed-loop control.',
-      ja: '生産ラインデータ収集からA²LAB基盤の特化型AIモデル微調整、マルチエージェント自律制御までを統合構築します。'
+      ko: 'A²LAB에서 생성된 품질/설비/에너지 에이전트들을 다중 AI Agent 슈퍼바이저가 오케스트레이션하고, 폐쇄망 sLM 컨센스봇과 3D 트윈을 결합합니다.',
+      en: 'The Multi-AI Agent Supervisor orchestrates the quality, equipment and energy agents generated in A²LAB, combined with the air-gapped ConsensBot sLM and a 3D digital twin.',
+      ja: 'A²LABで生成された品質・設備・エネルギーの各エージェントをマルチAI Agentスーパーバイザーがオーケストレーションし、閉域網sLMコンセンスボットと3Dツインを組み合わせます。'
     },
-    targetAudience: { ko: '자율제조 지능화 공장 전환 추진 기업', en: 'Enterprises Transitioning to Autonomous Smart Plants', ja: '自律製造インテリジェント工場へ移行を推進する企業' }
+    targetAudience: { ko: '지능형 등대공장 추진 / 대형 복합 생산 사업장', en: 'Lighthouse factory programs / large multi-process production sites', ja: 'インテリジェント・ライトハウス工場推進 / 大規模複合生産事業所' }
   },
-  'preset-nocode': {
-    title: { ko: '엔터프라이즈 자체구축 노코드 플랫폼형', en: 'Enterprise In-House No-Code Platform Builder', ja: 'エンタープライズ 自社構築ノーコード開発型' },
-    subtitle: { ko: '기성 MES 미도입 · 온톨로지 직결 · 기업 고유 화면 100% 빌드', en: 'Zero Off-the-Shelf MES · Direct Ontology Binding · 100% Custom Shopfloor Views', ja: '既製MES未導入・オントロジー直結・自社専用画面100%独自開発' },
-    badge: { ko: '자체 개발', en: 'Custom Build', ja: '自社開発' },
+  'preset-inhouse-diy': {
+    title: { ko: '자체 IT 인력 노코드 플랫폼 구축형 (In-House IT DIY)', en: 'In-House IT No-Code Platform Build (DIY)', ja: '自社IT要員によるノーコード基盤構築型 (In-House IT DIY)' },
+    subtitle: { ko: 'ArcMind 노코드·로우코드 빌더 · B²LAB 온톨로지 · A²LAB · 3D 트윈', en: 'ArcMind no-code/low-code builder · B²LAB ontology · A²LAB · 3D twin', ja: 'ArcMind ノーコード・ローコードビルダー・B²LAB オントロジー・A²LAB・3Dツイン' },
+    badge: { ko: '자체 IT 전용', en: 'In-House IT', ja: '自社IT専用' },
     desc: {
-      ko: '기성 MES를 사용하지 않고 ArcMind 노코드 빌더만으로 현장 작업자 화면, 공정 대시보드, 설비 제어 로직을 사내에서 100% 자유롭게 직접 설계합니다.',
-      en: 'Replaces rigid commercial MES by allowing in-house engineers to build 100% custom operator UIs and workflows via ArcMind.',
-      ja: '既製品のMESに縛られず、ArcMindノーコードビルダーのみで現場オペレーター画面や工程ダッシュボードを自社で100%自由に開発します。'
+      ko: '기성 제조 운영 스위트(MES)를 도입하지 않고, 사내 IT 인력이 ArcMind(No-Code/Low-Code)로 공정 화면·작업 지시서·모바일 뷰를 직접 개발합니다. 기성 MES 구독료 없이 B²LAB 온톨로지 위에서 100% 사내 맞춤형 플랫폼을 내재화합니다.',
+      en: 'Instead of adopting an off-the-shelf MES suite, in-house IT staff build process screens, work instructions and mobile views themselves with ArcMind (No-Code/Low-Code) — a 100% custom platform on top of the B²LAB ontology, with no MES subscription fee.',
+      ja: '既製の製造運用スイート(MES)を導入せず、社内IT要員がArcMind(No-Code/Low-Code)で工程画面・作業指示書・モバイルビューを直接開発します。既製MESの購読料なしにB²LABオントロジー上で100%自社カスタムのプラットフォームを内製化します。'
     },
-    targetAudience: { ko: '특수 공정 보유 기업 / 사내 IT 개발팀', en: 'Proprietary Process Owners / In-House IT Teams', ja: '独自特殊工程を保有する企業 / 社内IT・DXチーム' }
+    targetAudience: { ko: '자체 IT/전산 인력을 보유하여 기성 MES 대신 사내 스마트팩토리를 직접 개발하는 제조기업', en: 'Manufacturers with in-house IT staff who build their own smart factory instead of buying an off-the-shelf MES', ja: '自社IT/情報システム要員を擁し、既製MESの代わりに社内スマートファクトリーを自ら開発する製造企業' }
+  },
+  'preset-scm-audit': {
+    title: { ko: '공급망 & 협력사 품질 통합 연계 (SCM & Audit)', en: 'Supply Chain & Supplier Quality Integration (SCM & Audit)', ja: 'サプライチェーン & 協力会社品質の統合連係 (SCM & Audit)' },
+    subtitle: { ko: '협력사 발주 · 실시간 납기 트래킹 · 전자기록 증적', en: 'Supplier purchase orders · Real-time delivery tracking · Electronic record evidence', ja: '協力会社発注・リアルタイム納期トラッキング・電子記録証跡' },
+    badge: { ko: '공급망 연계', en: 'Supply Chain', ja: 'サプライチェーン連係' },
+    desc: {
+      ko: '사내 공정과 1·2차 외주 협력사 포털을 실시간 연계하고, 납품 품질 및 발주 검수 이력을 전자 기록으로 보존하여 고객사 실사에 즉각 대응합니다.',
+      en: 'Links in-house processes with tier-1 and tier-2 supplier portals in real time and preserves delivery quality and PO inspection history as electronic records, so customer audits can be answered immediately.',
+      ja: '社内工程と1次・2次外注協力会社ポータルをリアルタイムで連係し、納品品質および発注検収履歴を電子記録として保存することで、顧客の実地監査に即応します。'
+    },
+    targetAudience: { ko: '외주 가공 비중이 높고 협력사 감사가 필수인 제조사', en: 'Manufacturers with heavy outsourced machining and mandatory supplier audits', ja: '外注加工の比率が高く、協力会社監査が必須の製造業' }
   }
 };
 
 const FACILITY_LOCALIZATIONS: Record<string, { fullName: LocalizedString; subTitle: LocalizedString }> = {
-  'aerospace-sacheon': {
+  'aerospace-precision': {
     fullName: { ko: '[경남/사천] 항공·정밀가공 사업장', en: '[Sacheon] Aerospace & Precision Plant', ja: '[慶南/泗川] 航空・精密加工事業所' },
     subTitle: { ko: '기체 구조물 가공 및 복합재 조립 1·2공장', en: 'Aerospace Machining & Composite Assembly 1 & 2', ja: '機体構造物加工および複合材組立1・2工場' }
   },
-  'machinery-changwon': {
+  'machinery-specialty': {
     fullName: { ko: '[경남/창원] 기계·특수제조 사업장', en: '[Changwon] Machinery & Heavy Industry Plant', ja: '[慶南/昌原] 機械・特殊製造事業所' },
     subTitle: { ko: '대형 회전체 가공 및 고정밀 방산 부품 라인', en: 'Heavy Rotary Machining & Defense Components Line', ja: '大型回転体加工および高精度防衛部品ライン' }
   },
@@ -669,6 +787,12 @@ export function getLocalizedSubModuleName(subId: string, fallback: string, lang?
   if (item && item.name && item.name[l]) {
     return item.name[l];
   }
+  // Preset cart items reuse app ids that only exist in the app catalog. Korean keeps
+  // the caller's own wording; other languages fall back to the catalog translation.
+  const app = APP_LOCALIZATIONS[subId];
+  if (l !== 'ko' && app && app.name && app.name[l]) {
+    return app.name[l];
+  }
   return fallback;
 }
 
@@ -687,6 +811,10 @@ export function getLocalizedSubModuleUnit(subId: string, fallback: string, lang?
   if (item && item.unitLabel && item.unitLabel[l]) {
     return item.unitLabel[l];
   }
+  const app = APP_LOCALIZATIONS[subId];
+  if (l !== 'ko' && app && app.unit && app.unit[l]) {
+    return app.unit[l];
+  }
   return fallback;
 }
 
@@ -699,6 +827,19 @@ export function getLocalizedGroupLabel(label: string, lang?: Language | string):
   return label;
 }
 
+const DEP_DESC_LOCALIZATIONS: Record<string, LocalizedString> = {
+  '온톨로지 스키마 정합성 검증 완료': {
+    ko: '온톨로지 스키마 정합성 검증 완료',
+    en: 'Ontology schema consistency verified',
+    ja: 'オントロジースキーマ整合性の検証完了'
+  },
+  '플랫폼 기본료 포함 (GraphQL / REST 온톨로지 연동)': {
+    ko: '플랫폼 기본료 포함 (GraphQL / REST 온톨로지 연동)',
+    en: 'Included in the platform base fee (GraphQL / REST ontology integration)',
+    ja: 'プラットフォーム基本料に付属 (GraphQL / REST オントロジー連係)'
+  }
+};
+
 export function getLocalizedDepName(name: string, lang?: Language | string): string {
   const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
   const item = DEP_LOCALIZATIONS[name];
@@ -710,6 +851,10 @@ export function getLocalizedDepName(name: string, lang?: Language | string): str
 
 export function getLocalizedDepDesc(desc: string, lang?: Language | string): string {
   const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  const extra = DEP_DESC_LOCALIZATIONS[desc];
+  if (extra) {
+    return extra[l];
+  }
   for (const key of Object.keys(DEP_LOCALIZATIONS)) {
     const entry = DEP_LOCALIZATIONS[key];
     if (entry.desc.ko === desc || entry.desc.en === desc || entry.desc.ja === desc) {
@@ -816,4 +961,538 @@ export function getLocalizedFacilityName(facility: FacilityLocation, lang?: Lang
     return loc.fullName[l];
   }
   return facility.fullName;
+}
+
+interface LocalizedStringList {
+  ko: string[];
+  en: string[];
+  ja: string[];
+}
+
+interface PatchNoteLocalization {
+  typeLabel: LocalizedString;
+  title: LocalizedString;
+  summary: LocalizedString;
+  affectedModules: LocalizedStringList;
+  migrationMechanism: LocalizedString;
+  rollbackSafety: LocalizedString;
+  detailTitles: LocalizedStringList;
+  detailItems: LocalizedStringList[];
+}
+
+const PATCH_NOTE_LOCALIZATIONS: Record<string, PatchNoteLocalization> = {
+  'patch-4-2-3': {
+    typeLabel: { ko: '보안 핫픽스', en: 'Security Hotfix', ja: 'セキュリティ緊急修正' },
+    title: {
+      ko: 'ArcTunnel mTLS 암호화 키 무중단 롤링 갱신 및 터널 유지보수',
+      en: 'Zero-downtime rolling rotation of ArcTunnel mTLS encryption keys and tunnel maintenance',
+      ja: 'ArcTunnel mTLS 暗号鍵の無停止ローリング更新およびトンネル保守'
+    },
+    summary: {
+      ko: '운영 중인 PLC 및 MES 데이터 스트림 연결을 끊지 않고 TLS 1.3 암호화 세션 키를 무중단 교체했습니다.',
+      en: 'TLS 1.3 session keys were rotated without dropping a single live PLC or MES data stream connection.',
+      ja: '稼働中のPLCおよびMESデータストリーム接続を切断せずに、TLS 1.3暗号セッション鍵を無停止で交換しました。'
+    },
+    affectedModules: {
+      ko: ['ArcTunnel 게이트웨이', 'B²LAB 온톨로지', '컨센스봇 sLM'],
+      en: ['ArcTunnel Gateway', 'B²LAB Ontology', 'ConsensBot sLM'],
+      ja: ['ArcTunnel ゲートウェイ', 'B²LAB オントロジー', 'コンセンスボット sLM']
+    },
+    migrationMechanism: {
+      ko: 'Twin-Session Mutual TLS Handover (0.00초 단절)',
+      en: 'Twin-Session Mutual TLS Handover (0.00s interruption)',
+      ja: 'Twin-Session Mutual TLS Handover (0.00秒の断絶)'
+    },
+    rollbackSafety: {
+      ko: '키 교환 실패 시 이전 유효 인증서로 1초 내 무중단 복귀 검증 완료',
+      en: 'Verified sub-second zero-downtime fallback to the previously valid certificate if key exchange fails',
+      ja: '鍵交換に失敗した場合、1秒以内に以前の有効な証明書へ無停止で復帰することを検証済み'
+    },
+    detailTitles: {
+      ko: ['보안 강화 내역', '현장 영향도'],
+      en: ['Security hardening', 'Shopfloor impact'],
+      ja: ['セキュリティ強化内容', '現場への影響度']
+    },
+    detailItems: [
+      {
+        ko: [
+          '온프레미스 사내 노드와 ArcOS SaaS 간 mTLS 1.3 암호화 키 자동 로테이션 주기 90일 적용',
+          '구형 암호화 스위트(TLS 1.2 CBC 계열) 폐기 및 ChaCha20-Poly1305 / AES-256-GCM 표준 강제',
+          '공정 데이터 전송 중 터널 재연결 없이 백그라운드 세션 승계로 패킷 누락 0건 달성'
+        ],
+        en: [
+          'Automatic 90-day rotation cycle for mTLS 1.3 keys between on-premise nodes and ArcOS SaaS',
+          'Retired legacy cipher suites (TLS 1.2 CBC family) and enforced ChaCha20-Poly1305 / AES-256-GCM',
+          'Zero dropped packets via background session handover, with no tunnel reconnect during process data transfer'
+        ],
+        ja: [
+          'オンプレミス社内ノードとArcOS SaaS間のmTLS 1.3暗号鍵の自動ローテーション周期を90日に設定',
+          '旧暗号スイート(TLS 1.2 CBC系)を廃止し、ChaCha20-Poly1305 / AES-256-GCM標準を強制',
+          '工程データ転送中もトンネル再接続なしのバックグラウンドセッション継承でパケット欠落0件を達成'
+        ]
+      },
+      {
+        ko: [
+          '가동 중인 사천·창원·오송 사업장 생산 라인 통신 영향 없음 (Downtime: 0ms)',
+          'NVIDIA GPU 추론 서버 및 온톨로지 스트리밍 큐 정상 유지'
+        ],
+        en: [
+          'No communication impact on running production lines at the Sacheon, Changwon and Osong sites (Downtime: 0ms)',
+          'NVIDIA GPU inference servers and ontology streaming queues remained healthy'
+        ],
+        ja: [
+          '稼働中の泗川・昌原・梧倉事業所の生産ライン通信に影響なし (Downtime: 0ms)',
+          'NVIDIA GPU推論サーバーおよびオントロジーストリーミングキューは正常維持'
+        ]
+      }
+    ]
+  },
+  'patch-4-2-2': {
+    typeLabel: { ko: '규정 준수 패치', en: 'Compliance Patch', ja: '規制準拠パッチ' },
+    title: {
+      ko: '제약·바이오 FDA 21 CFR Part 11 전자 제조기록(EBRS) 감사추적 스키마 고도화',
+      en: 'Enhanced audit-trail schema for pharma/bio FDA 21 CFR Part 11 electronic batch records (EBRS)',
+      ja: '製薬・バイオ FDA 21 CFR Part 11 電子製造記録(EBRS)の監査証跡スキーマ高度化'
+    },
+    summary: {
+      ko: '식약처 및 FDA 실사 대비 감사추적(Audit Trail) 블록체인 해시 무결성 검증 필드가 무중단 반영되었습니다.',
+      en: 'Blockchain hash integrity verification fields for audit trails shipped with zero downtime ahead of MFDS and FDA inspections.',
+      ja: '食薬処およびFDA査察に備え、監査証跡(Audit Trail)のブロックチェーンハッシュ完全性検証フィールドを無停止で反映しました。'
+    },
+    affectedModules: {
+      ko: ['제약 특화 MES', 'EBRS (전자 제조기록)', '컨센스봇'],
+      en: ['Pharma-Specific MES', 'EBRS (Electronic Batch Records)', 'ConsensBot'],
+      ja: ['製薬特化MES', 'EBRS (電子製造記録)', 'コンセンスボット']
+    },
+    migrationMechanism: {
+      ko: 'Non-blocking Schema Evolution (N, N-1 필드 동시 허용)',
+      en: 'Non-blocking Schema Evolution (N and N-1 fields accepted simultaneously)',
+      ja: 'Non-blocking Schema Evolution (N, N-1 フィールドの同時許容)'
+    },
+    rollbackSafety: {
+      ko: '구버전 EBRS 클라이언트 하위 호환성 100% 보장',
+      en: '100% backward compatibility guaranteed for legacy EBRS clients',
+      ja: '旧バージョンEBRSクライアントとの下位互換性を100%保証'
+    },
+    detailTitles: {
+      ko: ['규제 대응 패치 내역', '무중단 검증 로그'],
+      en: ['Regulatory patch details', 'Zero-downtime verification log'],
+      ja: ['規制対応パッチ内容', '無停止検証ログ']
+    },
+    detailItems: [
+      {
+        ko: [
+          '작업자 전자서명 위변조 방지 SHA-256 증적 블록 체이닝 필드 자동 추가',
+          '배치(Batch) 일탈 발생 시 온프레미스 sLM 컨센스봇에 실시간 감사 레퍼런스 자동 전달',
+          '감사관 모드 읽기 전용 뷰어 권한 세분화 (테넌트 SSO 감사 프로파일 연동)'
+        ],
+        en: [
+          'Automatic SHA-256 evidence block chaining fields added to prevent operator e-signature tampering',
+          'Batch deviations are forwarded to the on-premise ConsensBot sLM as real-time audit references',
+          'Finer-grained auditor read-only viewer permissions (linked to the tenant SSO audit profile)'
+        ],
+        ja: [
+          '作業員の電子署名の改ざん防止のためSHA-256証跡ブロックチェーンフィールドを自動追加',
+          'バッチ逸脱の発生時にオンプレミスsLMコンセンスボットへ監査リファレンスをリアルタイム自動連携',
+          '監査官モードの読み取り専用ビューア権限を細分化 (テナントSSO監査プロファイル連係)'
+        ]
+      },
+      {
+        ko: [
+          '오송 GMP 클린룸 4개 라인 연속 주사제 생산 중 롤링 배포 완료',
+          '생산 데이터 유실: 0건, 스키마 마이그레이션 락 발생 시간: 0.00ms'
+        ],
+        en: [
+          'Rolling deployment completed during continuous injectable production across 4 Osong GMP cleanroom lines',
+          'Production data loss: 0 records; schema migration lock time: 0.00ms'
+        ],
+        ja: [
+          '梧倉GMPクリーンルーム4ラインの注射剤連続生産中にローリング展開を完了',
+          '生産データ損失: 0件、スキーマ移行ロック発生時間: 0.00ms'
+        ]
+      }
+    ]
+  },
+  'patch-4-2-1': {
+    typeLabel: { ko: '성능 최적화', en: 'Performance Optimization', ja: '性能最適化' },
+    title: {
+      ko: 'B²LAB 온톨로지 스트리밍 엔진 버퍼 최적화 및 OPC-UA 수집 지연 40% 단축',
+      en: 'B²LAB ontology streaming engine buffer optimization, cutting OPC-UA ingestion latency by 40%',
+      ja: 'B²LAB オントロジーストリーミングエンジンのバッファ最適化およびOPC-UA収集遅延の40%短縮'
+    },
+    summary: {
+      ko: '초당 50,000건 이상의 고속 센서 태그 유입 환경에서 메모리 캐시 파이프라인을 개선했습니다.',
+      en: 'Improved the memory cache pipeline for environments ingesting more than 50,000 high-speed sensor tags per second.',
+      ja: '毎秒50,000件以上の高速センサータグが流入する環境向けにメモリキャッシュパイプラインを改善しました。'
+    },
+    affectedModules: {
+      ko: ['B²LAB 온톨로지 데이터레이크', 'A²LAB MLOps', '디지털 트윈'],
+      en: ['B²LAB Ontology Datalake', 'A²LAB MLOps', 'Digital Twin'],
+      ja: ['B²LAB オントロジーデータレイク', 'A²LAB MLOps', 'デジタルツイン']
+    },
+    migrationMechanism: {
+      ko: 'Canary Rolling Buffer Swap (Ring-buffer 버퍼 무손실 이양)',
+      en: 'Canary Rolling Buffer Swap (lossless ring-buffer handover)',
+      ja: 'Canary Rolling Buffer Swap (Ring-buffer の無損失移譲)'
+    },
+    rollbackSafety: {
+      ko: '메모리 점유율 임계치 초과 시 이전 링버퍼 엔진 자동 롤백',
+      en: 'Automatic rollback to the previous ring-buffer engine when memory utilization exceeds the threshold',
+      ja: 'メモリ占有率が閾値を超過した場合、以前のリングバッファエンジンへ自動ロールバック'
+    },
+    detailTitles: {
+      ko: ['성능 개선 내역'],
+      en: ['Performance improvements'],
+      ja: ['性能改善内容']
+    },
+    detailItems: [
+      {
+        ko: [
+          'AAS(Asset Administration Shell) 메타데이터 질의 응답 시간 18ms -> 4.2ms 단축',
+          '3D 디지털 트윈 텔레메트리 렌더링 프레임 60 FPS 안정화 (지연율 40% 개선)',
+          '온프레미스 사내 노드 메모리 상주 용량 35% 절감 (Garbage Collection 주기 최적화)'
+        ],
+        en: [
+          'AAS (Asset Administration Shell) metadata query response time reduced from 18ms to 4.2ms',
+          '3D digital twin telemetry rendering stabilized at 60 FPS (40% latency improvement)',
+          'On-premise node resident memory reduced by 35% (garbage collection cycle tuning)'
+        ],
+        ja: [
+          'AAS(Asset Administration Shell)メタデータの照会応答時間を18ms → 4.2msに短縮',
+          '3Dデジタルツインのテレメトリ描画を60 FPSで安定化 (遅延率40%改善)',
+          'オンプレミス社内ノードの常駐メモリ容量を35%削減 (Garbage Collection周期の最適化)'
+        ]
+      }
+    ]
+  },
+  'patch-4-2-0': {
+    typeLabel: { ko: '기능 개선', en: 'Feature Update', ja: '機能改善' },
+    title: {
+      ko: 'ArcMind 노코드/로우코드 플랫폼 빌더 분리 출시 및 자체 IT 구축형 지원',
+      en: 'ArcMind no-code/low-code platform builder released as a separate SKU with self-build IT support',
+      ja: 'ArcMind ノーコード/ローコード プラットフォームビルダーの分離リリースおよび自社IT構築型サポート'
+    },
+    summary: {
+      ko: '자체 IT 인력을 보유한 제조기업이 기성 MES 도입 없이 사내 맞춤형 스마트팩토리를 노코드로 제작할 수 있도록 지원합니다.',
+      en: 'Manufacturers with in-house IT staff can now build a plant-specific smart factory with no code, without adopting an off-the-shelf MES.',
+      ja: '自社IT要員を抱える製造企業が、既製MESを導入せずに社内カスタムのスマートファクトリーをノーコードで制作できるよう支援します。'
+    },
+    affectedModules: {
+      ko: ['ArcMind (노코드/로우코드 빌더)', 'B²LAB 온톨로지', 'A²LAB'],
+      en: ['ArcMind (No-Code/Low-Code Builder)', 'B²LAB Ontology', 'A²LAB'],
+      ja: ['ArcMind (ノーコード/ローコードビルダー)', 'B²LAB オントロジー', 'A²LAB']
+    },
+    migrationMechanism: {
+      ko: 'Dynamic Component Plugin Load (무중단 런타임 탑재)',
+      en: 'Dynamic Component Plugin Load (zero-downtime runtime injection)',
+      ja: 'Dynamic Component Plugin Load (無停止ランタイム搭載)'
+    },
+    rollbackSafety: {
+      ko: '플러그인 로드 격리 샌드박스로 기존 운영 스위트 간섭 원천 차단',
+      en: 'Isolated plugin-load sandbox fully prevents interference with existing operating suites',
+      ja: 'プラグインロード隔離サンドボックスにより既存運用スイートへの干渉を根本から遮断'
+    },
+    detailTitles: {
+      ko: ['기능 추가 내역'],
+      en: ['New features'],
+      ja: ['追加機能']
+    },
+    detailItems: [
+      {
+        ko: [
+          '자체 IT 인력 전용 No-Code / Low-Code 드래그앤드롭 화면 빌더 캔버스 탑재',
+          '기성 제조 운영 스위트(MES)와 중복 없이 B²LAB 온톨로지 스키마 직접 바인딩 지원',
+          '모바일 현장 태블릿 화면 및 대형 생산 현황판 템플릿 24종 기본 제공'
+        ],
+        en: [
+          'No-Code / Low-Code drag-and-drop screen builder canvas for dedicated in-house IT teams',
+          'Direct B²LAB ontology schema binding without duplicating the off-the-shelf MES suite',
+          '24 built-in templates for mobile shopfloor tablets and large production status boards'
+        ],
+        ja: [
+          '自社IT要員専用のNo-Code / Low-Codeドラッグ&ドロップ画面ビルダーキャンバスを搭載',
+          '既製の製造運用スイート(MES)と重複せずB²LABオントロジースキーマへ直接バインディング可能',
+          'モバイル現場タブレット画面および大型生産状況ボードのテンプレート24種を標準提供'
+        ]
+      }
+    ]
+  },
+  'patch-4-1-8': {
+    typeLabel: { ko: '보안 패치', en: 'Security Patch', ja: 'セキュリティパッチ' },
+    title: {
+      ko: '온프레미스 sLM 컨센스봇 사내 문서 색인 격리 및 메모리 누수 방지 패치',
+      en: 'On-premise sLM ConsensBot internal document index isolation and memory leak fix',
+      ja: 'オンプレミスsLMコンセンスボットの社内文書インデックス隔離およびメモリリーク防止パッチ'
+    },
+    summary: {
+      ko: '폐쇄망 GPU 노드에서 PDF 및 제조 매뉴얼 색인 시 발생하던 Milvus 벡터 캐시 누수를 해결했습니다.',
+      en: 'Resolved a Milvus vector cache leak that occurred while indexing PDFs and manufacturing manuals on air-gapped GPU nodes.',
+      ja: '閉域網GPUノードでPDFおよび製造マニュアルをインデックスする際に発生していたMilvusベクターキャッシュのリークを解消しました。'
+    },
+    affectedModules: {
+      ko: ['컨센스봇 (ConsensBot)', '온프레미스 GPU 추론 런타임'],
+      en: ['ConsensBot', 'On-Premise GPU Inference Runtime'],
+      ja: ['コンセンスボット (ConsensBot)', 'オンプレミスGPU推論ランタイム']
+    },
+    migrationMechanism: {
+      ko: 'Model Worker Rolling Restart (GPU VRAM 무단절 교체)',
+      en: 'Model Worker Rolling Restart (uninterrupted GPU VRAM swap)',
+      ja: 'Model Worker Rolling Restart (GPU VRAMの無断絶交換)'
+    },
+    rollbackSafety: {
+      ko: '초기화 실패 시 예비 GPU 워커로 즉각 스탠바이 복귀',
+      en: 'Immediate standby failover to a spare GPU worker if initialization fails',
+      ja: '初期化に失敗した場合、予備GPUワーカーへ即座にスタンバイ復帰'
+    },
+    detailTitles: {
+      ko: ['패치 내역'],
+      en: ['Patch details'],
+      ja: ['パッチ内容']
+    },
+    detailItems: [
+      {
+        ko: [
+          '사내 SOP 문서 342건 벡터 임베딩 중 외부 아웃바운드 차단 감시 강화',
+          'GPU VRAM 48GB 메모리 캐시 정리 스케줄러 내장',
+          'sLM 질의응답 레이턴시 1.8초 -> 0.9초로 50% 향상'
+        ],
+        en: [
+          'Strengthened outbound blocking supervision while vector-embedding 342 internal SOP documents',
+          'Built-in scheduler that reclaims the 48GB GPU VRAM memory cache',
+          'sLM question-answering latency improved 50%, from 1.8s to 0.9s'
+        ],
+        ja: [
+          '社内SOP文書342件のベクター埋め込み中の外部アウトバウンド遮断監視を強化',
+          'GPU VRAM 48GBのメモリキャッシュ整理スケジューラを内蔵',
+          'sLM質疑応答レイテンシを1.8秒 → 0.9秒へ50%向上'
+        ]
+      }
+    ]
+  }
+};
+
+const PRINCIPLE_LOCALIZATIONS: Record<string, { title: LocalizedString; desc: LocalizedString; benefit: LocalizedString }> = {
+  'canary-rolling': {
+    title: {
+      ko: 'Blue-Green & 카나리 무중단 롤링 교체',
+      en: 'Blue-Green & canary zero-downtime rolling swap',
+      ja: 'Blue-Green & カナリア無停止ローリング交換'
+    },
+    desc: {
+      ko: '기존 버전의 컨테이너를 절대 미리 종료하지 않습니다. 신버전 컨테이너를 병렬 가동 후 헬스체크 및 온톨로지 바인딩 통과 시 10% -> 50% -> 100% 순차 승계합니다.',
+      en: 'The existing version’s container is never shut down in advance. The new container runs in parallel and, once health checks and ontology binding pass, traffic is handed over 10% → 50% → 100%.',
+      ja: '既存バージョンのコンテナを事前に終了させることは一切ありません。新バージョンのコンテナを並列稼働させ、ヘルスチェックとオントロジーバインディングを通過した時点で10% → 50% → 100%と順次引き継ぎます。'
+    },
+    benefit: {
+      ko: '생산 라인 가동률 100% 보장 (다운타임 0.00초)',
+      en: '100% production line uptime guaranteed (0.00s downtime)',
+      ja: '生産ライン稼働率100%を保証 (ダウンタイム0.00秒)'
+    }
+  },
+  'tunnel-buffer': {
+    title: {
+      ko: 'ArcTunnel 세션 유지 & PLC 제로-로스 메모리 버퍼링',
+      en: 'ArcTunnel session continuity & PLC zero-loss memory buffering',
+      ja: 'ArcTunnelセッション維持 & PLCゼロロス・メモリバッファリング'
+    },
+    desc: {
+      ko: '스위치오버가 일어나는 0.2초 순간에도 현장 PLC/SCADA 센서 계측 데이터는 온프레미스 로컬 Ring-Buffer에 저장되어 단 1개의 시계열 패킷도 유실되지 않습니다.',
+      en: 'Even during the 0.2-second switchover, shopfloor PLC/SCADA sensor readings are stored in an on-premise local ring buffer, so not a single time-series packet is lost.',
+      ja: 'スイッチオーバーが起こる0.2秒の瞬間でも、現場のPLC/SCADAセンサー計測データはオンプレミスのローカルRing-Bufferに保存され、時系列パケットを1件も失いません。'
+    },
+    benefit: {
+      ko: '고속 50,000 tag/s 환경에서도 데이터 유실률 0%',
+      en: '0% data loss even at 50,000 tag/s throughput',
+      ja: '高速50,000 tag/s環境でもデータ損失率0%'
+    }
+  },
+  'schema-compatibility': {
+    title: {
+      ko: 'B²LAB 온톨로지 스키마 N / N-1 하위 호환성',
+      en: 'B²LAB ontology schema N / N-1 backward compatibility',
+      ja: 'B²LAB オントロジースキーマの N / N-1 下位互換性'
+    },
+    desc: {
+      ko: '스키마 변경 시 필드 삭제나 타입 강제 변환을 금지하고, 필드 추가 및 하위 호환 매핑 정책을 강제하여 구버전 모듈과 신버전 모듈이 동시에 정상 동작합니다.',
+      en: 'Schema changes may never delete fields or force type conversions; only additive fields and backward-compatible mapping policies are allowed, so old and new module versions run correctly side by side.',
+      ja: 'スキーマ変更時のフィールド削除や型の強制変換を禁止し、フィールド追加および下位互換マッピングポリシーを強制することで、旧バージョンと新バージョンのモジュールが同時に正常動作します。'
+    },
+    benefit: {
+      ko: '공장 내 이종 버전 모듈 간 충돌 없는 점진적 업그레이드',
+      en: 'Gradual upgrades with no conflicts between mixed module versions in a plant',
+      ja: '工場内の異バージョンモジュール間で衝突のない段階的アップグレード'
+    }
+  },
+  'auto-rollback': {
+    title: {
+      ko: '3초 이내 무중단 자동 롤백 가드레일',
+      en: 'Zero-downtime automatic rollback guardrail within 3 seconds',
+      ja: '3秒以内の無停止自動ロールバック・ガードレール'
+    },
+    desc: {
+      ko: '신버전 배포 직후 헬스체크 응답 지연(>200ms)이나 비정상 예외가 감지되면 즉시 트래픽을 구버전으로 원상복귀시키며 작업자 개입 없이 안전을 유지합니다.',
+      en: 'If health check latency (>200ms) or an abnormal exception is detected right after a new version is deployed, traffic instantly reverts to the previous version, keeping the line safe with no operator intervention.',
+      ja: '新バージョン展開直後にヘルスチェック応答遅延(>200ms)や異常例外が検知された場合、直ちにトラフィックを旧バージョンへ原状復帰させ、作業員の介入なしに安全を維持します。'
+    },
+    benefit: {
+      ko: '패치 실패 리스크 제로화 및 휴먼 에러 원천 차단',
+      en: 'Patch failure risk eliminated and human error blocked at the source',
+      ja: 'パッチ失敗リスクのゼロ化およびヒューマンエラーの根本遮断'
+    }
+  }
+};
+
+export function getLocalizedPatchNote(patch: PatchNoteItem, lang?: Language | string): PatchNoteItem {
+  const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  const loc = PATCH_NOTE_LOCALIZATIONS[patch.id];
+  if (!loc) {
+    return patch;
+  }
+  return {
+    ...patch,
+    typeLabel: loc.typeLabel[l] || patch.typeLabel,
+    title: loc.title[l] || patch.title,
+    summary: loc.summary[l] || patch.summary,
+    affectedModules: loc.affectedModules[l] || patch.affectedModules,
+    migrationMechanism: loc.migrationMechanism[l] || patch.migrationMechanism,
+    rollbackSafety: loc.rollbackSafety[l] || patch.rollbackSafety,
+    details: patch.details.map((section, idx) => ({
+      title: loc.detailTitles[l]?.[idx] || section.title,
+      items: loc.detailItems[idx]?.[l] || section.items
+    }))
+  };
+}
+
+export function getLocalizedPrincipleTitle(id: string, fallback: string, lang?: Language | string): string {
+  const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  return PRINCIPLE_LOCALIZATIONS[id]?.title[l] || fallback;
+}
+
+export function getLocalizedPrincipleDesc(id: string, fallback: string, lang?: Language | string): string {
+  const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  return PRINCIPLE_LOCALIZATIONS[id]?.desc[l] || fallback;
+}
+
+export function getLocalizedPrincipleBenefit(id: string, fallback: string, lang?: Language | string): string {
+  const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  return PRINCIPLE_LOCALIZATIONS[id]?.benefit[l] || fallback;
+}
+
+/**
+ * Workspace-facing strings are stored on the runtime state objects (installed
+ * modules, decommissioned modules, PoC trials) as their Korean canonical form,
+ * including the ones App/PoCApplyModal generate at runtime. They are keyed here
+ * by that canonical text and translated at render time.
+ */
+const WORKSPACE_LOCALIZATIONS: Record<string, LocalizedString> = {
+  // Module names
+  'B²LAB 온톨로지 데이터레이크': { ko: 'B²LAB 온톨로지 데이터레이크', en: 'B²LAB Ontology Datalake', ja: 'B²LAB オントロジーデータレイク' },
+  '제약 특화 MES (Smart Factory)': { ko: '제약 특화 MES (Smart Factory)', en: 'Pharma-Specific MES (Smart Factory)', ja: '製薬特化MES (Smart Factory)' },
+  'EBRS (전자 제조기록)': { ko: 'EBRS (전자 제조기록)', en: 'EBRS (Electronic Batch Records)', ja: 'EBRS (電子製造記録)' },
+  'SCM (공급망 협업 연계)': { ko: 'SCM (공급망 협업 연계)', en: 'SCM (Supply Chain Collaboration)', ja: 'SCM (サプライチェーン協業連係)' },
+  'AI Vision 결함 탐지 (ArcVision)': { ko: 'AI Vision 결함 탐지 (ArcVision)', en: 'AI Vision Defect Detection (ArcVision)', ja: 'AI Vision 欠陥検知 (ArcVision)' },
+  'A²LAB (AI 모듈 생성기)': { ko: 'A²LAB (AI 모듈 생성기)', en: 'A²LAB (AI Model Generator)', ja: 'A²LAB (AIモデル生成)' },
+  '다중 AI Agent 슈퍼바이저': { ko: '다중 AI Agent 슈퍼바이저', en: 'Multi-AI Agent Supervisor', ja: 'マルチAI Agent スーパーバイザー' },
+  '컨센스봇 (ConsensBot)': { ko: '컨센스봇 (ConsensBot)', en: 'ConsensBot (Regulatory sLM)', ja: 'コンセンスボット (ConsensBot)' },
+  '디지털 트윈 (Digital Twin)': { ko: '디지털 트윈 (Digital Twin)', en: 'Digital Twin', ja: 'デジタルツイン (Digital Twin)' },
+  'ArcMind (노코드/로우코드 플랫폼 빌더)': { ko: 'ArcMind (노코드/로우코드 플랫폼 빌더)', en: 'ArcMind (No-Code/Low-Code Platform Builder)', ja: 'ArcMind (ノーコード/ローコード プラットフォームビルダー)' },
+
+  // Module categories
+  '공통 기반': { ko: '공통 기반', en: 'Shared Core', ja: '共通基盤' },
+  '스위트 코어': { ko: '스위트 코어', en: 'Suite Core', ja: 'スイートコア' },
+  '스위트 확장': { ko: '스위트 확장', en: 'Suite Extension', ja: 'スイート拡張' },
+  '에너지': { ko: '에너지', en: 'Energy', ja: 'エネルギー' },
+  '시각화': { ko: '시각화', en: 'Visualization', ja: '可視化' },
+  '기반': { ko: '기반', en: 'Core', ja: '基盤' },
+  '빌더': { ko: '빌더', en: 'Builder', ja: 'ビルダー' },
+
+  // Runtime health / binding status
+  '방금 전 (정상 수신)': { ko: '방금 전 (정상 수신)', en: 'just now (healthy)', ja: 'たった今 (正常受信)' },
+  '3초 전 (정상 수신)': { ko: '3초 전 (정상 수신)', en: '3s ago (healthy)', ja: '3秒前 (正常受信)' },
+  '5초 전 (정상 수신)': { ko: '5초 전 (정상 수신)', en: '5s ago (healthy)', ja: '5秒前 (正常受信)' },
+  '12초 전 (정상 수신)': { ko: '12초 전 (정상 수신)', en: '12s ago (healthy)', ja: '12秒前 (正常受信)' },
+  'B²LAB 온톨로지 바인딩 완료': { ko: 'B²LAB 온톨로지 바인딩 완료', en: 'B²LAB ontology binding complete', ja: 'B²LAB オントロジーバインディング完了' },
+  '표준 스키마 48개 태그 매핑 완료 (AAS/OPC-UA)': {
+    ko: '표준 스키마 48개 태그 매핑 완료 (AAS/OPC-UA)',
+    en: 'Standard schema: 48 tags mapped (AAS/OPC-UA)',
+    ja: '標準スキーマ48タグのマッピング完了 (AAS/OPC-UA)'
+  },
+  '생산 LOT 및 GMP 전자서명 로컬 기록 중': {
+    ko: '생산 LOT 및 GMP 전자서명 로컬 기록 중',
+    en: 'Recording production LOTs and GMP e-signatures locally',
+    ja: '生産LOTおよびGMP電子署名をローカル記録中'
+  },
+  'CFR Part 11 감사추적 DB 동기화 중': {
+    ko: 'CFR Part 11 감사추적 DB 동기화 중',
+    en: 'Syncing the CFR Part 11 audit trail DB',
+    ja: 'CFR Part 11 監査証跡DBを同期中'
+  },
+
+  // Read-only retention
+  '협력사 발주 및 납기 검수 이력 12,480건 (암호화 압축)': {
+    ko: '협력사 발주 및 납기 검수 이력 12,480건 (암호화 압축)',
+    en: 'Supplier PO & delivery inspection history: 12,480 records (encrypted, compressed)',
+    ja: '協力会社の発注および納期検収履歴12,480件 (暗号化圧縮)'
+  },
+  '2029년 03월 31일 (의무 보존 5년)': {
+    ko: '2029년 03월 31일 (의무 보존 5년)',
+    en: 'March 31, 2029 (5-year mandatory retention)',
+    ja: '2029年03月31日 (義務保存5年)'
+  },
+  '사내 구매팀 ERP 직접 이관에 따른 구독 해지 후 감사용 읽기전용 보존 전환': {
+    ko: '사내 구매팀 ERP 직접 이관에 따른 구독 해지 후 감사용 읽기전용 보존 전환',
+    en: 'Subscription cancelled after migrating to the in-house purchasing ERP; converted to read-only retention for audit',
+    ja: '社内購買チームERPへの直接移管に伴う解約後、監査用の読み取り専用保存へ移行'
+  },
+
+  // PoC trial fields
+  '가공 표면 미세 스크래치 실시간 AI 검출률 99.2% 실증 및 오탐 최소화': {
+    ko: '가공 표면 미세 스크래치 실시간 AI 검출률 99.2% 실증 및 오탐 최소화',
+    en: 'Demonstrate 99.2% real-time AI detection of micro-scratches on machined surfaces while minimizing false positives',
+    ja: '加工表面の微細スクラッチのリアルタイムAI検出率99.2%の実証および誤検知の最小化'
+  },
+  '제조기술팀 / 김선임': { ko: '제조기술팀 / 김선임', en: 'Manufacturing Engineering / Senior Engineer Kim', ja: '製造技術チーム / キム主任' },
+  '사내 공정 적합성 실증': { ko: '사내 공정 적합성 실증', en: 'In-house process suitability validation', ja: '社内工程適合性の実証' },
+  '제조기술팀': { ko: '제조기술팀', en: 'Manufacturing Engineering', ja: '製造技術チーム' }
+};
+
+export function getLocalizedWorkspaceText(text: string, lang?: Language | string): string {
+  const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  return WORKSPACE_LOCALIZATIONS[text]?.[l] || text;
+}
+
+const GROWTH_METRIC_LOCALIZATIONS: Record<string, LocalizedString> = {
+  '생산 라인 수 / 배치 건수': {
+    ko: '생산 라인 수 / 배치 건수',
+    en: 'Production lines / batch records',
+    ja: '生産ライン数 / バッチ件数'
+  },
+  '월간 추론 호출 수 (단위: 만 건)': {
+    ko: '월간 추론 호출 수 (단위: 만 건)',
+    en: 'Monthly inference calls (unit: 10K calls)',
+    ja: '月間推論コール数 (単位: 万件)'
+  },
+  '연계 에이전트 수': { ko: '연계 에이전트 수', en: 'Connected agents', ja: '連係エージェント数' },
+  '운영 라이선스 사용자 수': { ko: '운영 라이선스 사용자 수', en: 'Licensed operating users', ja: '運用ライセンスユーザー数' },
+  '실시간 전력·유틸리티 계측점 수': {
+    ko: '실시간 전력·유틸리티 계측점 수',
+    en: 'Real-time power & utility measurement points',
+    ja: 'リアルタイム電力・ユーティリティ計測点数'
+  },
+  '디지털화 대상 사업장 면적 및 라인': {
+    ko: '디지털화 대상 사업장 면적 및 라인',
+    en: 'Digitized facility floor area and lines',
+    ja: 'デジタル化対象事業所の面積およびライン'
+  },
+  '제작 대시보드 시트 수': { ko: '제작 대시보드 시트 수', en: 'Authored dashboard sheets', ja: '作成ダッシュボードシート数' },
+  '데이터 용량 구간 (기본 1TB 포함)': {
+    ko: '데이터 용량 구간 (기본 1TB 포함)',
+    en: 'Data storage tier (1TB included)',
+    ja: 'データ容量区間 (基本1TB込み)'
+  }
+};
+
+export function getLocalizedGrowthMetric(metric: string, lang?: Language | string): string {
+  const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  return GROWTH_METRIC_LOCALIZATIONS[metric]?.[l] || metric;
 }

@@ -296,7 +296,7 @@ export default function App() {
             />
           )}
 
-          {currentRoute === 'architecture' && <ArchitectureView />}
+          {currentRoute === 'architecture' && <ArchitectureView lang={lang} />}
         </main>
       </div>
 

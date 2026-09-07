@@ -336,7 +336,7 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
                   <div className="bg-white p-2 rounded border border-slate-200 space-y-1 text-xs">
                     <label className="text-[11px] text-slate-500 block">{t.gate3NodeSelect}</label>
                     <select
-                      aria-label="사업장 노드 선택"
+                      aria-label={t.ariaSelectDeployNode}
                       value={selectedLocation}
                       onChange={(e) => setSelectedLocation(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-300 rounded p-1.5 text-xs text-slate-900 font-medium"

@@ -377,6 +377,77 @@ export interface Translations {
   reportRoiDesc: string;
   reportPrintPdf: string;
   reportConvertToSub: string;
+
+  // Architecture (Whitepaper)
+  archBadge: string;
+  archBadgeSub: string;
+  archTitle: string;
+  archDesc: string;
+  archTab1: string;
+  archTab2: string;
+  archTab3: string;
+  archTab4: string;
+  archTab5: string;
+  archBoundaryNote: string;
+  archControlPlaneTitle: string;
+  archControlPlaneDesc: string;
+  archControlPlaneItem1: string;
+  archControlPlaneItem2: string;
+  archControlPlaneItem3: string;
+  archControlPlaneWarning: string;
+  archTunnelEncryption: string;
+  archDataPlaneTitle: string;
+  archDataPlaneDesc: string;
+  archDataPlaneItem1: string;
+  archDataPlaneItem2: string;
+  archDataPlaneItem3: string;
+  archDataPlaneGuarantee: string;
+  archDownstreamTitle: string;
+  archDownstreamDesc: string;
+  archUpstreamTitle: string;
+  archUpstreamDesc: string;
+  archSuiteSec1Title: string;
+  archSuiteSec1Desc: string;
+  archSuiteFormula: string;
+  archSuiteSec1Note: string;
+  archSuiteSec2Title: string;
+  archSuiteA2labTitle: string;
+  archSuiteA2labDesc: string;
+  archSuiteOrchTitle: string;
+  archSuiteOrchDesc: string;
+  archSuiteSec2Note: string;
+  archSuiteSec3Title: string;
+  archSuiteSec3Desc: string;
+  archSuiteSec3Warning: string;
+  archPnpTitle: string;
+  archPnpItem1Title: string;
+  archPnpItem1Desc: string;
+  archPnpItem2Title: string;
+  archPnpItem2Desc: string;
+  archPnpItem3Title: string;
+  archPnpItem3Desc: string;
+  archPnpItem4Title: string;
+  archPnpItem4Desc: string;
+  archPnpManifestTitle: string;
+  archPnpManifestTarget: string;
+  archPricingTitle: string;
+  archPricingDesc: string;
+  archPricingColModule: string;
+  archPricingColGrowth: string;
+  archPricingColBasis: string;
+  archPricingColMechanism: string;
+  archPricingRows: { module: string; growth: string; basis: string; mechanism: string }[];
+  archPolicyTitle: string;
+  archPolicy1Title: string;
+  archPolicy1Desc: string;
+  archPolicy2Title: string;
+  archPolicy2Desc: string;
+  archPolicy3Title: string;
+  archPolicy3Desc: string;
+
+  // Accessibility labels
+  ariaSelectFacility: string;
+  ariaSelectDeployNode: string;
 }
 
 export const TRANSLATIONS: Record<Language, Translations> = {
@@ -761,7 +832,84 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     reportRoiTitle: '정식 도입 시 기대 효과 및 상용 전환 안내',
     reportRoiDesc: '본 모듈을 정식 구독으로 전환할 경우, 14일 샌드박스에서 구축된 AAS 온톨로지 태그 매핑 설정과 튜닝 모델이 초기화 없이 100% 영구 보존되어 별도의 재설치나 가동 중단 없이 즉시 상용 서비스로 승격됩니다.',
     reportPrintPdf: '보고서 인쇄 / PDF 저장',
-    reportConvertToSub: '정식 구독으로 전환하기'
+    reportConvertToSub: '정식 구독으로 전환하기',
+
+    // Architecture (Whitepaper)
+    archBadge: 'IMPIX ArcOS 백서',
+    archBadgeSub: '하이브리드 아키텍처 · Plug & Play 표준 규약 · 3층 과금 모델 · 무중단 패치',
+    archTitle: 'ArcOS 플랫폼 마켓플레이스 기획 & 아키텍처 명세',
+    archDesc: '공정 데이터 사내 격리 원칙, 24종 Smart Factory 조합 구조, AI 에이전트 매니페스트 규약 등 핵심 설계 원칙을 인터랙티브하게 확인합니다.',
+    archTab1: '1. 하이브리드 배포 모델',
+    archTab2: '2. Smart Factory & AI 2-SKU',
+    archTab3: '3. Plug & Play 규약',
+    archTab4: '4. 3층 과금 & 성장 축',
+    archTab5: '5. 운영 정책 & 읽기전용 보존',
+    archBoundaryNote: '제약·식품 고객사 보안 심사 필수 통과 기준',
+    archControlPlaneTitle: '제어 평면 (Control Plane - SaaS)',
+    archControlPlaneDesc: 'SaaS 상에서 테넌트, 가입, 과금, 카탈로그 및 배포 오케스트레이션을 총괄합니다.',
+    archControlPlaneItem1: 'ArcOS 포털 (테넌트 SSO, 사용자 권한)',
+    archControlPlaneItem2: '앱 카탈로그 및 4대 조건 사전 점검',
+    archControlPlaneItem3: '메타·모델 레지스트리 (컨테이너 이미지, 매니페스트)',
+    archControlPlaneWarning: '⚠️ 원본 도메인 데이터는 SaaS에 절대 저장되지 않음',
+    archTunnelEncryption: 'mTLS 암호화',
+    archDataPlaneTitle: '데이터 평면 (Data Plane - 온프레미스)',
+    archDataPlaneDesc: '지역별 온프레미스 사업장 노드 방화벽 내부에서 데이터 원본과 sLM 모델을 보호합니다.',
+    archDataPlaneItem1: 'B²LAB 데이터레이크 (AAS/OPC-UA 온톨로지 표준)',
+    archDataPlaneItem2: '도메인 DB 원본 (MES, ERP, 설비 PLC, 내부 문서)',
+    archDataPlaneItem3: '학습·추론 런타임 (사내 GPU 노드에서 sLM 추론)',
+    archDataPlaneGuarantee: '🔒 공정 데이터·사내 문서 원본 외부 유출 원천 차단',
+    archDownstreamTitle: '↓ SaaS에서 온프레미스로 내려가는 것:',
+    archDownstreamDesc: '앱 컨테이너 이미지, 환경 설정 매니페스트, AI 모델 파라미터 정의, 배포 명령',
+    archUpstreamTitle: '↑ 온프레미스에서 SaaS로 올라가는 것:',
+    archUpstreamDesc: '실행 상태 하트비트, 가동률 성능 메트릭, 보안 감사 로그, 과금 정산용 사용량 카운터',
+    archSuiteSec1Title: '1. Smart Factory 24가지 조합 구조적 근거',
+    archSuiteSec1Desc: 'MES 3종(제약 특화, 식품·화장품 특화, 일반 제조)은 공정 규제와 밸리데이션 요구사항이 상이하여 **상호 배타적(하나만 선택)**입니다. 반면 품질·기록·공급망을 담당하는 EBRS, REMS, SCM은 **자유 조합**입니다.',
+    archSuiteFormula: '실질 조합 수 = MES (3종 중 1개) × 확장 모듈 (2³ = 8가지) = **총 24가지**',
+    archSuiteSec1Note: '업종별 고정 번들 패키지만으로는 이 24가지 고객 수요를 모두 충족할 수 없으므로, **모듈 개별 과금**을 채택하는 구조적 근거가 됩니다.',
+    archSuiteSec2Title: '2. AI 계층의 2개 SKU 분리 (A²LAB vs 슈퍼바이저)',
+    archSuiteA2labTitle: 'A²LAB (에이전트 모듈 생성기)',
+    archSuiteA2labDesc: '품질 예측, 설비 예지, 규정 검토 같은 도메인 에이전트 모듈을 제작·학습시키는 **공장** 역할입니다.',
+    archSuiteOrchTitle: '다중 AI Agent 슈퍼바이저 (오케스트레이션)',
+    archSuiteOrchDesc: '만들어진 개별 에이전트들의 판단을 교차 검증하고 충돌을 조율하는 **지휘 런타임**입니다.',
+    archSuiteSec2Note: '에이전트가 1~2개일 때는 오케스트레이션이 필요 없으므로 초기에는 A²LAB 상위 티어에 포함시키고, 사내 에이전트가 3개 이상 가동되는 대규모 고객부터 별도 SKU로 분리 판매하는 경로를 제공합니다.',
+    archSuiteSec3Title: '3. ArcMind (노코드 빌더) vs 기성 스마트팩토리 스위트의 명확한 역할 구분',
+    archSuiteSec3Desc: '**ArcMind**는 사내 IT/소프트웨어 전담 인력을 보유한 기업이 기성 MES 제품에 종속되지 않고, 자체적으로 No-Code/Low-Code 컴포넌트를 드래그앤드롭하여 공장별 맞춤형 Smart Factory 플랫폼을 직접 구축할 수 있는 전문 빌더입니다.',
+    archSuiteSec3Warning: '**💡 중복 구매 방지 정책:** 기성 MES 스위트를 도입하는 경우 대부분의 공정·배치·설비 화면이 이미 완성되어 공급되므로, ArcMind와의 중복 구성을 방지하기 위해 마켓플레이스와 견적 시뮬레이터에서 상호 배타적 검토 및 분리 가이드를 제공합니다.',
+    archPnpTitle: '새 모듈 추가에 기존 코드 수정이 없는 5대 Plug & Play 규약',
+    archPnpItem1Title: '① 패키징 규약 (Container + Manifest)',
+    archPnpItem1Desc: '모든 앱은 OCI 표준 컨테이너 이미지와 JSON 매니페스트로 등록됩니다. 매니페스트에 요구 데이터 스키마, 노출 API, 의존 앱을 선언합니다.',
+    archPnpItem2Title: '② 데이터 규약 (AAS, OPC-UA, KS X 9101)',
+    archPnpItem2Desc: '앱은 레거시 DB를 직접 보지 않고 B²LAB 온톨로지 계층만 조회합니다. 고객사마다 상이한 DB 구조를 앱이 알 필요가 없습니다.',
+    archPnpItem3Title: '③ 인증·권한 규약 (ArcOS Tenant SSO)',
+    archPnpItem3Desc: '테넌트 단위 통합 SSO를 ArcOS가 독점 소유하며, 앱별 권한 매트릭스는 ArcMind 컴포넌트 레벨까지 일관되게 제어됩니다.',
+    archPnpItem4Title: '④ 이벤트 규약 (공통 Pub/Sub Event Bus)',
+    archPnpItem4Desc: '앱 간 통신은 직접 결합하지 않고 이벤트 버스를 통합니다. 설비 알람 이벤트에 컨센스봇이 구독하는 방식으로 상호 연동됩니다.',
+    archPnpManifestTitle: 'A²LAB 생성 에이전트 매니페스트 예시 (JSON Spec):',
+    archPnpManifestTarget: '압출 공정 두께 불량 사전 예측',
+    archPricingTitle: '3층 과금 모델 & 모듈별 자연 성장 축',
+    archPricingDesc: '단가는 고정하고 할인은 볼륨 구간에서만 제공합니다. 고객이 최소 조합으로 시작해도 사업 성장에 따라 청구액이 자연스럽게 연동되는 구조입니다.',
+    archPricingColModule: '모듈',
+    archPricingColGrowth: '자연 성장 축',
+    archPricingColBasis: '과금 기준',
+    archPricingColMechanism: '성장 메커니즘',
+    archPricingRows: [
+      { module: '플랫폼 기본료', growth: '데이터 저장 용량 구간', basis: '월 300만원 (1TB 포함)', mechanism: '고정 앵커로 기본 진입 장벽 확보' },
+      { module: 'MES 3종', growth: '생산 라인 수', basis: '라인당 40~80만원', mechanism: '공장 증설 시 라인 추가 구독' },
+      { module: 'EBRS', growth: '배치 기록 건수', basis: '월 120만원 (기본 배치)', mechanism: '생산량 증가 시 종량 초과' },
+      { module: 'REMS / A.ESG', growth: '센서 계측점 수', basis: '월 90~130만원', mechanism: '계측 센서 설치 구역 확대' },
+      { module: 'A²LAB', growth: '추론 호출 수', basis: '월 150만원 + 호출 종량', mechanism: 'AI 모듈 상시 가동량 비례' },
+      { module: '컨센스봇', growth: '사용자 수', basis: '월 180만원 (동시 20유저)', mechanism: 'QA/QC/생산 관리 인원 확대' }
+    ],
+    archPolicyTitle: '운영 정책: 규제 데이터 [읽기 전용 보존] & 런타임 지원 정책',
+    archPolicy1Title: '1. 제3의 상태: [읽기 전용 보존] 상태',
+    archPolicy1Desc: 'EBRS나 품질 모듈을 해지했을 때, 이미 생성된 전자 제조기록은 제약·식품 규제상 5~10년간 법적 보존 의무가 있습니다. 따라서 단순 ‘활성’과 ‘해지’ 외에, 저렴한 유지비용으로 데이터 무결성을 보존하는 **[읽기 전용 보존] 상태**와 보존 요금을 운영합니다.',
+    archPolicy2Title: '2. N, N-1 버전 이중 지원 원칙',
+    archPolicy2Desc: '고객사 온프레미스 런타임 갱신 시점이 저마다 다르므로, SaaS 제어 평면은 **현재 버전(v4.2)과 직전 버전(v4.1) 2개 버전**만을 동시 지원합니다. 이 원칙이 없으면 2~3년 뒤 하위 호환성 유지 비용으로 제품이 붕괴합니다.',
+    archPolicy3Title: '3. 24/7 무중단 롤링 패치 원칙',
+    archPolicy3Desc: '24시간 가동되는 제조 라인의 특성상 유지보수를 위한 다운타임은 허용되지 않습니다. Blue/Green 및 온프레미스 노드 롤링 업데이트로 **무중단 핫픽스**를 적용하며, 플랫폼 내 ‘무중단 패치노트’ 메뉴에서 변경 이력과 롤백 보증 상태를 즉시 추적합니다.',
+
+    ariaSelectFacility: '사업장 선택 (지역 + 업종)',
+    ariaSelectDeployNode: '배포 대상 사업장 노드 선택'
   },
   en: {
     brandName: 'ArcOS',
@@ -1144,7 +1292,84 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     reportRoiTitle: 'Commercial Transition & ROI Guidance',
     reportRoiDesc: 'Converting to commercial subscription permanently retains all configured AAS tag mappings and tuned model weights with zero re-installation or line downtime.',
     reportPrintPdf: 'Print / Save as PDF',
-    reportConvertToSub: 'Convert to Full Subscription'
+    reportConvertToSub: 'Convert to Full Subscription',
+
+    // Architecture (Whitepaper)
+    archBadge: 'IMPIX ArcOS Whitepaper',
+    archBadgeSub: 'Hybrid architecture · Plug & Play standards · 3-tier pricing · Zero-downtime patching',
+    archTitle: 'ArcOS Platform Marketplace Blueprint & Architecture Specification',
+    archDesc: 'Explore the core design principles interactively: on-premise process data isolation, the 24-variant Smart Factory composition model, and the AI agent manifest contract.',
+    archTab1: '1. Hybrid Deployment Model',
+    archTab2: '2. Smart Factory & AI 2-SKU',
+    archTab3: '3. Plug & Play Contracts',
+    archTab4: '4. 3-Tier Pricing & Growth Metrics',
+    archTab5: '5. Operating Policy & Read-Only Retention',
+    archBoundaryNote: 'Mandatory pass criteria for pharma/food customer security reviews',
+    archControlPlaneTitle: 'Control Plane (SaaS)',
+    archControlPlaneDesc: 'Governs tenants, subscriptions, billing, the catalog, and deployment orchestration from SaaS.',
+    archControlPlaneItem1: 'ArcOS Portal (tenant SSO, user permissions)',
+    archControlPlaneItem2: 'App catalog and 4-point pre-installation check',
+    archControlPlaneItem3: 'Meta & model registry (container images, manifests)',
+    archControlPlaneWarning: '⚠️ Raw domain data is never stored in SaaS',
+    archTunnelEncryption: 'mTLS encrypted',
+    archDataPlaneTitle: 'Data Plane (On-Premises)',
+    archDataPlaneDesc: 'Protects raw data and sLM models inside the firewall of each regional on-premise facility node.',
+    archDataPlaneItem1: 'B²LAB datalake (AAS/OPC-UA ontology standard)',
+    archDataPlaneItem2: 'Raw domain DBs (MES, ERP, equipment PLC, internal documents)',
+    archDataPlaneItem3: 'Training & inference runtime (sLM inference on in-house GPU nodes)',
+    archDataPlaneGuarantee: '🔒 Process data and internal documents never leave the premises',
+    archDownstreamTitle: '↓ Pushed from SaaS down to on-premises:',
+    archDownstreamDesc: 'App container images, environment manifests, AI model parameter definitions, deployment commands',
+    archUpstreamTitle: '↑ Reported from on-premises up to SaaS:',
+    archUpstreamDesc: 'Runtime heartbeats, uptime performance metrics, security audit logs, metered usage counters for billing',
+    archSuiteSec1Title: '1. Structural Rationale for the 24 Smart Factory Combinations',
+    archSuiteSec1Desc: 'The three MES editions (pharma-specific, food/cosmetics-specific, general manufacturing) differ in process regulation and validation requirements, which makes them **mutually exclusive (pick exactly one)**. EBRS, REMS and SCM — covering quality, records and supply chain — are **freely combinable**.',
+    archSuiteFormula: 'Effective combinations = MES (1 of 3) × extension modules (2³ = 8) = **24 in total**',
+    archSuiteSec1Note: 'Fixed industry bundles alone cannot satisfy all 24 demand profiles, which is the structural rationale for adopting **per-module pricing**.',
+    archSuiteSec2Title: '2. Splitting the AI Tier into Two SKUs (A²LAB vs Supervisor)',
+    archSuiteA2labTitle: 'A²LAB (Agent Module Generator)',
+    archSuiteA2labDesc: 'Acts as the **factory** that builds and trains domain agent modules such as quality prediction, equipment prognostics and regulatory review.',
+    archSuiteOrchTitle: 'Multi-AI Agent Supervisor (Orchestration)',
+    archSuiteOrchDesc: 'The **command runtime** that cross-verifies the decisions of individual agents and arbitrates conflicts between them.',
+    archSuiteSec2Note: 'With only one or two agents, orchestration is unnecessary, so it ships inside the A²LAB upper tier at first; customers running three or more in-house agents move onto a separate SKU.',
+    archSuiteSec3Title: '3. Clear Role Separation: ArcMind (No-Code Builder) vs Off-the-Shelf Smart Factory Suites',
+    archSuiteSec3Desc: '**ArcMind** is a specialist builder for companies with dedicated in-house IT/software staff, letting them drag and drop No-Code/Low-Code components to build a plant-specific Smart Factory platform themselves instead of locking into an off-the-shelf MES product.',
+    archSuiteSec3Warning: '**💡 Duplicate-purchase prevention policy:** An off-the-shelf MES suite already ships finished process, batch and equipment screens, so the marketplace and quote simulator review ArcMind as mutually exclusive and provide separation guidance.',
+    archPnpTitle: 'Five Plug & Play contracts that let new modules ship without touching existing code',
+    archPnpItem1Title: '① Packaging contract (Container + Manifest)',
+    archPnpItem1Desc: 'Every app registers as an OCI-standard container image with a JSON manifest that declares required data schemas, exposed APIs and dependent apps.',
+    archPnpItem2Title: '② Data contract (AAS, OPC-UA, KS X 9101)',
+    archPnpItem2Desc: 'Apps never read legacy DBs directly — they query only the B²LAB ontology layer, so an app never needs to know each customer’s DB structure.',
+    archPnpItem3Title: '③ Authentication & authorization contract (ArcOS Tenant SSO)',
+    archPnpItem3Desc: 'ArcOS exclusively owns tenant-level unified SSO, and per-app permission matrices are enforced consistently down to the ArcMind component level.',
+    archPnpItem4Title: '④ Event contract (shared Pub/Sub event bus)',
+    archPnpItem4Desc: 'Apps never couple directly; they communicate over the event bus — ConsensBot, for example, subscribes to equipment alarm events.',
+    archPnpManifestTitle: 'A²LAB generated agent manifest example (JSON spec):',
+    archPnpManifestTarget: 'Predictive detection of extrusion thickness defects',
+    archPricingTitle: '3-Tier Pricing Model & Natural Growth Metric per Module',
+    archPricingDesc: 'Unit prices stay fixed and discounts apply only at volume tiers. Even customers starting from a minimal combination see billing scale naturally as their business grows.',
+    archPricingColModule: 'Module',
+    archPricingColGrowth: 'Natural Growth Metric',
+    archPricingColBasis: 'Billing Basis',
+    archPricingColMechanism: 'Growth Mechanism',
+    archPricingRows: [
+      { module: 'Platform base fee', growth: 'Data storage tier', basis: 'KRW 3M/mo (1TB included)', mechanism: 'Fixed anchor securing the baseline entry point' },
+      { module: 'MES (3 editions)', growth: 'Production lines', basis: 'KRW 400K-800K per line', mechanism: 'Additional line subscriptions as plants expand' },
+      { module: 'EBRS', growth: 'Batch record volume', basis: 'KRW 1.2M/mo (base batches)', mechanism: 'Metered overage as output grows' },
+      { module: 'REMS / A.ESG', growth: 'Sensor measurement points', basis: 'KRW 900K-1.3M/mo', mechanism: 'Expanding instrumented plant zones' },
+      { module: 'A²LAB', growth: 'Inference calls', basis: 'KRW 1.5M/mo + metered calls', mechanism: 'Scales with continuous AI module workload' },
+      { module: 'ConsensBot', growth: 'Users', basis: 'KRW 1.8M/mo (20 concurrent users)', mechanism: 'More QA/QC/production staff onboarded' }
+    ],
+    archPolicyTitle: 'Operating Policy: Regulated Data [Read-Only Retention] & Runtime Support',
+    archPolicy1Title: '1. The third state: [Read-Only Retention]',
+    archPolicy1Desc: 'When EBRS or a quality module is cancelled, the electronic manufacturing records already produced carry a 5-10 year legal retention obligation under pharma/food regulation. Beyond plain “active” and “cancelled”, ArcOS therefore operates a **[Read-Only Retention] state** with a low-cost retention fee that preserves data integrity.',
+    archPolicy2Title: '2. Dual N / N-1 version support principle',
+    archPolicy2Desc: 'Because customers refresh their on-premise runtimes at different times, the SaaS control plane simultaneously supports only **the current version (v4.2) and the immediately preceding one (v4.1)**. Without this rule, backward-compatibility costs would collapse the product within two to three years.',
+    archPolicy3Title: '3. 24/7 zero-downtime rolling patch principle',
+    archPolicy3Desc: 'Production lines running around the clock cannot accept maintenance downtime. **Zero-downtime hotfixes** are applied through Blue/Green and on-premise node rolling updates, and the in-platform “Zero-Downtime Patch Notes” menu tracks change history and rollback guarantees instantly.',
+
+    ariaSelectFacility: 'Select facility (region + industry)',
+    ariaSelectDeployNode: 'Select target facility node for deployment'
   },
   ja: {
     brandName: 'ArcOS',
@@ -1527,6 +1752,83 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     reportRoiTitle: '正式導入時の期待効果および商用移行案内',
     reportRoiDesc: '本モジュールを正式サブスクリプションへ移行する場合、14日間のサンドボックスで構築されたAASオントロジータグ設定と学習済みモデルは初期化されず100%永久保持され、再設置やライン停止なしに即座に本番運用へ昇格します。',
     reportPrintPdf: 'レポート印刷 / PDF保存',
-    reportConvertToSub: '正式サブスクリプションへ移行'
+    reportConvertToSub: '正式サブスクリプションへ移行',
+
+    // Architecture (Whitepaper)
+    archBadge: 'IMPIX ArcOS ホワイトペーパー',
+    archBadgeSub: 'ハイブリッドアーキテクチャ · Plug & Play 標準規約 · 3層課金モデル · 無停止パッチ',
+    archTitle: 'ArcOS プラットフォームマーケットプレイス企画 & アーキテクチャ仕様',
+    archDesc: '工程データの社内隔離原則、24種のSmart Factory組合せ構造、AIエージェントマニフェスト規約など、中核となる設計原則をインタラクティブに確認できます。',
+    archTab1: '1. ハイブリッド展開モデル',
+    archTab2: '2. Smart Factory & AI 2-SKU',
+    archTab3: '3. Plug & Play 規約',
+    archTab4: '4. 3層課金 & 成長軸',
+    archTab5: '5. 運用ポリシー & 読み取り専用保存',
+    archBoundaryNote: '製薬・食品顧客のセキュリティ審査における必須通過基準',
+    archControlPlaneTitle: 'コントロールプレーン (Control Plane - SaaS)',
+    archControlPlaneDesc: 'SaaS上でテナント、加入、課金、カタログおよび展開オーケストレーションを統括します。',
+    archControlPlaneItem1: 'ArcOS ポータル (テナントSSO、ユーザー権限)',
+    archControlPlaneItem2: 'アプリカタログおよび4大条件の事前点検',
+    archControlPlaneItem3: 'メタ・モデルレジストリ (コンテナイメージ、マニフェスト)',
+    archControlPlaneWarning: '⚠️ ドメインデータの原本はSaaSに一切保存されません',
+    archTunnelEncryption: 'mTLS 暗号化',
+    archDataPlaneTitle: 'データプレーン (Data Plane - オンプレミス)',
+    archDataPlaneDesc: '地域ごとのオンプレミス事業所ノードのファイアウォール内部でデータ原本とsLMモデルを保護します。',
+    archDataPlaneItem1: 'B²LAB データレイク (AAS/OPC-UA オントロジー標準)',
+    archDataPlaneItem2: 'ドメインDB原本 (MES、ERP、設備PLC、社内文書)',
+    archDataPlaneItem3: '学習・推論ランタイム (社内GPUノードでのsLM推論)',
+    archDataPlaneGuarantee: '🔒 工程データ・社内文書の原本の外部流出を根本から遮断',
+    archDownstreamTitle: '↓ SaaSからオンプレミスへ配信されるもの:',
+    archDownstreamDesc: 'アプリコンテナイメージ、環境設定マニフェスト、AIモデルパラメータ定義、展開コマンド',
+    archUpstreamTitle: '↑ オンプレミスからSaaSへ送信されるもの:',
+    archUpstreamDesc: '実行状態ハートビート、稼働率パフォーマンスメトリクス、セキュリティ監査ログ、課金精算用の使用量カウンター',
+    archSuiteSec1Title: '1. Smart Factory 24通りの組合せの構造的根拠',
+    archSuiteSec1Desc: 'MES3種(製薬特化、食品・化粧品特化、一般製造)は工程規制とバリデーション要件が異なるため**相互排他的(1つのみ選択)**です。一方、品質・記録・サプライチェーンを担うEBRS、REMS、SCMは**自由組合せ**です。',
+    archSuiteFormula: '実質組合せ数 = MES (3種中1つ) × 拡張モジュール (2³ = 8通り) = **合計24通り**',
+    archSuiteSec1Note: '業種別の固定バンドルパッケージだけではこの24通りの顧客需要をすべて満たせないため、**モジュール個別課金**を採用する構造的根拠となります。',
+    archSuiteSec2Title: '2. AI階層の2SKU分離 (A²LAB vs スーパーバイザー)',
+    archSuiteA2labTitle: 'A²LAB (エージェントモジュール生成器)',
+    archSuiteA2labDesc: '品質予測、設備予知、規程レビューなどのドメインエージェントモジュールを制作・学習させる**工場**の役割です。',
+    archSuiteOrchTitle: 'マルチAI Agent スーパーバイザー (オーケストレーション)',
+    archSuiteOrchDesc: '生成された個々のエージェントの判断を相互検証し、衝突を調停する**指揮ランタイム**です。',
+    archSuiteSec2Note: 'エージェントが1〜2個のうちはオーケストレーションが不要なため、初期はA²LABの上位ティアに含め、社内エージェントが3個以上稼働する大規模顧客から別SKUとして分離販売する経路を提供します。',
+    archSuiteSec3Title: '3. ArcMind (ノーコードビルダー) と既製スマートファクトリースイートの明確な役割区分',
+    archSuiteSec3Desc: '**ArcMind**は、社内にIT/ソフトウェア専任要員を抱える企業が既製MES製品に縛られず、自らNo-Code/Low-Codeコンポーネントをドラッグ&ドロップして工場別カスタムSmart Factoryプラットフォームを直接構築できる専門ビルダーです。',
+    archSuiteSec3Warning: '**💡 重複購入防止ポリシー:** 既製MESスイートを導入する場合、工程・バッチ・設備の画面はほぼ完成した状態で供給されるため、ArcMindとの重複構成を防ぐべく、マーケットプレイスと見積シミュレーターで相互排他的なレビューと分離ガイドを提供します。',
+    archPnpTitle: '新規モジュール追加時に既存コードの修正が不要な5大 Plug & Play 規約',
+    archPnpItem1Title: '① パッケージング規約 (Container + Manifest)',
+    archPnpItem1Desc: 'すべてのアプリはOCI標準コンテナイメージとJSONマニフェストで登録されます。マニフェストに要求データスキーマ、公開API、依存アプリを宣言します。',
+    archPnpItem2Title: '② データ規約 (AAS、OPC-UA、KS X 9101)',
+    archPnpItem2Desc: 'アプリはレガシーDBを直接参照せず、B²LABオントロジー層のみを照会します。顧客ごとに異なるDB構造をアプリが知る必要はありません。',
+    archPnpItem3Title: '③ 認証・権限規約 (ArcOS Tenant SSO)',
+    archPnpItem3Desc: 'テナント単位の統合SSOをArcOSが独占的に保有し、アプリ別権限マトリクスはArcMindコンポーネントレベルまで一貫して制御されます。',
+    archPnpItem4Title: '④ イベント規約 (共通 Pub/Sub Event Bus)',
+    archPnpItem4Desc: 'アプリ間通信は直接結合せずイベントバスを経由します。設備アラームイベントにコンセンスボットが購読する形で相互連係します。',
+    archPnpManifestTitle: 'A²LAB生成エージェントのマニフェスト例 (JSON Spec):',
+    archPnpManifestTarget: '押出工程の厚み不良の事前予測',
+    archPricingTitle: '3層課金モデル & モジュール別の自然成長軸',
+    archPricingDesc: '単価は固定し、割引はボリューム区間でのみ提供します。顧客が最小構成で開始しても、事業成長に応じて請求額が自然に連動する構造です。',
+    archPricingColModule: 'モジュール',
+    archPricingColGrowth: '自然成長軸',
+    archPricingColBasis: '課金基準',
+    archPricingColMechanism: '成長メカニズム',
+    archPricingRows: [
+      { module: 'プラットフォーム基本料', growth: 'データ保存容量区間', basis: '月300万ウォン (1TB込み)', mechanism: '固定アンカーとして基本的な参入基盤を確保' },
+      { module: 'MES 3種', growth: '生産ライン数', basis: 'ライン当たり40〜80万ウォン', mechanism: '工場増設時にライン追加サブスクリプション' },
+      { module: 'EBRS', growth: 'バッチ記録件数', basis: '月120万ウォン (基本バッチ)', mechanism: '生産量増加に伴う従量超過' },
+      { module: 'REMS / A.ESG', growth: 'センサー計測点数', basis: '月90〜130万ウォン', mechanism: '計測センサー設置区域の拡大' },
+      { module: 'A²LAB', growth: '推論コール数', basis: '月150万ウォン + コール従量', mechanism: 'AIモジュールの常時稼働量に比例' },
+      { module: 'コンセンスボット', growth: 'ユーザー数', basis: '月180万ウォン (同時20ユーザー)', mechanism: 'QA/QC/生産管理人員の拡大' }
+    ],
+    archPolicyTitle: '運用ポリシー: 規制データ [読み取り専用保存] & ランタイムサポート方針',
+    archPolicy1Title: '1. 第3の状態: [読み取り専用保存] 状態',
+    archPolicy1Desc: 'EBRSや品質モジュールを解約した場合でも、既に生成された電子製造記録は製薬・食品規制上5〜10年間の法的保存義務があります。したがって単純な「稼働」と「解約」のほかに、低廉な維持費用でデータ完全性を保存する**[読み取り専用保存] 状態**と保存料金を運用します。',
+    archPolicy2Title: '2. N, N-1 バージョン二重サポート原則',
+    archPolicy2Desc: '顧客のオンプレミスランタイムの更新時期はそれぞれ異なるため、SaaSコントロールプレーンは**現行バージョン(v4.2)と直前バージョン(v4.1)の2バージョン**のみを同時サポートします。この原則がなければ2〜3年後には下位互換維持コストで製品が破綻します。',
+    archPolicy3Title: '3. 24/7 無停止ローリングパッチ原則',
+    archPolicy3Desc: '24時間稼働する製造ラインの特性上、保守のためのダウンタイムは許容されません。Blue/Greenおよびオンプレミスノードのローリングアップデートで**無停止ホットフィックス**を適用し、プラットフォーム内の「無停止パッチノート」メニューで変更履歴とロールバック保証状態を即座に追跡できます。',
+
+    ariaSelectFacility: '事業所選択 (地域 + 業種)',
+    ariaSelectDeployNode: '展開対象の事業所ノード選択'
   }
 };

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { NavRoute } from '../types';
 import { Language, TRANSLATIONS } from '../i18n/translations';
+import { getLocalizedTenantName } from '../i18n/localizedData';
 
 interface SidebarProps {
   currentRoute: NavRoute;
@@ -101,7 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <div className="mt-1 flex items-center gap-1.5 text-slate-100 font-medium text-xs">
             <Building className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
-            <span className="truncate">{tenantName}</span>
+            <span className="truncate">{getLocalizedTenantName(tenantName, lang)}</span>
           </div>
         </div>
       </div>
