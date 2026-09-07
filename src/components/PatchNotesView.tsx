@@ -18,7 +18,7 @@ import {
   getLocalizedPrincipleTitle,
   getLocalizedPrincipleDesc,
   getLocalizedPrincipleBenefit
-} from '../i18n/localizedData';
+} from '../i18n/patchNotesLocalization';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 
 interface PatchNotesViewProps {

@@ -1,15 +1,40 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { HeaderLinkBar } from './components/HeaderLinkBar';
+// The catalog is the landing route, so it stays in the initial chunk.
 import { CatalogView } from './components/CatalogView';
-import { AppDetailModal } from './components/AppDetailModal';
-import { QuoteView } from './components/QuoteView';
-import { WorkspaceView } from './components/WorkspaceView';
-import { ArchitectureView } from './components/ArchitectureView';
-import { PatchNotesView } from './components/PatchNotesView';
-import { DeployModal } from './components/DeployModal';
-import { PoCApplyModal } from './components/PoCApplyModal';
+import { ViewFallback } from './components/ViewFallback';
 import { Language } from './i18n/translations';
+
+/**
+ * Routes and modals are loaded on demand. These components are only reachable
+ * after a navigation or a user action, so keeping them out of the initial chunk
+ * shortens first paint; Rollup derives one chunk per dynamic import below.
+ *
+ * The named exports are mapped to `default` because `lazy` expects a module
+ * whose default export is the component.
+ */
+const QuoteView = lazy(() =>
+  import('./components/QuoteView').then((m) => ({ default: m.QuoteView }))
+);
+const WorkspaceView = lazy(() =>
+  import('./components/WorkspaceView').then((m) => ({ default: m.WorkspaceView }))
+);
+const ArchitectureView = lazy(() =>
+  import('./components/ArchitectureView').then((m) => ({ default: m.ArchitectureView }))
+);
+const PatchNotesView = lazy(() =>
+  import('./components/PatchNotesView').then((m) => ({ default: m.PatchNotesView }))
+);
+const AppDetailModal = lazy(() =>
+  import('./components/AppDetailModal').then((m) => ({ default: m.AppDetailModal }))
+);
+const DeployModal = lazy(() =>
+  import('./components/DeployModal').then((m) => ({ default: m.DeployModal }))
+);
+const PoCApplyModal = lazy(() =>
+  import('./components/PoCApplyModal').then((m) => ({ default: m.PoCApplyModal }))
+);
 import { CurrencyCode, defaultCurrencyForLanguage, isCurrencyCode } from './lib/currency';
 import { applyDocumentLanguage, detectInitialLanguage, parseLanguage } from './lib/language';
 import { STORAGE_KEYS, readStored, usePersistentState, writeStored } from './lib/storage';
@@ -316,6 +341,7 @@ export default function App() {
 
         {/* View Switcher */}
         <main className="flex-1 overflow-y-auto">
+          <Suspense fallback={<ViewFallback />}>
           {currentRoute === 'catalog' && (
             <CatalogView
               apps={APPS_DATA}
@@ -371,10 +397,14 @@ export default function App() {
           )}
 
           {currentRoute === 'architecture' && <ArchitectureView lang={lang} />}
+          </Suspense>
         </main>
       </div>
 
-      {/* Modals */}
+      {/* Modals are mounted only while open: their chunks load on first use, and
+          per-app state (selected node, permission toggles) starts clean each time. */}
+      <Suspense fallback={null}>
+      {isDetailModalOpen && (
       <AppDetailModal
         app={selectedAppForDetail}
         isOpen={isDetailModalOpen}
@@ -387,7 +417,9 @@ export default function App() {
         lang={lang}
         currency={currency}
       />
+      )}
 
+      {deployModalState.isOpen && (
       <DeployModal
         isOpen={deployModalState.isOpen}
         onClose={closeDeployModal}
@@ -396,7 +428,9 @@ export default function App() {
         onDeployComplete={handleDeployComplete}
         lang={lang}
       />
+      )}
 
+      {pocApplyModalState.isOpen && (
       <PoCApplyModal
         isOpen={pocApplyModalState.isOpen}
         onClose={closePoCApplyModal}
@@ -405,6 +439,8 @@ export default function App() {
         onApplySuccess={handleApplyPoCSubmit}
         lang={lang}
       />
+      )}
+      </Suspense>
     </div>
   );
 }
