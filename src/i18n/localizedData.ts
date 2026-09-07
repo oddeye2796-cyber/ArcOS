@@ -130,11 +130,11 @@ const APP_LOCALIZATIONS: Record<string, AppLocalization> = {
       ja: '多様な社内ドメインDBを標準オントロジースキーマに仮想化して提供するデータバックボーン'
     },
     detail: {
-      ko: '플랫폼 기본료(월 300만원)에 영구 포함되어 있습니다. AAS, OPC-UA, KS X 9101 표준을 기반으로 사내 이종 DB(MES, ERP, 설비 PLC)를 중계하여, 새 모듈 설치 시에도 기존 시스템 코드를 변경할 필요가 없습니다.',
-      en: 'Permanently bundled in the base platform subscription (3.0M KRW/mo). Based on AAS, OPC-UA, and KS X 9101, it mediates heterogeneous legacy DBs (MES, ERP, PLC) so adding new modules requires zero modifications to existing production codes.',
-      ja: 'プラットフォーム基本料(月額300万円)に恒久的に付属しています。AAS、OPC-UA、KS X 9101標準に準拠して社内の異機種DB(MES, ERP, PLC)を仲介し、新規モジュール導入時にも既存システムのコード改修が一切不要です。'
+      ko: '플랫폼 기본료와 별도로 책정되는 공통 기반 모듈입니다. AAS, OPC-UA, KS X 9101 표준을 기반으로 사내 이종 DB(MES, ERP, 설비 PLC)를 중계하여, 새 모듈 설치 시에도 기존 시스템 코드를 변경할 필요가 없습니다. 다른 모듈이 도메인 데이터를 조회하려면 이 계층이 먼저 있어야 합니다.',
+      en: 'A shared foundation module priced separately from the platform base fee. It brokers heterogeneous in-house databases (MES, ERP, equipment PLC) through AAS, OPC-UA and KS X 9101, so installing a new module never means editing existing system code. Any module that reads domain data needs this layer in place first.',
+      ja: 'プラットフォーム基本料とは別に価格設定される共通基盤モジュールです。AAS、OPC-UA、KS X 9101標準に基づき社内の異種DB(MES、ERP、設備PLC)を仲介するため、新規モジュール導入時も既存システムのコード変更は不要です。他モジュールがドメインデータを参照するには、この層が先に必要です。'
     },
-    unit: { ko: '플랫폼 기본료에 포함 (해지 불가)', en: 'Included in Base Fee (Permanent)', ja: 'プラットフォーム基本料に付属（解除不可）' }
+    unit: { ko: '월 80만원 (기본 1TB 포함)', en: 'KRW 800K/mo (1TB included)', ja: '月80万ウォン (基本1TB込み)' }
   }
 };
 
@@ -182,7 +182,11 @@ const SUBMODULE_LOCALIZATIONS: Record<string, { name: LocalizedString; desc: Loc
       en: 'Real-time differential pressure, temperature/humidity, particle count collection & alarms',
       ja: '差圧、温湿度、浮遊微粒子濃度リアルタイム収集および警報発令'
     },
-    unitLabel: { ko: '기본 90만원/월 (계측점 연동)', en: 'Base 900k KRW/mo (Sensor point scaled)', ja: '基本 90万円/月 (計測点連動)' }
+    unitLabel: {
+      ko: '기본 90만원/월 (계측점 200개 포함, 100개당 15% 증분)',
+      en: 'Base 900k KRW/mo (200 measurement points included, +15% per 100)',
+      ja: '基本 90万円/月 (計測点200点込み、100点ごとに15%加算)'
+    }
   },
   'scm': {
     name: { ko: 'SCM (공급망 협업 연계)', en: 'SCM (Supply Chain Collaboration)', ja: 'SCM (サプライチェーン協業連携)' },
@@ -191,7 +195,11 @@ const SUBMODULE_LOCALIZATIONS: Record<string, { name: LocalizedString; desc: Loc
       en: 'Raw material procurement, lead time tracking, Tier 1 & 2 subcontractor portal integration',
       ja: '原材料発注、リアルタイム納期追跡、1・2次外注協力会社ポータル連携'
     },
-    unitLabel: { ko: '기본 100만원/월 (협력사수 연동)', en: 'Base 1.0M KRW/mo (Partner scaled)', ja: '基本 100万円/月 (協力社数連動)' }
+    unitLabel: {
+      ko: '기본 100만원/월 (협력사 10개사 포함, 10개사당 20% 증분)',
+      en: 'Base 1.0M KRW/mo (10 supplier accounts included, +20% per 10)',
+      ja: '基本 100万円/月 (協力会社10社込み、10社ごとに20%加算)'
+    }
   }
 };
 
@@ -212,9 +220,9 @@ const DEP_LOCALIZATIONS: Record<string, { name: LocalizedString; desc: Localized
   'B²LAB 온톨로지 데이터레이크': {
     name: { ko: 'B²LAB 온톨로지 데이터레이크', en: 'B²LAB Ontology Datalake', ja: 'B²LAB オントロジーデータレイク' },
     desc: {
-      ko: '플랫폼 기본료 포함 (구독 중)',
-      en: 'Included in Base Fee (Subscribed)',
-      ja: 'プラットフォーム基本料に付属 (契約中)'
+      ko: '별도 구독 중 (공통 기반 모듈)',
+      en: 'Separately subscribed (shared foundation module)',
+      ja: '別途契約中 (共通基盤モジュール)'
     }
   },
   'ArcTunnel mTLS 게이트웨이': {
@@ -236,9 +244,9 @@ const DEP_LOCALIZATIONS: Record<string, { name: LocalizedString; desc: Localized
   'B²LAB 데이터레이크 (AAS 온톨로지)': {
     name: { ko: 'B²LAB 데이터레이크 (AAS 온톨로지)', en: 'B²LAB Datalake (AAS Ontology)', ja: 'B²LAB データレイク (AASオントロジー)' },
     desc: {
-      ko: '플랫폼 기본료 포함 (데이터 파이프라인 가동 중)',
-      en: 'Included in Base Fee (Active data pipeline)',
-      ja: 'プラットフォーム基本料付属 (データパイプライン稼働中)'
+      ko: '별도 구독 중 (데이터 파이프라인 가동 중)',
+      en: 'Separately subscribed (active data pipeline)',
+      ja: '別途契約中 (データパイプライン稼働中)'
     }
   },
   'GPU 가속 추론 노드 (NVIDIA TensorRT)': {
@@ -1068,10 +1076,10 @@ export function getLocalizedWorkspaceText(text: string, lang?: Language | string
 }
 
 const GROWTH_METRIC_LOCALIZATIONS: Record<string, LocalizedString> = {
-  '생산 라인 수 / 배치 건수': {
-    ko: '생산 라인 수 / 배치 건수',
-    en: 'Production lines / batch records',
-    ja: '生産ライン数 / バッチ件数'
+  '생산 라인 수 / 계측점 수 / 협력사 수': {
+    ko: '생산 라인 수 / 계측점 수 / 협력사 수',
+    en: 'Production lines / measurement points / supplier accounts',
+    ja: '生産ライン数 / 計測点数 / 協力会社数'
   },
   '월간 추론 호출 수 (단위: 만 건)': {
     ko: '월간 추론 호출 수 (단위: 만 건)',

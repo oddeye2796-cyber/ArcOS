@@ -10,7 +10,8 @@ import {
   Layers,
   Factory,
   Target,
-  Cpu
+  Cpu,
+  Rocket
 } from 'lucide-react';
 import { RECOMMENDATION_PRESETS } from '../data/presetsData';
 import { Language, TRANSLATIONS } from '../i18n/translations';
@@ -22,6 +23,7 @@ import {
   getLocalizedAppDesc,
   getLocalizedPresetTitle,
   getLocalizedGrowthMetric,
+  getLocalizedSubModuleName,
   getLocalizedDataScopeStd
 } from '../i18n/localizedData';
 
@@ -63,8 +65,13 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
 
   const categories = ['전체', 'Smart Factory', 'AI', 'LLM', '에너지', '시각화', '기반', '빌더'];
 
+  /** The submodule a suite is recommended to be entered through, if any. */
+  const landingSubModule = (app: AppItem) =>
+    app.groups?.flatMap((g) => g.items).find((item) => item.landing);
+  const isLandingApp = (app: AppItem) => Boolean(app.landing || landingSubModule(app));
+
   const filteredApps = useMemo(() => {
-    return apps.filter((app) => {
+    const matched = apps.filter((app) => {
       // Category filter
       if (selectedCategory !== '전체' && app.category !== selectedCategory) {
         return false;
@@ -91,6 +98,10 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
       }
       return true;
     });
+    // Recommended starting points lead the grid; the rest keep catalog order.
+    return [...matched].sort(
+      (a, b) => Number(isLandingApp(b)) - Number(isLandingApp(a))
+    );
   }, [apps, selectedCategory, selectedStatusFilter, searchQuery, lang]);
 
   // Check if app or its submodules are in cart
@@ -256,6 +267,12 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
         </div>
       </div>
 
+      {/* Recommended entry points for a first-time tenant */}
+      <div className="flex items-start gap-2 p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 text-emerald-950 text-[11.5px]">
+        <Rocket className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0 mt-0.5" />
+        <p className="leading-relaxed break-keep">{t.landingCatalogNote}</p>
+      </div>
+
       {/* Filter and Search Controls */}
       <div className="space-y-3">
         {/* Category Pills */}
@@ -359,6 +376,21 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                       <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
                         {localizedCat}
                       </span>
+                      {isLandingApp(app) && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 border border-emerald-200 inline-flex items-center gap-1 whitespace-nowrap">
+                          <Rocket className="w-2.5 h-2.5 flex-shrink-0" />
+                          {landingSubModule(app)
+                            ? t.landingBadgeWith.replace(
+                                '{module}',
+                                getLocalizedSubModuleName(
+                                  landingSubModule(app)!.id,
+                                  landingSubModule(app)!.name,
+                                  lang
+                                )
+                              )
+                            : t.landingBadge}
+                        </span>
+                      )}
                       {pocTrials.some((trial) => trial.appId === app.id) && (
                         <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 border border-indigo-200">
                           {t.pocBadgeActive}

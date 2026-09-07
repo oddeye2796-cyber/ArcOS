@@ -226,6 +226,8 @@ export interface Translations {
   tier1Title: string;
   monthPrefix: string;
   mandatoryPlatformInclude: string;
+  tier1Composition: string;
+  tier1CompositionDesc: string;
   vatNotice: string;
   platformBaseFeeLabel: string;
   selectedModulesSubtotal: string;
@@ -444,6 +446,22 @@ export interface Translations {
   archPolicy2Desc: string;
   archPolicy3Title: string;
   archPolicy3Desc: string;
+  archPolicy4Title: string;
+  archPolicy4Desc: string;
+
+  // Minimum commitment terms
+  commitmentTermAnnual: string;
+  commitmentTermQuarterly: string;
+  commitmentTermMonthly: string;
+  commitmentSummaryLabel: string;
+  commitmentSummaryNote: string;
+  commitmentUsageFloorNote: string;
+  commitmentQuotationRow: string;
+
+  // Landing (recommended first) modules
+  landingBadge: string;
+  landingBadgeWith: string;
+  landingCatalogNote: string;
 
   // Accessibility labels
   ariaSelectFacility: string;
@@ -511,6 +529,17 @@ export interface Translations {
   cartEmptyTitle: string;
   browseModules: string;
   callsUnit: string;
+  pointsCountUnit: string;
+  partnersCountUnit: string;
+  growthAxisLinesTitle: string;
+  growthAxisLinesDesc: string;
+  growthAxisPointsTitle: string;
+  growthAxisPointsDesc: string;
+  growthAxisPartnersTitle: string;
+  growthAxisPartnersDesc: string;
+  growthAxisInferenceTitle: string;
+  growthAxisInferenceDesc: string;
+  meteredBreakdown: string;
   discountAppliedBadge: string;
   reportBadge: string;
 
@@ -587,7 +616,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     baseFeeValue: '300만원 / 월',
     baseFeeBullets: [
       '✓ ArcOS 제어 포털 & 테넌트 SSO',
-      '✓ B²LAB 온톨로지 데이터레이크 영구 포함',
+      '✓ 모듈 배포 오케스트레이션 & 무중단 롤링 패치',
       '✓ ArcTunnel mTLS 암호화 보안 채널 제공'
     ],
     viewCartBtn: '담긴 견적 확인하기',
@@ -644,7 +673,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     tabIndustry: '업종별 추천',
     tabRequirement: '요구사항 · 도입단계별',
     layer1Title: '1층: 플랫폼 기본료 (Anchor)',
-    layer1Desc: 'ArcOS 포털 + B²LAB 온톨로지 데이터레이크 + ArcOS Tools (필수 포함)',
+    layer1Desc: 'ArcOS 포털 + ArcTunnel + ArcOS Tools (필수 포함 · B²LAB은 별도 모듈)',
     layer2Title: '2층: 선택한 구독 모듈',
     layer3Title: '3층: 자연 성장 축 시뮬레이터 (라인 수 및 호출량)',
     linesSliderTitle: '생산 라인 수 (MES 코어 연동 성장 축)',
@@ -781,7 +810,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     applyPresetBtn: '이 조합으로 견적 적용',
     tier1Title: '1층: 플랫폼 기본료 (고정 앵커)',
     monthPrefix: '월',
-    mandatoryPlatformInclude: '테넌트 격리 SaaS 제어 포털 + B²LAB 온톨로지 데이터레이크 + ArcTunnel 보안 링크 (필수 포함)',
+    mandatoryPlatformInclude: '테넌트 격리 SaaS 제어 포털 + ArcTunnel 보안 링크 (필수 포함)',
+    tier1Composition: 'ArcOS 포털 + ArcTunnel + ArcOS Tools',
+    tier1CompositionDesc: '테넌트 SSO, ArcTunnel mTLS 암호화 연결, 모듈 카탈로그·배포 오케스트레이션·무중단 롤링 패치를 제공합니다. 도메인 데이터 온톨로지 계층(B²LAB)과 저장 용량은 별도 모듈로 과금됩니다.',
     vatNotice: 'VAT 별도',
     platformBaseFeeLabel: '플랫폼 기본료',
     selectedModulesSubtotal: '선택 모듈 소계',
@@ -804,8 +835,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     itemCol: '항목',
     quantityCriterionCol: '수량/기준',
     monthlyPriceCol: '월 정가',
-    basePlatformRowDesc: '플랫폼 기본료 (ArcOS + B²LAB 온톨로지)',
-    basePlatformRowQty: '기본 1TB / 테넌트 고정',
+    basePlatformRowDesc: '플랫폼 기본료 (ArcOS 제어 포털 + ArcTunnel)',
+    basePlatformRowQty: '테넌트 고정',
     linesCountUnit: '라인',
     volumeDiscountRowTitle: '볼륨 할인 ({count}개 모듈 일괄 구독)',
     discountAppliedRate: '-{rate}% 적용',
@@ -975,7 +1006,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archSuiteSec3Title: '3. ArcMind (노코드 빌더) vs 기성 스마트팩토리 스위트의 명확한 역할 구분',
     archSuiteSec3Desc: '**ArcMind**는 사내 IT/소프트웨어 전담 인력을 보유한 기업이 기성 MES 제품에 종속되지 않고, 자체적으로 No-Code/Low-Code 컴포넌트를 드래그앤드롭하여 공장별 맞춤형 Smart Factory 플랫폼을 직접 구축할 수 있는 전문 빌더입니다.',
     archSuiteSec3Warning: '**💡 중복 구매 방지 정책:** 기성 MES 스위트를 도입하는 경우 대부분의 공정·배치·설비 화면이 이미 완성되어 공급되므로, ArcMind와의 중복 구성을 방지하기 위해 마켓플레이스와 견적 시뮬레이터에서 상호 배타적 검토 및 분리 가이드를 제공합니다.',
-    archPnpTitle: '새 모듈 추가에 기존 코드 수정이 없는 5대 Plug & Play 규약',
+    archPnpTitle: '새 모듈 추가에 기존 코드 수정이 없는 4대 Plug & Play 규약',
     archPnpItem1Title: '① 패키징 규약 (Container + Manifest)',
     archPnpItem1Desc: '모든 앱은 OCI 표준 컨테이너 이미지와 JSON 매니페스트로 등록됩니다. 매니페스트에 요구 데이터 스키마, 노출 API, 의존 앱을 선언합니다.',
     archPnpItem2Title: '② 데이터 규약 (AAS, OPC-UA, KS X 9101)',
@@ -993,7 +1024,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archPricingColBasis: '과금 기준',
     archPricingColMechanism: '성장 메커니즘',
     archPricingRows: [
-      { module: '플랫폼 기본료', growth: '데이터 저장 용량 구간', basis: '월 300만원 (1TB 포함)', mechanism: '고정 앵커로 기본 진입 장벽 확보' },
+      { module: '플랫폼 기본료', growth: '테넌트 고정', basis: '월 300만원', mechanism: '고정 앵커로 기본 진입 장벽 확보' },
+      { module: 'B²LAB 온톨로지', growth: '데이터 저장 용량 구간', basis: '월 80만원 (1TB 포함)', mechanism: '수집 태그·이력 축적에 비례' },
       { module: 'MES 3종', growth: '생산 라인 수', basis: '라인당 40~80만원', mechanism: '공장 증설 시 라인 추가 구독' },
       { module: 'EBRS', growth: '배치 기록 건수', basis: '월 120만원 (기본 배치)', mechanism: '생산량 증가 시 종량 초과' },
       { module: 'REMS / A.ESG', growth: '센서 계측점 수', basis: '월 90~130만원', mechanism: '계측 센서 설치 구역 확대' },
@@ -1007,6 +1039,21 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archPolicy2Desc: '고객사 온프레미스 런타임 갱신 시점이 저마다 다르므로, SaaS 제어 평면은 **현재 버전(v4.2)과 직전 버전(v4.1) 2개 버전**만을 동시 지원합니다. 이 원칙이 없으면 2~3년 뒤 하위 호환성 유지 비용으로 제품이 붕괴합니다.',
     archPolicy3Title: '3. 24/7 무중단 롤링 패치 원칙',
     archPolicy3Desc: '24시간 가동되는 제조 라인의 특성상 유지보수를 위한 다운타임은 허용되지 않습니다. Blue/Green 및 온프레미스 노드 롤링 업데이트로 **무중단 핫픽스**를 적용하며, 플랫폼 내 ‘무중단 패치노트’ 메뉴에서 변경 이력과 롤백 보증 상태를 즉시 추적합니다.',
+
+    archPolicy4Title: '4. 모듈별 최소 약정 기간',
+    archPolicy4Desc: '모듈마다 도입 부담과 이탈 위험이 다르므로 약정 단위를 나눕니다. **MES 코어 3종은 연 단위**, **EBRS·REMS·SCM 등 규제 도메인 확장 모듈은 분기 단위**로 묶고, **A²LAB·오케스트레이션·컨센스봇 등 AI 모듈은 월 단위 해지를 허용하되 월 {floor} 최소 청구액**을 둡니다. 서로 다른 약정이 한 견적에 섞이면 가장 긴 약정이 구독 전체를 구속합니다.',
+
+    commitmentTermAnnual: '연 약정 (12개월)',
+    commitmentTermQuarterly: '분기 약정 (3개월)',
+    commitmentTermMonthly: '월 약정 (사용량 최소 청구)',
+    commitmentSummaryLabel: '최소 약정 기간',
+    commitmentSummaryNote: '견적에 포함된 모듈 중 가장 긴 약정이 구독 전체에 적용됩니다.',
+    commitmentUsageFloorNote: '월 단위 모듈은 언제든 해지할 수 있으나 월 {floor} 최소 청구액이 적용됩니다.',
+    commitmentQuotationRow: '최소 약정 기간',
+
+    landingBadge: '추천 시작 모듈',
+    landingBadgeWith: '추천 시작 모듈: {module}',
+    landingCatalogNote: '처음 도입하신다면 컨센스봇과 일반 제조 MES부터 시작하는 것을 권장합니다. 두 모듈은 기존 시스템 교체 없이 가장 빠르게 효과를 확인할 수 있는 진입점입니다.',
 
     ariaSelectFacility: '사업장 선택 (지역 + 업종)',
     ariaSelectDeployNode: '배포 대상 사업장 노드 선택',
@@ -1072,6 +1119,17 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     cartEmptyTitle: '선택한 모듈이 없습니다.',
     browseModules: '앱 마켓플레이스에서 모듈 둘러보기',
     callsUnit: '건/월',
+    pointsCountUnit: '점',
+    partnersCountUnit: '개사',
+    growthAxisLinesTitle: '생산 라인 수 (MES 코어 연동 성장 축)',
+    growthAxisLinesDesc: '공장 내 가동 중인 전체 제조 라인 수에 비례하여 MES 코어 단가가 승산됩니다.',
+    growthAxisPointsTitle: '계측점 수 (REMS 연동 성장 축)',
+    growthAxisPointsDesc: '청정실에 설치된 차압·온습도·미립자 센서의 총 계측점 수입니다. 기본 200점이 포함되며 100점 추가마다 기본료의 15%가 가산됩니다.',
+    growthAxisPartnersTitle: '협력사 수 (SCM 연동 성장 축)',
+    growthAxisPartnersDesc: '협력사 포털에 연결된 1·2차 외주사 계정 수입니다. 기본 10개사가 포함되며 10개사 추가마다 기본료의 20%가 가산됩니다.',
+    growthAxisInferenceTitle: 'AI 추론 호출량 (A²LAB MLOps 성장 축)',
+    growthAxisInferenceDesc: '품질 예측 및 이상 감지 에이전트의 월간 추론 호출 건수입니다 (10만 건 기본 포함).',
+    meteredBreakdown: '{base} 기준 · {qty}{unit} (×{factor})',
     discountAppliedBadge: '할인 적용',
     reportBadge: 'PoC 평가 보고서',
 
@@ -1143,7 +1201,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     baseFeeValue: '₩3,000,000 / mo',
     baseFeeBullets: [
       '✓ ArcOS Control Portal & Tenant SSO',
-      '✓ B²LAB Ontology Datalake Permanently Included',
+      '✓ Module deployment orchestration & zero-downtime rolling patches',
       '✓ ArcTunnel mTLS Encrypted Secure Channel'
     ],
     viewCartBtn: 'View Selected Quote',
@@ -1200,7 +1258,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     tabIndustry: 'Industry Presets',
     tabRequirement: 'Requirement & Maturity Stages',
     layer1Title: 'Layer 1: Platform Base Fee (Anchor)',
-    layer1Desc: 'ArcOS Portal + B²LAB Ontology Datalake + ArcOS Tools (Mandatory)',
+    layer1Desc: 'ArcOS Portal + ArcTunnel + ArcOS Tools (mandatory; B²LAB is billed separately)',
     layer2Title: 'Layer 2: Selected Subscription Modules',
     layer3Title: 'Layer 3: Natural Growth Metrics (Lines & Inferences)',
     linesSliderTitle: 'Active Production Lines (MES Scaling Axis)',
@@ -1337,7 +1395,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     applyPresetBtn: 'Apply This Configuration',
     tier1Title: 'Tier 1: Platform Base Fee (Fixed Anchor)',
     monthPrefix: 'Monthly',
-    mandatoryPlatformInclude: 'Tenant Isolated SaaS Portal + B²LAB Datalake + ArcTunnel Secure Link (Mandatory)',
+    mandatoryPlatformInclude: 'Tenant Isolated SaaS Portal + ArcTunnel Secure Link (Mandatory)',
+    tier1Composition: 'ArcOS Portal + ArcTunnel + ArcOS Tools',
+    tier1CompositionDesc: 'Covers tenant SSO, the ArcTunnel mTLS encrypted link, and the module catalog, deployment orchestration and zero-downtime rolling patches. The domain ontology layer (B²LAB) and its storage are billed as a separate module.',
     vatNotice: 'Excl. VAT',
     platformBaseFeeLabel: 'Platform Base Fee',
     selectedModulesSubtotal: 'Selected Modules Subtotal',
@@ -1360,8 +1420,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     itemCol: 'Item / Module',
     quantityCriterionCol: 'Qty / Metric',
     monthlyPriceCol: 'Monthly Price',
-    basePlatformRowDesc: 'Platform Base Fee (ArcOS SaaS + B²LAB Datalake)',
-    basePlatformRowQty: '1TB Included / Fixed per Tenant',
+    basePlatformRowDesc: 'Platform Base Fee (ArcOS Portal + ArcTunnel)',
+    basePlatformRowQty: 'Fixed per tenant',
     linesCountUnit: 'Lines',
     volumeDiscountRowTitle: 'Volume Discount ({count} modules bundle)',
     discountAppliedRate: '-{rate}% Applied',
@@ -1531,7 +1591,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archSuiteSec3Title: '3. Clear Role Separation: ArcMind (No-Code Builder) vs Off-the-Shelf Smart Factory Suites',
     archSuiteSec3Desc: '**ArcMind** is a specialist builder for companies with dedicated in-house IT/software staff, letting them drag and drop No-Code/Low-Code components to build a plant-specific Smart Factory platform themselves instead of locking into an off-the-shelf MES product.',
     archSuiteSec3Warning: '**💡 Duplicate-purchase prevention policy:** An off-the-shelf MES suite already ships finished process, batch and equipment screens, so the marketplace and quote simulator review ArcMind as mutually exclusive and provide separation guidance.',
-    archPnpTitle: 'Five Plug & Play contracts that let new modules ship without touching existing code',
+    archPnpTitle: 'Four Plug & Play contracts that let new modules ship without touching existing code',
     archPnpItem1Title: '① Packaging contract (Container + Manifest)',
     archPnpItem1Desc: 'Every app registers as an OCI-standard container image with a JSON manifest that declares required data schemas, exposed APIs and dependent apps.',
     archPnpItem2Title: '② Data contract (AAS, OPC-UA, KS X 9101)',
@@ -1549,7 +1609,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archPricingColBasis: 'Billing Basis',
     archPricingColMechanism: 'Growth Mechanism',
     archPricingRows: [
-      { module: 'Platform base fee', growth: 'Data storage tier', basis: 'KRW 3M/mo (1TB included)', mechanism: 'Fixed anchor securing the baseline entry point' },
+      { module: 'Platform base fee', growth: 'Per tenant, fixed', basis: 'KRW 3M/mo', mechanism: 'Fixed anchor securing the baseline entry point' },
+      { module: 'B²LAB ontology', growth: 'Data storage tier', basis: 'KRW 800K/mo (1TB included)', mechanism: 'Scales with ingested tags and retained history' },
       { module: 'MES (3 editions)', growth: 'Production lines', basis: 'KRW 400K-800K per line', mechanism: 'Additional line subscriptions as plants expand' },
       { module: 'EBRS', growth: 'Batch record volume', basis: 'KRW 1.2M/mo (base batches)', mechanism: 'Metered overage as output grows' },
       { module: 'REMS / A.ESG', growth: 'Sensor measurement points', basis: 'KRW 900K-1.3M/mo', mechanism: 'Expanding instrumented plant zones' },
@@ -1563,6 +1624,21 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archPolicy2Desc: 'Because customers refresh their on-premise runtimes at different times, the SaaS control plane simultaneously supports only **the current version (v4.2) and the immediately preceding one (v4.1)**. Without this rule, backward-compatibility costs would collapse the product within two to three years.',
     archPolicy3Title: '3. 24/7 zero-downtime rolling patch principle',
     archPolicy3Desc: 'Production lines running around the clock cannot accept maintenance downtime. **Zero-downtime hotfixes** are applied through Blue/Green and on-premise node rolling updates, and the in-platform “Zero-Downtime Patch Notes” menu tracks change history and rollback guarantees instantly.',
+
+    archPolicy4Title: '4. Minimum commitment term per module',
+    archPolicy4Desc: 'Adoption cost and churn risk differ by module, so the commitment unit differs too. **The three MES cores are annual**, **regulated domain extensions such as EBRS, REMS and SCM are quarterly**, and **AI modules such as A²LAB, the orchestrator and ConsensBot may be cancelled monthly, subject to a {floor}/month minimum charge**. When terms are mixed in one quote, the longest one binds the whole subscription.',
+
+    commitmentTermAnnual: 'Annual (12 months)',
+    commitmentTermQuarterly: 'Quarterly (3 months)',
+    commitmentTermMonthly: 'Monthly (usage minimum)',
+    commitmentSummaryLabel: 'Minimum commitment',
+    commitmentSummaryNote: 'The longest term among the selected modules applies to the whole subscription.',
+    commitmentUsageFloorNote: 'Monthly modules can be cancelled at any time, subject to a {floor}/month minimum charge.',
+    commitmentQuotationRow: 'Minimum commitment term',
+
+    landingBadge: 'Recommended first module',
+    landingBadgeWith: 'Recommended first module: {module}',
+    landingCatalogNote: 'New to the platform? Start with ConsensBot and the General Manufacturing MES. Both are entry points that show results fastest without replacing an existing system.',
 
     ariaSelectFacility: 'Select facility (region + industry)',
     ariaSelectDeployNode: 'Select target facility node for deployment',
@@ -1628,6 +1704,17 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     cartEmptyTitle: 'No modules selected yet.',
     browseModules: 'Browse modules in the app marketplace',
     callsUnit: 'calls/mo',
+    pointsCountUnit: ' points',
+    partnersCountUnit: ' suppliers',
+    growthAxisLinesTitle: 'Production Lines (MES Growth Metric)',
+    growthAxisLinesDesc: 'MES core module price scales proportionally with the active plant lines.',
+    growthAxisPointsTitle: 'Measurement Points (REMS Growth Metric)',
+    growthAxisPointsDesc: 'Total cleanroom sensor points for differential pressure, temperature/humidity and particle counts. 200 points are included; every additional 100 adds 15% of the base fee.',
+    growthAxisPartnersTitle: 'Supplier Accounts (SCM Growth Metric)',
+    growthAxisPartnersDesc: 'Tier 1 and Tier 2 subcontractor accounts on the partner portal. 10 accounts are included; every additional 10 adds 20% of the base fee.',
+    growthAxisInferenceTitle: 'AI Inference Volume (A²LAB MLOps Metric)',
+    growthAxisInferenceDesc: 'Monthly agent inference requests for anomaly detection (100k included).',
+    meteredBreakdown: '{base} base · {qty}{unit} (×{factor})',
     discountAppliedBadge: 'discount applied',
     reportBadge: 'PoC Evaluation Report',
 
@@ -1699,7 +1786,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     baseFeeValue: '月額 300万ウォン',
     baseFeeBullets: [
       '✓ ArcOS 統合制御ポータル＆テナントSSO',
-      '✓ B²LAB オントロジーデータレイク永久付与',
+      '✓ モジュール配布オーケストレーション＆無停止ローリングパッチ',
       '✓ ArcTunnel mTLS 暗号化セキュアトンネル'
     ],
     viewCartBtn: '見積を確認する',
@@ -1756,7 +1843,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     tabIndustry: '業種別パッケージ',
     tabRequirement: '要件・導入段階別',
     layer1Title: '第1層: プラットフォーム基本料 (Anchor)',
-    layer1Desc: 'ArcOS ポータル + B²LAB オントロジー + ArcOS Tools (必須付与)',
+    layer1Desc: 'ArcOS ポータル + ArcTunnel + ArcOS Tools (必須付与・B²LABは別モジュール)',
     layer2Title: '第2層: 選択したサブスクモジュール',
     layer3Title: '第3層: 自然成長軸シミュレータ (ライン数および呼出量)',
     linesSliderTitle: '生産ライン数 (MESコア課金連動軸)',
@@ -1893,7 +1980,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     applyPresetBtn: 'この構成で見積を適用',
     tier1Title: '第1層: プラットフォーム基本料（固定アンカー）',
     monthPrefix: '月額',
-    mandatoryPlatformInclude: 'テナント分離SaaS制御ポータル + B²LABオントロジーデータレイク + ArcTunnelセキュアリンク（必須付与）',
+    mandatoryPlatformInclude: 'テナント分離SaaS制御ポータル + ArcTunnelセキュアリンク（必須付与）',
+    tier1Composition: 'ArcOSポータル + ArcTunnel + ArcOS Tools',
+    tier1CompositionDesc: 'テナントSSO、ArcTunnel mTLS暗号化接続、モジュールカタログ・配布オーケストレーション・無停止ローリングパッチを提供します。ドメインデータのオントロジー層 (B²LAB) と保存容量は別モジュールとして課金されます。',
     vatNotice: '税抜',
     platformBaseFeeLabel: 'プラットフォーム基本料',
     selectedModulesSubtotal: '選択モジュール小計',
@@ -1916,8 +2005,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     itemCol: '項目',
     quantityCriterionCol: '数量 / 基準',
     monthlyPriceCol: '月額定価',
-    basePlatformRowDesc: 'プラットフォーム基本料 (ArcOS + B²LAB オントロジー)',
-    basePlatformRowQty: '基本1TB / テナント固定',
+    basePlatformRowDesc: 'プラットフォーム基本料 (ArcOS制御ポータル + ArcTunnel)',
+    basePlatformRowQty: 'テナント固定',
     linesCountUnit: 'ライン',
     volumeDiscountRowTitle: 'ボリューム割引 ({count}個モジュール一括導入)',
     discountAppliedRate: '-{rate}% 適用',
@@ -2087,7 +2176,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archSuiteSec3Title: '3. ArcMind (ノーコードビルダー) と既製スマートファクトリースイートの明確な役割区分',
     archSuiteSec3Desc: '**ArcMind**は、社内にIT/ソフトウェア専任要員を抱える企業が既製MES製品に縛られず、自らNo-Code/Low-Codeコンポーネントをドラッグ&ドロップして工場別カスタムSmart Factoryプラットフォームを直接構築できる専門ビルダーです。',
     archSuiteSec3Warning: '**💡 重複購入防止ポリシー:** 既製MESスイートを導入する場合、工程・バッチ・設備の画面はほぼ完成した状態で供給されるため、ArcMindとの重複構成を防ぐべく、マーケットプレイスと見積シミュレーターで相互排他的なレビューと分離ガイドを提供します。',
-    archPnpTitle: '新規モジュール追加時に既存コードの修正が不要な5大 Plug & Play 規約',
+    archPnpTitle: '新規モジュール追加時に既存コードの修正が不要な4大 Plug & Play 規約',
     archPnpItem1Title: '① パッケージング規約 (Container + Manifest)',
     archPnpItem1Desc: 'すべてのアプリはOCI標準コンテナイメージとJSONマニフェストで登録されます。マニフェストに要求データスキーマ、公開API、依存アプリを宣言します。',
     archPnpItem2Title: '② データ規約 (AAS、OPC-UA、KS X 9101)',
@@ -2105,7 +2194,8 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archPricingColBasis: '課金基準',
     archPricingColMechanism: '成長メカニズム',
     archPricingRows: [
-      { module: 'プラットフォーム基本料', growth: 'データ保存容量区間', basis: '月300万ウォン (1TB込み)', mechanism: '固定アンカーとして基本的な参入基盤を確保' },
+      { module: 'プラットフォーム基本料', growth: 'テナント固定', basis: '月300万ウォン', mechanism: '固定アンカーとして基本的な参入基盤を確保' },
+      { module: 'B²LAB オントロジー', growth: 'データ保存容量区間', basis: '月80万ウォン (1TB込み)', mechanism: '収集タグ・履歴の蓄積に比例' },
       { module: 'MES 3種', growth: '生産ライン数', basis: 'ライン当たり40〜80万ウォン', mechanism: '工場増設時にライン追加サブスクリプション' },
       { module: 'EBRS', growth: 'バッチ記録件数', basis: '月120万ウォン (基本バッチ)', mechanism: '生産量増加に伴う従量超過' },
       { module: 'REMS / A.ESG', growth: 'センサー計測点数', basis: '月90〜130万ウォン', mechanism: '計測センサー設置区域の拡大' },
@@ -2119,6 +2209,21 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     archPolicy2Desc: '顧客のオンプレミスランタイムの更新時期はそれぞれ異なるため、SaaSコントロールプレーンは**現行バージョン(v4.2)と直前バージョン(v4.1)の2バージョン**のみを同時サポートします。この原則がなければ2〜3年後には下位互換維持コストで製品が破綻します。',
     archPolicy3Title: '3. 24/7 無停止ローリングパッチ原則',
     archPolicy3Desc: '24時間稼働する製造ラインの特性上、保守のためのダウンタイムは許容されません。Blue/Greenおよびオンプレミスノードのローリングアップデートで**無停止ホットフィックス**を適用し、プラットフォーム内の「無停止パッチノート」メニューで変更履歴とロールバック保証状態を即座に追跡できます。',
+
+    archPolicy4Title: '4. モジュール別の最低契約期間',
+    archPolicy4Desc: 'モジュールごとに導入負担と解約リスクが異なるため、契約単位を分けます。**MESコア3種は年単位**、**EBRS・REMS・SCMなど規制ドメイン拡張モジュールは四半期単位**とし、**A²LAB・オーケストレーション・コンセンスボットなどのAIモジュールは月単位の解約を認めつつ、月 {floor} の最低請求額**を設定します。異なる契約が一つの見積に混在する場合、最も長い契約が購読全体を拘束します。',
+
+    commitmentTermAnnual: '年間契約 (12ヶ月)',
+    commitmentTermQuarterly: '四半期契約 (3ヶ月)',
+    commitmentTermMonthly: '月契約 (使用量の最低請求)',
+    commitmentSummaryLabel: '最低契約期間',
+    commitmentSummaryNote: '見積に含まれるモジュールのうち、最も長い契約が購読全体に適用されます。',
+    commitmentUsageFloorNote: '月単位モジュールはいつでも解約できますが、月 {floor} の最低請求額が適用されます。',
+    commitmentQuotationRow: '最低契約期間',
+
+    landingBadge: '推奨スタートモジュール',
+    landingBadgeWith: '推奨スタートモジュール: {module}',
+    landingCatalogNote: '初めて導入される場合は、コンセンスボットと一般製造MESから始めることをおすすめします。この2つは既存システムを置き換えずに最も早く効果を確認できる入口です。',
 
     ariaSelectFacility: '事業所選択 (地域 + 業種)',
     ariaSelectDeployNode: '展開対象の事業所ノード選択',
@@ -2184,6 +2289,17 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     cartEmptyTitle: '選択されたモジュールがありません。',
     browseModules: 'アプリマーケットプレイスでモジュールを見る',
     callsUnit: '件/月',
+    pointsCountUnit: '点',
+    partnersCountUnit: '社',
+    growthAxisLinesTitle: '生産ライン数 (MESコア連動成長軸)',
+    growthAxisLinesDesc: '工場内で稼働中の全製造ライン数に比例してMESコアの単価が計算されます。',
+    growthAxisPointsTitle: '計測点数 (REMS連動成長軸)',
+    growthAxisPointsDesc: 'クリーンルームに設置された差圧・温湿度・微粒子センサーの総計測点数です。基本200点が含まれ、100点追加ごとに基本料の15%が加算されます。',
+    growthAxisPartnersTitle: '協力会社数 (SCM連動成長軸)',
+    growthAxisPartnersDesc: '協力会社ポータルに接続された1・2次外注先のアカウント数です。基本10社が含まれ、10社追加ごとに基本料の20%が加算されます。',
+    growthAxisInferenceTitle: 'AI推論コール量 (A²LAB MLOps 成長軸)',
+    growthAxisInferenceDesc: '品質予測・異常検知エージェントの月間推論呼び出し回数です (月10万件基本含む)。',
+    meteredBreakdown: '{base} 基準 · {qty}{unit} (×{factor})',
     discountAppliedBadge: '割引適用',
     reportBadge: 'PoC 評価レポート',
 

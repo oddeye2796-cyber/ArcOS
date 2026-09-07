@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { CartItem, RecommendationPreset } from '../types';
 import { RECOMMENDATION_PRESETS } from '../data/presetsData';
+import { ARCMIND_ID, MES_CORE_IDS } from '../data/appsData';
 import {
   Trash2,
   Sparkles,
@@ -15,13 +16,28 @@ import {
   AlertTriangle,
   Save,
   Columns3,
+  CalendarClock,
   X
 } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { CurrencyCode, exchangeRateNote, formatMoney } from '../lib/currency';
 import { useExchangeRates } from '../lib/useExchangeRates';
-import { BASE_PLATFORM_FEE, computeQuote, lineItemTotal } from '../lib/pricing';
+import {
+  BASE_PLATFORM_FEE,
+  DEFAULT_GROWTH_METRICS,
+  GROWTH_METRIC_RANGES,
+  GrowthMetrics,
+  computeQuote,
+  growthFactor,
+  lineItemTotal
+} from '../lib/pricing';
 import { STORAGE_KEYS, parsers, usePersistentState } from '../lib/storage';
+import {
+  CommitmentTerm,
+  MONTHLY_MINIMUM_CHARGE,
+  bindingCommitment,
+  commitmentFor
+} from '../lib/commitment';
 import {
   MAX_SCENARIOS,
   QuoteScenario,
@@ -42,6 +58,75 @@ import {
   getLocalizedLocationName,
   getLocalizedTenantName
 } from '../i18n/localizedData';
+
+type AccentName = 'blue' | 'emerald' | 'amber' | 'indigo';
+
+const ACCENT_STYLE: Record<AccentName, { readout: string; range: string }> = {
+  blue: { readout: 'text-blue-700 bg-blue-50 border-blue-200', range: 'accent-blue-600' },
+  emerald: { readout: 'text-emerald-700 bg-emerald-50 border-emerald-200', range: 'accent-emerald-600' },
+  amber: { readout: 'text-amber-700 bg-amber-50 border-amber-200', range: 'accent-amber-600' },
+  indigo: { readout: 'text-indigo-700 bg-indigo-50 border-indigo-200', range: 'accent-indigo-600' }
+};
+
+interface GrowthSliderProps {
+  title: string;
+  desc: string;
+  value: number;
+  onChange: (value: number) => void;
+  min: number;
+  max: number;
+  step: number;
+  /** Current value as the customer reads it, e.g. "350 points". */
+  readout: string;
+  /** Scale markers under the track. */
+  ticks: string[];
+  accent: AccentName;
+  ariaLabel: string;
+}
+
+/** One growth axis: a labelled range input plus the value it currently bills at. */
+const GrowthSlider: React.FC<GrowthSliderProps> = ({
+  title,
+  desc,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  readout,
+  ticks,
+  accent,
+  ariaLabel
+}) => (
+  <div className="space-y-2 bg-slate-50 p-3.5 rounded-lg border border-slate-100 text-xs">
+    <div className="flex justify-between items-center flex-wrap gap-2">
+      <div className="min-w-0">
+        <span className="font-semibold text-slate-800 break-keep">{title}</span>
+        <p className="text-[11px] text-slate-500 break-keep leading-relaxed">{desc}</p>
+      </div>
+      <span
+        className={`font-mono font-bold text-sm px-2.5 py-0.5 rounded border whitespace-nowrap ${ACCENT_STYLE[accent].readout}`}
+      >
+        {readout}
+      </span>
+    </div>
+    <input
+      aria-label={ariaLabel}
+      type="range"
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+      onChange={(e) => onChange(Number(e.target.value))}
+      className={`w-full cursor-pointer ${ACCENT_STYLE[accent].range}`}
+    />
+    <div className="flex justify-between text-[10px] text-slate-400">
+      {ticks.map((tick) => (
+        <span key={tick}>{tick}</span>
+      ))}
+    </div>
+  </div>
+);
 
 interface QuoteViewProps {
   cart: CartItem[];
@@ -72,8 +157,18 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
   const [presetTab, setPresetTab] = useState<'industry' | 'requirement'>('industry');
   const [productionLines, setProductionLines] = usePersistentState<number>(
     STORAGE_KEYS.productionLines,
-    4,
-    parsers.numberInRange(1, 20)
+    DEFAULT_GROWTH_METRICS.productionLines,
+    parsers.numberInRange(GROWTH_METRIC_RANGES.productionLines.min, GROWTH_METRIC_RANGES.productionLines.max)
+  );
+  const [measurementPoints, setMeasurementPoints] = usePersistentState<number>(
+    STORAGE_KEYS.measurementPoints,
+    DEFAULT_GROWTH_METRICS.measurementPoints,
+    parsers.numberInRange(GROWTH_METRIC_RANGES.measurementPoints.min, GROWTH_METRIC_RANGES.measurementPoints.max)
+  );
+  const [supplyPartners, setSupplyPartners] = usePersistentState<number>(
+    STORAGE_KEYS.supplyPartners,
+    DEFAULT_GROWTH_METRICS.supplyPartners,
+    parsers.numberInRange(GROWTH_METRIC_RANGES.supplyPartners.min, GROWTH_METRIC_RANGES.supplyPartners.max)
   );
   const [inferenceCalls, setInferenceCalls] = usePersistentState<number>(
     STORAGE_KEYS.inferenceCalls,
@@ -99,23 +194,108 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
   );
 
   // Conflict Check
-  const hasMesApp = cart.some((item) => item.id === 'mes-pharma' || item.id === 'mes-semi' || item.id === 'mes-discrete');
-  const hasArcMind = cart.some((item) => item.id === 'arcmind-builder');
+  const hasMesApp = cart.some((item) => MES_CORE_IDS.includes(item.id));
+  const hasArcMind = cart.some((item) => item.id === ARCMIND_ID);
   const hasConflict = hasMesApp && hasArcMind;
 
   const handleResolveConflictKeepMES = () => {
-    onRemoveItem('arcmind-builder');
+    onRemoveItem(ARCMIND_ID);
   };
 
   const handleResolveConflictKeepArcMind = () => {
     cart
-      .filter((item) => item.id === 'mes-pharma' || item.id === 'mes-semi' || item.id === 'mes-discrete')
+      .filter((item) => MES_CORE_IDS.includes(item.id))
       .forEach((item) => onRemoveItem(item.id));
   };
 
+  /** The three quantities every metered module is priced against. */
+  const metrics: GrowthMetrics = useMemo(
+    () => ({ productionLines, measurementPoints, supplyPartners }),
+    [productionLines, measurementPoints, supplyPartners]
+  );
+
+  const growthSliders = [
+    {
+      key: 'lines' as const,
+      titleKey: 'growthAxisLinesTitle' as const,
+      descKey: 'growthAxisLinesDesc' as const,
+      value: productionLines,
+      onChange: setProductionLines,
+      ...GROWTH_METRIC_RANGES.productionLines,
+      readout: `${productionLines} ${t.linesCountUnit}`,
+      ticks: ['1', '4', '10', '20'],
+      accent: 'blue' as const
+    },
+    {
+      key: 'points' as const,
+      titleKey: 'growthAxisPointsTitle' as const,
+      descKey: 'growthAxisPointsDesc' as const,
+      value: measurementPoints,
+      onChange: setMeasurementPoints,
+      ...GROWTH_METRIC_RANGES.measurementPoints,
+      readout: `${measurementPoints.toLocaleString()}${t.pointsCountUnit}`,
+      ticks: ['50', '500', '1,000', '2,000'],
+      accent: 'emerald' as const
+    },
+    {
+      key: 'partners' as const,
+      titleKey: 'growthAxisPartnersTitle' as const,
+      descKey: 'growthAxisPartnersDesc' as const,
+      value: supplyPartners,
+      onChange: setSupplyPartners,
+      ...GROWTH_METRIC_RANGES.supplyPartners,
+      readout: `${supplyPartners}${t.partnersCountUnit}`,
+      ticks: ['1', '25', '50', '100'],
+      accent: 'amber' as const
+    },
+    {
+      key: 'inference' as const,
+      titleKey: 'growthAxisInferenceTitle' as const,
+      descKey: 'growthAxisInferenceDesc' as const,
+      value: inferenceCalls,
+      onChange: setInferenceCalls,
+      min: 5,
+      max: 100,
+      step: 5,
+      readout: `${inferenceCalls * 10}k ${t.callsUnit}`,
+      ticks: ['50k', '250k', '500k', '1,000k'],
+      accent: 'indigo' as const
+    }
+  ];
+
+  /** Quantity and unit shown beside a metered module, by billing unit. */
+  const axisDisplay: Partial<Record<CartItem['per'], { qty: number; unit: string }>> = {
+    line: { qty: productionLines, unit: t.linesCountUnit },
+    point: { qty: measurementPoints, unit: t.pointsCountUnit },
+    partner: { qty: supplyPartners, unit: t.partnersCountUnit }
+  };
+
+  /** "80만원 기준 · 4라인 (×4)" — how a metered line arrived at its total. */
+  const meteredNote = (item: CartItem): string | null => {
+    const display = axisDisplay[item.per];
+    const factor = growthFactor(item.per, metrics);
+    if (!display || factor === null) return null;
+    return t.meteredBreakdown
+      .replace('{base}', money(item.price))
+      .replace('{qty}', display.qty.toLocaleString())
+      .replace('{unit}', display.unit)
+      .replace('{factor}', factor.toFixed(2).replace(/\.?0+$/, ''));
+  };
+
+  const commitmentLabel: Record<CommitmentTerm, string> = {
+    annual: t.commitmentTermAnnual,
+    quarterly: t.commitmentTermQuarterly,
+    monthly: t.commitmentTermMonthly
+  };
+
+  /** Longest term in the cart — the one that actually binds the subscription. */
+  const binding = bindingCommitment(cart);
+  /** Shown only when the binding term does not already cover the usage floor. */
+  const showUsageFloor = cart.some((item) => commitmentFor(item.id) === 'monthly');
+
   const { moduleCount, moduleSubtotal, discountRate, discountAmount, grandTotal } = useMemo(
-    () => computeQuote(cart, productionLines),
-    [cart, productionLines]
+    () => computeQuote(cart, metrics),
+    [cart, metrics]
   );
 
   const { snapshot: rateSnapshot } = useExchangeRates();
@@ -164,7 +344,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
         name,
         savedAt: new Date().toISOString(),
         cart,
-        productionLines,
+        metrics,
         inferenceCalls
       }
     ]);
@@ -184,10 +364,12 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
       badge: '',
       desc: '',
       highlights: [],
-      recommendedLines: scenario.productionLines,
+      recommendedLines: scenario.metrics.productionLines,
       recommendedModules: scenario.cart
     });
-    setProductionLines(scenario.productionLines);
+    setProductionLines(scenario.metrics.productionLines);
+    setMeasurementPoints(scenario.metrics.measurementPoints);
+    setSupplyPartners(scenario.metrics.supplyPartners);
     setInferenceCalls(scenario.inferenceCalls);
     flashToast(t.scenarioLoadedToast.replace('{name}', scenario.name));
   };
@@ -198,7 +380,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
 
   /** Totals per scenario, recomputed under the current pricing rules. */
   const scenarioTotals = useMemo(
-    () => scenarios.map((scenario) => computeQuote(scenario.cart, scenario.productionLines)),
+    () => scenarios.map((scenario) => computeQuote(scenario.cart, scenario.metrics)),
     [scenarios]
   );
   const lowestTotal = scenarioTotals.length
@@ -305,7 +487,12 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3.5">
           {filteredPresets.map((preset) => {
             const active = isPresetActive(preset);
-            const presetTotals = computeQuote(preset.recommendedModules, preset.recommendedLines);
+            // A preset advertises a line count only, so the other axes preview
+            // at their standard scale rather than at whatever the cart is on.
+            const presetTotals = computeQuote(preset.recommendedModules, {
+              ...DEFAULT_GROWTH_METRICS,
+              productionLines: preset.recommendedLines
+            });
             const pDiscountRate = presetTotals.discountRate;
             const pGrandTotal = presetTotals.grandTotal;
 
@@ -421,21 +608,11 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
             </div>
             <div className="p-3 bg-slate-50 rounded-lg text-xs text-slate-600 space-y-1 border border-slate-100">
               <div className="flex items-center justify-between flex-wrap gap-1">
-                <span className="font-medium text-slate-800 break-keep">
-                  {lang === 'ja'
-                    ? 'ArcOSポータル + B²LABオントロジーデータレイク + ArcOS Tools'
-                    : lang === 'en'
-                    ? 'ArcOS Portal + B²LAB Ontology Datalake + ArcOS Tools'
-                    : 'ArcOS 포털 + B²LAB 온톨로지 데이터레이크 + ArcOS Tools'}
-                </span>
+                <span className="font-medium text-slate-800 break-keep">{t.tier1Composition}</span>
                 <span className="text-[11px] text-emerald-700 font-semibold">{t.mandatoryPlatformInclude}</span>
               </div>
               <p className="text-[11px] text-slate-500 leading-relaxed break-keep">
-                {lang === 'ja'
-                  ? 'AASおよびOPC-UAに基づくドメインDBオントロジー仮想化スキーマ、テナントSSO、ArcTunnel mTLS暗号化接続、基本ストレージ1TBを提供。'
-                  : lang === 'en'
-                  ? 'AAS & OPC-UA based domain DB ontology virtualization schema, tenant SSO, ArcTunnel mTLS encryption, 1TB base storage included.'
-                  : 'AAS 및 OPC-UA 기반 도메인 DB 온톨로지 가상화 스키마, 테넌트 SSO, ArcTunnel mTLS 암호화 연결, 기본 데이터 저장 용량 1TB 제공.'}
+                {t.tier1CompositionDesc}
               </p>
             </div>
           </div>
@@ -511,7 +688,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
             ) : (
               <div className="divide-y divide-slate-100">
                 {cart.map((item) => {
-                  const itemTotal = item.per === 'line' ? item.price * productionLines : item.price;
+                  const itemTotal = lineItemTotal(item, metrics);
                   return (
                     <div
                       key={item.id}
@@ -523,11 +700,13 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                           <span className="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded font-normal whitespace-nowrap">
                             {t.categoryLabels[item.category] || item.category}
                           </span>
+                          <span className="text-[10px] text-slate-600 bg-white border border-slate-200 px-1.5 py-0.2 rounded font-normal whitespace-nowrap inline-flex items-center gap-1">
+                            <CalendarClock className="w-2.5 h-2.5 flex-shrink-0" />
+                            {commitmentLabel[commitmentFor(item.id)]}
+                          </span>
                         </div>
                         <div className="text-[11px] text-slate-500 mt-0.5 break-keep">
-                          {item.per === 'line'
-                            ? `${money(item.price)} × ${productionLines}${t.linesCountUnit}`
-                            : getLocalizedSubModuleUnit(item.id, item.unitLabel, lang)}
+                          {meteredNote(item) ?? getLocalizedSubModuleUnit(item.id, item.unitLabel, lang)}
                         </div>
                       </div>
 
@@ -559,78 +738,22 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
               </h2>
             </div>
 
-            {/* Production Lines Slider */}
-            <div className="space-y-2 bg-slate-50 p-3.5 rounded-lg border border-slate-100 text-xs">
-              <div className="flex justify-between items-center flex-wrap gap-2">
-                <div>
-                  <span className="font-semibold text-slate-800 break-keep">
-                    {lang === 'ja' ? '生産ライン数 (MESコア連動成長軸)' : lang === 'en' ? 'Production Lines (MES Growth Metric)' : '생산 라인 수 (MES 코어 연동 성장 축)'}
-                  </span>
-                  <p className="text-[11px] text-slate-500 break-keep">
-                    {lang === 'ja'
-                      ? '工場内で稼働中の全製造ライン数に比例してMESコアの単価が計算されます。'
-                      : lang === 'en'
-                      ? 'MES core module price scales proportionally with the active plant lines.'
-                      : '공장 내 가동 중인 전체 제조 라인 수에 비례하여 MES 코어 단가가 승산됩니다.'}
-                  </p>
-                </div>
-                <span className="font-mono font-bold text-blue-700 text-sm bg-blue-50 px-2.5 py-0.5 rounded border border-blue-200">
-                  {productionLines} {t.linesCountUnit}
-                </span>
-              </div>
-              <input
-                aria-label={lang === 'ja' ? '生産ライン数調整' : lang === 'en' ? 'Adjust production lines' : '생산 라인 수 조절'}
-                type="range"
-                min="1"
-                max="20"
-                value={productionLines}
-                onChange={(e) => setProductionLines(Number(e.target.value))}
-                className="w-full accent-blue-600 cursor-pointer"
+            {growthSliders.map((slider) => (
+              <GrowthSlider
+                key={slider.key}
+                title={t[slider.titleKey]}
+                desc={t[slider.descKey]}
+                value={slider.value}
+                onChange={slider.onChange}
+                min={slider.min}
+                max={slider.max}
+                step={slider.step}
+                readout={slider.readout}
+                ticks={slider.ticks}
+                accent={slider.accent}
+                ariaLabel={t[slider.titleKey]}
               />
-              <div className="flex justify-between text-[10px] text-slate-400">
-                <span>1 (Min)</span>
-                <span>4 (Standard)</span>
-                <span>10 (Mid-Large)</span>
-                <span>20 (Enterprise)</span>
-              </div>
-            </div>
-
-            {/* AI Inference Slider */}
-            <div className="space-y-2 bg-slate-50 p-3.5 rounded-lg border border-slate-100 text-xs">
-              <div className="flex justify-between items-center flex-wrap gap-2">
-                <div>
-                  <span className="font-semibold text-slate-800 break-keep">
-                    {lang === 'ja' ? 'AI推論コール量 (A²LAB MLOps 成長軸)' : lang === 'en' ? 'AI Inference Volume (A²LAB MLOps Metric)' : 'AI 추론 호출량 (A²LAB MLOps 성장 축)'}
-                  </span>
-                  <p className="text-[11px] text-slate-500 break-keep">
-                    {lang === 'ja'
-                      ? '品質予測・異常検知エージェントの月間推論呼び出し回数です (月10万件基本含む)。'
-                      : lang === 'en'
-                      ? 'Monthly agent inference requests for anomaly detection (100k included).'
-                      : '품질 예측 및 이상 감지 에이전트의 월간 추론 호출 건수입니다 (10만 건 기본 포함).'}
-                  </p>
-                </div>
-                <span className="font-mono font-bold text-indigo-700 text-sm bg-indigo-50 px-2.5 py-0.5 rounded border border-indigo-200">
-                  {inferenceCalls * 10}k {t.callsUnit}
-                </span>
-              </div>
-              <input
-                aria-label={lang === 'ja' ? 'AI推論コール量調整' : lang === 'en' ? 'Adjust AI inference calls' : 'AI 추론 호출량 조절'}
-                type="range"
-                min="5"
-                max="100"
-                step="5"
-                value={inferenceCalls}
-                onChange={(e) => setInferenceCalls(Number(e.target.value))}
-                className="w-full accent-indigo-600 cursor-pointer"
-              />
-              <div className="flex justify-between text-[10px] text-slate-400">
-                <span>50k</span>
-                <span>250k</span>
-                <span>500k</span>
-                <span>1,000k</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -684,6 +807,27 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                 </p>
               </div>
             </div>
+
+            {/* Minimum commitment term binding this configuration */}
+            {binding && (
+              <div className="border-t border-slate-800 pt-3 space-y-1">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-slate-300 inline-flex items-center gap-1.5 break-keep">
+                    <CalendarClock className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                    {t.commitmentSummaryLabel}
+                  </span>
+                  <span className="font-mono text-white font-semibold whitespace-nowrap">
+                    {commitmentLabel[binding]}
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-500 break-keep leading-relaxed">
+                  {t.commitmentSummaryNote}
+                  {showUsageFloor
+                    ? ` ${t.commitmentUsageFloorNote.replace('{floor}', money(MONTHLY_MINIMUM_CHARGE))}`
+                    : ''}
+                </p>
+              </div>
+            )}
 
             {/* Grand Total */}
             <div className="border-t border-slate-800 pt-4 space-y-1">
@@ -900,7 +1044,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                     <td className="p-2.5 text-slate-500">{t.scenarioRowLines}</td>
                     {scenarios.map((scenario) => (
                       <td key={scenario.id} className="p-2.5 font-mono text-slate-800">
-                        {scenario.productionLines} {t.linesCountUnit}
+                        {scenario.metrics.productionLines} {t.linesCountUnit}
                       </td>
                     ))}
                   </tr>
@@ -924,7 +1068,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                           <td key={scenario.id} className="p-2.5 font-mono">
                             {item ? (
                               <span className="text-slate-800">
-                                {money(lineItemTotal(item, scenario.productionLines))}
+                                {money(lineItemTotal(item, scenario.metrics))}
                               </span>
                             ) : (
                               <span className="text-slate-400">{t.scenarioNotIncluded}</span>
@@ -980,6 +1124,15 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                 </tbody>
               </table>
             </div>
+
+            {binding && (
+              <p className="mt-3 text-[10.5px] text-slate-500 break-keep leading-relaxed">
+                {t.commitmentSummaryLabel}: {commitmentLabel[binding]} — {t.commitmentSummaryNote}
+                {showUsageFloor
+                  ? ` ${t.commitmentUsageFloorNote.replace('{floor}', money(MONTHLY_MINIMUM_CHARGE))}`
+                  : ''}
+              </p>
+            )}
 
             {rateNote && (
               <p className="mt-3 text-[10.5px] text-slate-500 break-keep">{rateNote}</p>
@@ -1047,6 +1200,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                   <tr>
                     <th className="p-2.5">{t.itemCol}</th>
                     <th className="p-2.5">{t.quantityCriterionCol}</th>
+                    <th className="p-2.5">{t.commitmentQuotationRow}</th>
                     <th className="p-2.5 text-right">{t.monthlyPriceCol}</th>
                   </tr>
                 </thead>
@@ -1054,16 +1208,22 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                   <tr>
                     <td className="p-2.5 font-medium">{t.basePlatformRowDesc}</td>
                     <td className="p-2.5 text-slate-500">{t.basePlatformRowQty}</td>
+                    <td className="p-2.5 text-slate-500">
+                      {binding ? commitmentLabel[binding] : commitmentLabel.monthly}
+                    </td>
                     <td className="p-2.5 text-right font-mono">{money(BASE_PLATFORM_FEE)}</td>
                   </tr>
                   {cart.map((c) => (
                     <tr key={c.id}>
                       <td className="p-2.5 font-medium">{getLocalizedSubModuleName(c.id, c.name, lang)}</td>
                       <td className="p-2.5 text-slate-500">
-                        {c.per === 'line' ? `${productionLines} ${t.linesCountUnit}` : getLocalizedSubModuleUnit(c.id, c.unitLabel, lang)}
+                        {axisDisplay[c.per]
+                          ? `${axisDisplay[c.per]!.qty} ${axisDisplay[c.per]!.unit}`
+                          : getLocalizedSubModuleUnit(c.id, c.unitLabel, lang)}
                       </td>
+                      <td className="p-2.5 text-slate-500">{commitmentLabel[commitmentFor(c.id)]}</td>
                       <td className="p-2.5 text-right font-mono">
-                        {money(lineItemTotal(c, productionLines))}
+                        {money(lineItemTotal(c, metrics))}
                       </td>
                     </tr>
                   ))}
@@ -1071,6 +1231,7 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                     <tr className="bg-emerald-50 text-emerald-800">
                       <td className="p-2.5 font-semibold">{t.volumeDiscountRowTitle.replace('{count}', String(moduleCount))}</td>
                       <td className="p-2.5">{t.discountAppliedRate.replace('{rate}', (discountRate * 100).toFixed(0))}</td>
+                      <td className="p-2.5" />
                       <td className="p-2.5 text-right font-mono font-bold">-{money(discountAmount)}</td>
                     </tr>
                   )}
@@ -1085,6 +1246,15 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                 {money(grandTotal)} / {t.monthUnit}
               </span>
             </div>
+
+            {binding && (
+              <p className="mt-3 text-[10.5px] text-slate-500 break-keep leading-relaxed">
+                {t.commitmentSummaryLabel}: {commitmentLabel[binding]} — {t.commitmentSummaryNote}
+                {showUsageFloor
+                  ? ` ${t.commitmentUsageFloorNote.replace('{floor}', money(MONTHLY_MINIMUM_CHARGE))}`
+                  : ''}
+              </p>
+            )}
 
             {rateNote && (
               <p className="mt-3 text-[10.5px] text-slate-500 break-keep">{rateNote}</p>

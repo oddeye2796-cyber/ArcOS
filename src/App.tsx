@@ -45,7 +45,8 @@ import {
   APPS_DATA,
   INITIAL_INSTALLED_MODULES,
   INITIAL_DECOMMISSIONED_MODULES,
-  INITIAL_POC_TRIALS
+  INITIAL_POC_TRIALS,
+  MES_CORE_IDS
 } from './data/appsData';
 import {
   AppItem,
@@ -159,8 +160,7 @@ export default function App() {
   // MES radio selection (mutual exclusivity among MES core: pharma, food, general)
   const handleSelectRadioMES = (item: SubModuleItem, suiteApp: AppItem) => {
     setCart((prev) => {
-      const mesIds = ['mes-pharma', 'mes-food', 'mes-general'];
-      const filtered = prev.filter((c) => !mesIds.includes(c.id));
+      const filtered = prev.filter((c) => !MES_CORE_IDS.includes(c.id));
       return [
         ...filtered,
         {
