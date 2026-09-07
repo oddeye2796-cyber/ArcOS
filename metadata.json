@@ -1,0 +1,6 @@
+{
+  "name": "ArcOS 마켓플레이스",
+  "description": "IMPIX 제조 운영 하이브리드 클라우드 플랫폼 ArcOS 앱 마켓플레이스 및 견적·배포 시뮬레이터",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
