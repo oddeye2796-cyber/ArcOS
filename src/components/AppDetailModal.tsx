@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { AppItem, CartItem, SubModuleItem } from '../types';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { CurrencyCode, formatMoney } from '../lib/currency';
+import { getAppValueProp } from '../i18n/appValueData';
+import { findDocForModule } from '../data/resourcesData';
 import { useModalDismiss } from '../lib/useModalDismiss';
 import {
   getLocalizedAppName,
@@ -23,6 +25,8 @@ import {
 import {
   X,
   CheckCircle2,
+  Sparkles,
+  BookOpen,
   AlertTriangle,
   Server,
   Shield,
@@ -49,6 +53,7 @@ interface AppDetailModalProps {
   onApplyPoC?: (app: AppItem) => void;
   lang?: Language;
   currency?: CurrencyCode;
+  onOpenResource?: (docId: string) => void;
 }
 
 export const AppDetailModal: React.FC<AppDetailModalProps> = ({
@@ -60,6 +65,7 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
   onSelectRadioMES,
   onDeployRequest,
   onApplyPoC,
+  onOpenResource,
   lang = 'ko'
 }) => {
   const t = TRANSLATIONS[lang];
@@ -86,6 +92,9 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
       [scope]: !prev[scope]
     }));
   };
+
+  const valueProp = getAppValueProp(app.id, lang);
+  const relatedDoc = findDocForModule(app.id);
 
   const isItemInCart = (id: string) => cart.some((c) => c.id === id);
 
@@ -155,6 +164,68 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
               <p className="text-indigo-800 leading-relaxed text-xs break-keep">
                 {t.arcMindNoticeDesc}
               </p>
+            </div>
+          )}
+
+          {/* Why adopt this — shown before the installability checks below */}
+          {valueProp && (
+            <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 space-y-3.5">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                <span>{t.valueSectionTitle}</span>
+              </h3>
+
+              <p className="text-xs text-slate-800 leading-relaxed break-keep font-medium">
+                {valueProp.headline}
+              </p>
+
+              <div>
+                <span className="text-[11px] font-semibold text-slate-500 block mb-1.5">
+                  {t.valueOutcomesTitle}
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {valueProp.outcomes.map((outcome) => (
+                    <div
+                      key={outcome.label}
+                      className="rounded-lg bg-white border border-blue-100 px-3 py-2"
+                    >
+                      <div className="text-sm font-bold text-blue-700 font-mono break-keep">
+                        {outcome.value}
+                      </div>
+                      <div className="text-[10.5px] text-slate-600 leading-snug break-keep">
+                        {outcome.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[11px] font-semibold text-slate-500 block mb-1.5">
+                  {t.valueUseCasesTitle}
+                </span>
+                <ul className="space-y-1">
+                  {valueProp.useCases.map((useCase) => (
+                    <li key={useCase} className="flex items-start gap-1.5 text-xs text-slate-700">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span className="leading-relaxed break-keep">{useCase}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {relatedDoc && onOpenResource && (
+                <button
+                  onClick={() => {
+                    onClose();
+                    onOpenResource(relatedDoc.id);
+                  }}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 hover:text-blue-800 hover:underline transition-colors"
+                >
+                  <BookOpen className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span>{t.valueDocsLinkLabel}</span>
+                </button>
+              )}
             </div>
           )}
 

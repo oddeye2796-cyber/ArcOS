@@ -65,11 +65,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       badgeHighlight: false
     },
     {
-      id: 'architecture' as NavRoute,
-      label: t.navArchitecture,
-      sublabel: t.navArchitectureSub,
+      // The whitepaper used to sit here as a top-level item, which made it the
+      // only document among four features. It now lives inside the library.
+      id: 'resources' as NavRoute,
+      label: t.navResources,
+      sublabel: t.navResourcesSub,
       icon: BookOpen,
-      badge: t.navWhitepaperBadge
+      badge: t.navResourcesBadge
     }
   ];
 

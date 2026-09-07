@@ -520,6 +520,34 @@ export interface Translations {
   rateStatusStale: string;
   rateStatusBundled: string;
   rateRefreshLabel: string;
+
+  // App value / adoption outcomes
+  valueSectionTitle: string;
+  valueOutcomesTitle: string;
+  valueUseCasesTitle: string;
+  valueDocsLinkLabel: string;
+
+  // Resource library
+  navResources: string;
+  navResourcesSub: string;
+  navResourcesBadge: string;
+  resourcesTitle: string;
+  resourcesSubtitle: string;
+  resourcesSearchPlaceholder: string;
+  resourcesKindAll: string;
+  resourcesKindWhitepaper: string;
+  resourcesKindManual: string;
+  resourcesKindGuide: string;
+  resourcesKindSpec: string;
+  resourcesAudienceLabel: string;
+  resourcesUpdatedLabel: string;
+  resourcesReadingTime: string;
+  resourcesRelatedModules: string;
+  resourcesEmpty: string;
+  resourcesResetFilters: string;
+  resourcesBackToList: string;
+  resourcesOpenManual: string;
+  resourcesCountLabel: string;
 }
 
 export const TRANSLATIONS: Record<Language, Translations> = {
@@ -1051,7 +1079,33 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rateStatusLoading: '환율 동기화 중…',
     rateStatusStale: '환율 서버 응답 없음 — 마지막 환율 사용 중',
     rateStatusBundled: '기본 내장 환율 사용 중',
-    rateRefreshLabel: '환율 새로고침'
+    rateRefreshLabel: '환율 새로고침',
+
+    valueSectionTitle: '도입 효과',
+    valueOutcomesTitle: '주요 지표',
+    valueUseCasesTitle: '적용 사례',
+    valueDocsLinkLabel: '관련 자료 보기',
+
+    navResources: '자료실',
+    navResourcesSub: '백서 · 매뉴얼 · 도입 가이드',
+    navResourcesBadge: '문서',
+    resourcesTitle: '자료실',
+    resourcesSubtitle: '아키텍처 백서, 모듈별 운영 매뉴얼, 도입 가이드를 한 곳에서 찾아보세요.',
+    resourcesSearchPlaceholder: '문서명, 내용, 대상 모듈 검색...',
+    resourcesKindAll: '전체',
+    resourcesKindWhitepaper: '백서',
+    resourcesKindManual: '운영 매뉴얼',
+    resourcesKindGuide: '도입 가이드',
+    resourcesKindSpec: '연동 규격',
+    resourcesAudienceLabel: '대상 독자',
+    resourcesUpdatedLabel: '최종 개정',
+    resourcesReadingTime: '약 {min}분',
+    resourcesRelatedModules: '관련 모듈',
+    resourcesEmpty: '조건에 맞는 문서가 없습니다.',
+    resourcesResetFilters: '검색 조건 초기화',
+    resourcesBackToList: '목록으로',
+    resourcesOpenManual: '매뉴얼 보기',
+    resourcesCountLabel: '개 문서'
   },
   en: {
     brandName: 'ArcOS',
@@ -1581,7 +1635,33 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rateStatusLoading: 'Syncing rate…',
     rateStatusStale: 'Rate provider unreachable — using last known rate',
     rateStatusBundled: 'Using the bundled fallback rate',
-    rateRefreshLabel: 'Refresh exchange rate'
+    rateRefreshLabel: 'Refresh exchange rate',
+
+    valueSectionTitle: 'Why adopt this',
+    valueOutcomesTitle: 'Key figures',
+    valueUseCasesTitle: 'Where it is used',
+    valueDocsLinkLabel: 'View related documents',
+
+    navResources: 'Resources',
+    navResourcesSub: 'Whitepaper · Manuals · Guides',
+    navResourcesBadge: 'Docs',
+    resourcesTitle: 'Resource Library',
+    resourcesSubtitle: 'The architecture whitepaper, per-module operating manuals and adoption guides, in one place.',
+    resourcesSearchPlaceholder: 'Search titles, content, related modules...',
+    resourcesKindAll: 'All',
+    resourcesKindWhitepaper: 'Whitepaper',
+    resourcesKindManual: 'Operating Manual',
+    resourcesKindGuide: 'Adoption Guide',
+    resourcesKindSpec: 'Integration Spec',
+    resourcesAudienceLabel: 'Written for',
+    resourcesUpdatedLabel: 'Last revised',
+    resourcesReadingTime: '~{min} min',
+    resourcesRelatedModules: 'Related modules',
+    resourcesEmpty: 'No documents match these filters.',
+    resourcesResetFilters: 'Reset filters',
+    resourcesBackToList: 'Back to list',
+    resourcesOpenManual: 'Open manual',
+    resourcesCountLabel: 'documents'
   },
   ja: {
     brandName: 'ArcOS',
@@ -2111,6 +2191,32 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     rateStatusLoading: '為替レート同期中…',
     rateStatusStale: '為替サーバー応答なし — 最後に取得したレートを使用中',
     rateStatusBundled: '内蔵の既定レートを使用中',
-    rateRefreshLabel: '為替レートを更新'
+    rateRefreshLabel: '為替レートを更新',
+
+    valueSectionTitle: '導入効果',
+    valueOutcomesTitle: '主要指標',
+    valueUseCasesTitle: '適用事例',
+    valueDocsLinkLabel: '関連資料を見る',
+
+    navResources: '資料室',
+    navResourcesSub: 'ホワイトペーパー · マニュアル · 導入ガイド',
+    navResourcesBadge: '文書',
+    resourcesTitle: '資料室',
+    resourcesSubtitle: 'アーキテクチャホワイトペーパー、モジュール別運用マニュアル、導入ガイドを一箇所で探せます。',
+    resourcesSearchPlaceholder: '文書名、内容、対象モジュールを検索...',
+    resourcesKindAll: 'すべて',
+    resourcesKindWhitepaper: 'ホワイトペーパー',
+    resourcesKindManual: '運用マニュアル',
+    resourcesKindGuide: '導入ガイド',
+    resourcesKindSpec: '連係規格',
+    resourcesAudienceLabel: '対象読者',
+    resourcesUpdatedLabel: '最終改訂',
+    resourcesReadingTime: '約{min}分',
+    resourcesRelatedModules: '関連モジュール',
+    resourcesEmpty: '条件に一致する文書がありません。',
+    resourcesResetFilters: '検索条件をリセット',
+    resourcesBackToList: '一覧へ戻る',
+    resourcesOpenManual: 'マニュアルを見る',
+    resourcesCountLabel: '件の文書'
   }
 };
