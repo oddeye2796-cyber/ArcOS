@@ -513,6 +513,13 @@ export interface Translations {
   callsUnit: string;
   discountAppliedBadge: string;
   reportBadge: string;
+
+  // Exchange rate status
+  rateStatusLive: string;
+  rateStatusLoading: string;
+  rateStatusStale: string;
+  rateStatusBundled: string;
+  rateRefreshLabel: string;
 }
 
 export const TRANSLATIONS: Record<Language, Translations> = {
@@ -1038,7 +1045,13 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     browseModules: '앱 마켓플레이스에서 모듈 둘러보기',
     callsUnit: '건/월',
     discountAppliedBadge: '할인 적용',
-    reportBadge: 'PoC 평가 보고서'
+    reportBadge: 'PoC 평가 보고서',
+
+    rateStatusLive: '실시간 환율 적용 중',
+    rateStatusLoading: '환율 동기화 중…',
+    rateStatusStale: '환율 서버 응답 없음 — 마지막 환율 사용 중',
+    rateStatusBundled: '기본 내장 환율 사용 중',
+    rateRefreshLabel: '환율 새로고침'
   },
   en: {
     brandName: 'ArcOS',
@@ -1562,7 +1575,13 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     browseModules: 'Browse modules in the app marketplace',
     callsUnit: 'calls/mo',
     discountAppliedBadge: 'discount applied',
-    reportBadge: 'PoC Evaluation Report'
+    reportBadge: 'PoC Evaluation Report',
+
+    rateStatusLive: 'Live rate applied',
+    rateStatusLoading: 'Syncing rate…',
+    rateStatusStale: 'Rate provider unreachable — using last known rate',
+    rateStatusBundled: 'Using the bundled fallback rate',
+    rateRefreshLabel: 'Refresh exchange rate'
   },
   ja: {
     brandName: 'ArcOS',
@@ -2086,6 +2105,12 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     browseModules: 'アプリマーケットプレイスでモジュールを見る',
     callsUnit: '件/月',
     discountAppliedBadge: '割引適用',
-    reportBadge: 'PoC 評価レポート'
+    reportBadge: 'PoC 評価レポート',
+
+    rateStatusLive: 'リアルタイム為替レート適用中',
+    rateStatusLoading: '為替レート同期中…',
+    rateStatusStale: '為替サーバー応答なし — 最後に取得したレートを使用中',
+    rateStatusBundled: '内蔵の既定レートを使用中',
+    rateRefreshLabel: '為替レートを更新'
   }
 };

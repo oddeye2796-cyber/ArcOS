@@ -4,6 +4,7 @@ import { PoCReportModal } from './PoCReportModal';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { getLocalizedLocationName, getLocalizedWorkspaceText } from '../i18n/localizedData';
 import { CurrencyCode, formatMoney } from '../lib/currency';
+import { useExchangeRates } from '../lib/useExchangeRates';
 import { POC_STAGES, PoCStageId, canExtend, getPoCProgress } from '../lib/poc';
 import {
   Server,
@@ -59,6 +60,7 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
   currency = 'KRW'
 }) => {
   const t = TRANSLATIONS[lang];
+  const { snapshot: rateSnapshot } = useExchangeRates();
   const [upgradingId, setUpgradingId] = useState<string | null>(null);
   const [downloadSuccessToast, setDownloadSuccessToast] = useState<string | null>(null);
   const [selectedReportTrial, setSelectedReportTrial] = useState<PoCTrial | null>(null);
@@ -649,7 +651,7 @@ export const WorkspaceView: React.FC<WorkspaceViewProps> = ({
                     </div>
                   </td>
                   <td className="p-3.5 font-mono text-slate-900 font-semibold">
-                    {t.monthPrefix} {formatMoney(item.retentionFee, currency, lang)}
+                    {t.monthPrefix} {formatMoney(item.retentionFee, currency, lang, rateSnapshot.rates)}
                   </td>
                   <td className="p-3.5 pr-5 text-right">
                     <button

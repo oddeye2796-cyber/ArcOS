@@ -40,6 +40,7 @@ import { applyDocumentLanguage, detectInitialLanguage, parseLanguage } from './l
 import { STORAGE_KEYS, readStored, usePersistentState, writeStored } from './lib/storage';
 import { parseCart } from './lib/scenarios';
 import { POC_EXTENSION_DAYS, canExtend } from './lib/poc';
+import { ExchangeRateProvider } from './lib/useExchangeRates';
 import {
   APPS_DATA,
   INITIAL_INSTALLED_MODULES,
@@ -316,6 +317,7 @@ export default function App() {
   };
 
   return (
+    <ExchangeRateProvider>
     <div className="flex min-h-screen bg-slate-100 text-slate-900 font-sans antialiased">
       {/* Sidebar Navigation */}
       <Sidebar
@@ -442,5 +444,6 @@ export default function App() {
       )}
       </Suspense>
     </div>
+    </ExchangeRateProvider>
   );
 }
