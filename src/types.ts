@@ -108,6 +108,10 @@ export interface PoCTrial {
   tagsProcessed: number;
   runtimeVersion: string;
   sampleLoaded: boolean;
+  /** Number of times the trial period has been extended (see POC_MAX_EXTENSIONS). */
+  extensionsUsed?: number;
+  /** Set once a support engineer has been requested for this trial. */
+  engineerRequested?: boolean;
 }
 
 export interface FacilityLocation {

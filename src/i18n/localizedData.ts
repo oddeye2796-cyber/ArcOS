@@ -305,6 +305,31 @@ const DEP_LOCALIZATIONS: Record<string, { name: LocalizedString; desc: Localized
       ja: '社内ノーコード/ローコード画面および業務ロジック作成主体'
     }
   }
+,
+  'A²LAB (선행 모듈)': {
+    name: { ko: 'A²LAB (선행 모듈)', en: 'A²LAB (Prerequisite Module)', ja: 'A²LAB (前提モジュール)' },
+    desc: {
+      ko: '선행 에이전트 제작 도구 필요 (함께 담기 권장)',
+      en: 'Requires the prerequisite agent authoring tool (bundling recommended)',
+      ja: '前提となるエージェント作成ツールが必要 (同時追加を推奨)'
+    }
+  },
+  '등록된 에이전트 모듈 3개 이상': {
+    name: { ko: '등록된 에이전트 모듈 3개 이상', en: 'At Least 3 Registered Agent Modules', ja: '登録済みエージェントモジュール3個以上' },
+    desc: {
+      ko: '현재 사업장에 1개 등록됨 (A²LAB 설치 후 생성 가능)',
+      en: '1 registered at this facility (more can be created after installing A²LAB)',
+      ja: '当事業所に1個登録済み (A²LABインストール後に作成可能)'
+    }
+  },
+  'MLOps 실행엔진': {
+    name: { ko: 'MLOps 실행엔진', en: 'MLOps Execution Engine', ja: 'MLOps 実行エンジン' },
+    desc: {
+      ko: '온프레미스 도커 런타임 기본 탑재',
+      en: 'Bundled with the on-premise Docker runtime',
+      ja: 'オンプレミスDockerランタイムに標準搭載'
+    }
+  }
 };
 
 const DATASCOPE_LOCALIZATIONS: Record<string, LocalizedString> = {
@@ -368,6 +393,27 @@ const DATASCOPE_LOCALIZATIONS: Record<string, LocalizedString> = {
     en: 'AAS / OPC-UA / KS X 9101',
     ja: 'AAS / OPC-UA / KS X 9101'
   }
+,
+  'ArcOS 공통 이벤트 버스 (Pub/Sub)': {
+    ko: 'ArcOS 공통 이벤트 버스 (Pub/Sub)',
+    en: 'ArcOS Shared Event Bus (Pub/Sub)',
+    ja: 'ArcOS 共通イベントバス (Pub/Sub)'
+  },
+  'OPC-UA / Parquet Lakehouse': {
+    ko: 'OPC-UA / Parquet Lakehouse',
+    en: 'OPC-UA / Parquet Lakehouse',
+    ja: 'OPC-UA / Parquet Lakehouse'
+  },
+  '학습 데이터는 사내 로컬 GPU 클러스터 내부에서만 순환': {
+    ko: '학습 데이터는 사내 로컬 GPU 클러스터 내부에서만 순환',
+    en: 'Training data circulates only inside the in-house local GPU cluster',
+    ja: '学習データは社内ローカルGPUクラスタ内部でのみ循環'
+  },
+  '에이전트 판단 신뢰도 벡터 및 결정 로그 (사내)': {
+    ko: '에이전트 판단 신뢰도 벡터 및 결정 로그 (사내)',
+    en: 'Agent confidence vectors and decision logs (on-premises)',
+    ja: 'エージェント判断信頼度ベクトルおよび決定ログ (社内)'
+  }
 };
 
 const PERMISSION_LOCALIZATIONS: Record<string, LocalizedString> = {
@@ -415,6 +461,32 @@ const PERMISSION_LOCALIZATIONS: Record<string, LocalizedString> = {
     ko: '사내 온톨로지 메타데이터 카탈로그 관리',
     en: 'Manage in-house ontology metadata catalog',
     ja: '社内オントロジーメタデータカタログ管理'
+  }
+,
+  '생산 라인 설비 PLC 읽기': {
+    ko: '생산 라인 설비 PLC 읽기',
+    en: 'Production line equipment PLC read',
+    ja: '生産ライン設備PLCの読み取り'
+  },
+  '배치 완료 승인 및 전자 서명': {
+    ko: '배치 완료 승인 및 전자 서명',
+    en: 'Batch completion approval and e-signature',
+    ja: 'バッチ完了承認および電子署名'
+  },
+  '공정 레시피 제어 명령(Write)': {
+    ko: '공정 레시피 제어 명령(Write)',
+    en: 'Process recipe control command (Write)',
+    ja: '工程レシピ制御コマンド(Write)'
+  },
+  '센서 시계열 데이터 학습용 Read': {
+    ko: '센서 시계열 데이터 학습용 Read',
+    en: 'Sensor time-series data read for training',
+    ja: 'センサー時系列データの学習用Read'
+  },
+  '새 에이전트 컨테이너 기동': {
+    ko: '새 에이전트 컨테이너 기동',
+    en: 'Launch new agent container',
+    ja: '新規エージェントコンテナの起動'
   }
 };
 
@@ -498,6 +570,41 @@ const LOCATION_LOCALIZATIONS: Record<string, LocalizedString> = {
     ko: '[경남/사천] 항공·정밀가공 사업장 온프레미스',
     en: '[Sacheon] Aerospace Plant On-Premises',
     ja: '[慶南/泗川] 航空・精密加工事業所 オンプレミス'
+  },
+  '[충북/오송] 제약·바이오 GMP 사업장 온프레미스': {
+    ko: '[충북/오송] 제약·바이오 GMP 사업장 온프레미스',
+    en: '[Osong] Pharma/Bio GMP Plant On-Premises',
+    ja: '[忠北/五松] 製薬・バイオ GMP事業所 オンプレミス'
+  },
+  '[충북/오송] 제약·바이오 GMP 사업장 (라인 #1~#4)': {
+    ko: '[충북/오송] 제약·바이오 GMP 사업장 (라인 #1~#4)',
+    en: '[Osong] Pharma/Bio GMP Plant (Lines #1-#4)',
+    ja: '[忠北/五松] 製薬・バイオ GMP事業所 (ライン #1〜#4)'
+  },
+  '[경남/사천] 항공·정밀가공 사업장 AI 노드': {
+    ko: '[경남/사천] 항공·정밀가공 사업장 AI 노드',
+    en: '[Sacheon] Aerospace Plant AI Node',
+    ja: '[慶南/泗川] 航空・精密加工事業所 AIノード'
+  },
+  '[경남/창원] 기계·특수제조 사업장 AI 노드': {
+    ko: '[경남/창원] 기계·특수제조 사업장 AI 노드',
+    en: '[Changwon] Machinery Plant AI Node',
+    ja: '[慶南/昌原] 機械・特殊製造事業所 AIノード'
+  },
+  '[충북/오송] 제약·바이오 GMP 사업장 AI 노드': {
+    ko: '[충북/오송] 제약·바이오 GMP 사업장 AI 노드',
+    en: '[Osong] Pharma/Bio GMP Plant AI Node',
+    ja: '[忠北/五松] 製薬・バイオ GMP事業所 AIノード'
+  },
+  '[경남/사천] 항공·정밀가공 사업장 엣지 노드': {
+    ko: '[경남/사천] 항공·정밀가공 사업장 엣지 노드',
+    en: '[Sacheon] Aerospace Plant Edge Node',
+    ja: '[慶南/泗川] 航空・精密加工事業所 エッジノード'
+  },
+  '[경기/화성] 전자·반도체 부품 사업장 엣지 노드': {
+    ko: '[경기/화성] 전자·반도체 부품 사업장 엣지 노드',
+    en: '[Hwaseong] Electronics Plant Edge Node',
+    ja: '[京畿/華城] 電子・半導体部品事業所 エッジノード'
   }
 };
 
@@ -571,36 +678,47 @@ const PRESET_LOCALIZATIONS: Record<string, {
     },
     targetAudience: { ko: '스마트공장 신규 도입 중소·중견 제조사', en: 'SMEs Adopting Smart Manufacturing For First Time', ja: 'スマート工場を新規導入する中小・中堅メーカー' }
   },
-  'preset-ai': {
-    title: { ko: '자율제조 AI 에이전트 오케스트레이션형', en: 'Autonomous Manufacturing AI Agent Orchestration', ja: '自律製造 AIエージェント オーケストレーション型' },
-    subtitle: { ko: 'A²LAB 모델 생성 · 멀티 에이전트 협업 · 이상 탐지', en: 'A²LAB Model Generator · Multi-Agent Collaboration · Anomaly Detection', ja: 'A²LABモデル生成・マルチエージェント協調・異常検知' },
-    badge: { ko: 'AI 자율화', en: 'AI Autonomous', ja: 'AI自律化' },
+  'preset-autonomous': {
+    title: { ko: 'AI 자율제조 고도화 (Full Agent Architecture)', en: 'Autonomous AI Manufacturing (Full Agent Architecture)', ja: 'AI自律製造の高度化 (Full Agent Architecture)' },
+    subtitle: { ko: 'AI 에이전트 생성 · 슈퍼바이저 지휘 · sLM 규정 분석', en: 'AI agent generation · Supervisor orchestration · sLM regulatory analysis', ja: 'AIエージェント生成・スーパーバイザー指揮・sLM規程分析' },
+    badge: { ko: 'AI 자율제조', en: 'Autonomous AI', ja: 'AI自律製造' },
     desc: {
-      ko: '생산라인 데이터 수집부터 A²LAB 기반 도메인 특화 경량 AI 모델 파인튜닝, 멀티 에이전트 자동 제어까지 일체형으로 구축합니다.',
-      en: 'End-to-end autonomous suite from ingestion to A²LAB lightweight model tuning and multi-agent closed-loop control.',
-      ja: '生産ラインデータ収集からA²LAB基盤の特化型AIモデル微調整、マルチエージェント自律制御までを統合構築します。'
+      ko: 'A²LAB에서 생성된 품질/설비/에너지 에이전트들을 다중 AI Agent 슈퍼바이저가 오케스트레이션하고, 폐쇄망 sLM 컨센스봇과 3D 트윈을 결합합니다.',
+      en: 'The Multi-AI Agent Supervisor orchestrates the quality, equipment and energy agents generated in A²LAB, combined with the air-gapped ConsensBot sLM and a 3D digital twin.',
+      ja: 'A²LABで生成された品質・設備・エネルギーの各エージェントをマルチAI Agentスーパーバイザーがオーケストレーションし、閉域網sLMコンセンスボットと3Dツインを組み合わせます。'
     },
-    targetAudience: { ko: '자율제조 지능화 공장 전환 추진 기업', en: 'Enterprises Transitioning to Autonomous Smart Plants', ja: '自律製造インテリジェント工場へ移行を推進する企業' }
+    targetAudience: { ko: '지능형 등대공장 추진 / 대형 복합 생산 사업장', en: 'Lighthouse factory programs / large multi-process production sites', ja: 'インテリジェント・ライトハウス工場推進 / 大規模複合生産事業所' }
   },
-  'preset-nocode': {
-    title: { ko: '엔터프라이즈 자체구축 노코드 플랫폼형', en: 'Enterprise In-House No-Code Platform Builder', ja: 'エンタープライズ 自社構築ノーコード開発型' },
-    subtitle: { ko: '기성 MES 미도입 · 온톨로지 직결 · 기업 고유 화면 100% 빌드', en: 'Zero Off-the-Shelf MES · Direct Ontology Binding · 100% Custom Shopfloor Views', ja: '既製MES未導入・オントロジー直結・自社専用画面100%独自開発' },
-    badge: { ko: '자체 개발', en: 'Custom Build', ja: '自社開発' },
+  'preset-inhouse-diy': {
+    title: { ko: '자체 IT 인력 노코드 플랫폼 구축형 (In-House IT DIY)', en: 'In-House IT No-Code Platform Build (DIY)', ja: '自社IT要員によるノーコード基盤構築型 (In-House IT DIY)' },
+    subtitle: { ko: 'ArcMind 노코드·로우코드 빌더 · B²LAB 온톨로지 · A²LAB · 3D 트윈', en: 'ArcMind no-code/low-code builder · B²LAB ontology · A²LAB · 3D twin', ja: 'ArcMind ノーコード・ローコードビルダー・B²LAB オントロジー・A²LAB・3Dツイン' },
+    badge: { ko: '자체 IT 전용', en: 'In-House IT', ja: '自社IT専用' },
     desc: {
-      ko: '기성 MES를 사용하지 않고 ArcMind 노코드 빌더만으로 현장 작업자 화면, 공정 대시보드, 설비 제어 로직을 사내에서 100% 자유롭게 직접 설계합니다.',
-      en: 'Replaces rigid commercial MES by allowing in-house engineers to build 100% custom operator UIs and workflows via ArcMind.',
-      ja: '既製品のMESに縛られず、ArcMindノーコードビルダーのみで現場オペレーター画面や工程ダッシュボードを自社で100%自由に開発します。'
+      ko: '기성 제조 운영 스위트(MES)를 도입하지 않고, 사내 IT 인력이 ArcMind(No-Code/Low-Code)로 공정 화면·작업 지시서·모바일 뷰를 직접 개발합니다. 기성 MES 구독료 없이 B²LAB 온톨로지 위에서 100% 사내 맞춤형 플랫폼을 내재화합니다.',
+      en: 'Instead of adopting an off-the-shelf MES suite, in-house IT staff build process screens, work instructions and mobile views themselves with ArcMind (No-Code/Low-Code) — a 100% custom platform on top of the B²LAB ontology, with no MES subscription fee.',
+      ja: '既製の製造運用スイート(MES)を導入せず、社内IT要員がArcMind(No-Code/Low-Code)で工程画面・作業指示書・モバイルビューを直接開発します。既製MESの購読料なしにB²LABオントロジー上で100%自社カスタムのプラットフォームを内製化します。'
     },
-    targetAudience: { ko: '특수 공정 보유 기업 / 사내 IT 개발팀', en: 'Proprietary Process Owners / In-House IT Teams', ja: '独自特殊工程を保有する企業 / 社内IT・DXチーム' }
+    targetAudience: { ko: '자체 IT/전산 인력을 보유하여 기성 MES 대신 사내 스마트팩토리를 직접 개발하는 제조기업', en: 'Manufacturers with in-house IT staff who build their own smart factory instead of buying an off-the-shelf MES', ja: '自社IT/情報システム要員を擁し、既製MESの代わりに社内スマートファクトリーを自ら開発する製造企業' }
+  },
+  'preset-scm-audit': {
+    title: { ko: '공급망 & 협력사 품질 통합 연계 (SCM & Audit)', en: 'Supply Chain & Supplier Quality Integration (SCM & Audit)', ja: 'サプライチェーン & 協力会社品質の統合連係 (SCM & Audit)' },
+    subtitle: { ko: '협력사 발주 · 실시간 납기 트래킹 · 전자기록 증적', en: 'Supplier purchase orders · Real-time delivery tracking · Electronic record evidence', ja: '協力会社発注・リアルタイム納期トラッキング・電子記録証跡' },
+    badge: { ko: '공급망 연계', en: 'Supply Chain', ja: 'サプライチェーン連係' },
+    desc: {
+      ko: '사내 공정과 1·2차 외주 협력사 포털을 실시간 연계하고, 납품 품질 및 발주 검수 이력을 전자 기록으로 보존하여 고객사 실사에 즉각 대응합니다.',
+      en: 'Links in-house processes with tier-1 and tier-2 supplier portals in real time and preserves delivery quality and PO inspection history as electronic records, so customer audits can be answered immediately.',
+      ja: '社内工程と1次・2次外注協力会社ポータルをリアルタイムで連係し、納品品質および発注検収履歴を電子記録として保存することで、顧客の実地監査に即応します。'
+    },
+    targetAudience: { ko: '외주 가공 비중이 높고 협력사 감사가 필수인 제조사', en: 'Manufacturers with heavy outsourced machining and mandatory supplier audits', ja: '外注加工の比率が高く、協力会社監査が必須の製造業' }
   }
 };
 
 const FACILITY_LOCALIZATIONS: Record<string, { fullName: LocalizedString; subTitle: LocalizedString }> = {
-  'aerospace-sacheon': {
+  'aerospace-precision': {
     fullName: { ko: '[경남/사천] 항공·정밀가공 사업장', en: '[Sacheon] Aerospace & Precision Plant', ja: '[慶南/泗川] 航空・精密加工事業所' },
     subTitle: { ko: '기체 구조물 가공 및 복합재 조립 1·2공장', en: 'Aerospace Machining & Composite Assembly 1 & 2', ja: '機体構造物加工および複合材組立1・2工場' }
   },
-  'machinery-changwon': {
+  'machinery-specialty': {
     fullName: { ko: '[경남/창원] 기계·특수제조 사업장', en: '[Changwon] Machinery & Heavy Industry Plant', ja: '[慶南/昌原] 機械・特殊製造事業所' },
     subTitle: { ko: '대형 회전체 가공 및 고정밀 방산 부품 라인', en: 'Heavy Rotary Machining & Defense Components Line', ja: '大型回転体加工および高精度防衛部品ライン' }
   },
@@ -669,6 +787,12 @@ export function getLocalizedSubModuleName(subId: string, fallback: string, lang?
   if (item && item.name && item.name[l]) {
     return item.name[l];
   }
+  // Preset cart items reuse app ids that only exist in the app catalog. Korean keeps
+  // the caller's own wording; other languages fall back to the catalog translation.
+  const app = APP_LOCALIZATIONS[subId];
+  if (l !== 'ko' && app && app.name && app.name[l]) {
+    return app.name[l];
+  }
   return fallback;
 }
 
@@ -687,6 +811,10 @@ export function getLocalizedSubModuleUnit(subId: string, fallback: string, lang?
   if (item && item.unitLabel && item.unitLabel[l]) {
     return item.unitLabel[l];
   }
+  const app = APP_LOCALIZATIONS[subId];
+  if (l !== 'ko' && app && app.unit && app.unit[l]) {
+    return app.unit[l];
+  }
   return fallback;
 }
 
@@ -699,6 +827,19 @@ export function getLocalizedGroupLabel(label: string, lang?: Language | string):
   return label;
 }
 
+const DEP_DESC_LOCALIZATIONS: Record<string, LocalizedString> = {
+  '온톨로지 스키마 정합성 검증 완료': {
+    ko: '온톨로지 스키마 정합성 검증 완료',
+    en: 'Ontology schema consistency verified',
+    ja: 'オントロジースキーマ整合性の検証完了'
+  },
+  '플랫폼 기본료 포함 (GraphQL / REST 온톨로지 연동)': {
+    ko: '플랫폼 기본료 포함 (GraphQL / REST 온톨로지 연동)',
+    en: 'Included in the platform base fee (GraphQL / REST ontology integration)',
+    ja: 'プラットフォーム基本料に付属 (GraphQL / REST オントロジー連係)'
+  }
+};
+
 export function getLocalizedDepName(name: string, lang?: Language | string): string {
   const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
   const item = DEP_LOCALIZATIONS[name];
@@ -710,6 +851,10 @@ export function getLocalizedDepName(name: string, lang?: Language | string): str
 
 export function getLocalizedDepDesc(desc: string, lang?: Language | string): string {
   const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  const extra = DEP_DESC_LOCALIZATIONS[desc];
+  if (extra) {
+    return extra[l];
+  }
   for (const key of Object.keys(DEP_LOCALIZATIONS)) {
     const entry = DEP_LOCALIZATIONS[key];
     if (entry.desc.ko === desc || entry.desc.en === desc || entry.desc.ja === desc) {
@@ -816,4 +961,124 @@ export function getLocalizedFacilityName(facility: FacilityLocation, lang?: Lang
     return loc.fullName[l];
   }
   return facility.fullName;
+}
+
+
+/**
+ * Workspace-facing strings are stored on the runtime state objects (installed
+ * modules, decommissioned modules, PoC trials) as their Korean canonical form,
+ * including the ones App/PoCApplyModal generate at runtime. They are keyed here
+ * by that canonical text and translated at render time.
+ */
+const WORKSPACE_LOCALIZATIONS: Record<string, LocalizedString> = {
+  // Module names
+  'B²LAB 온톨로지 데이터레이크': { ko: 'B²LAB 온톨로지 데이터레이크', en: 'B²LAB Ontology Datalake', ja: 'B²LAB オントロジーデータレイク' },
+  '제약 특화 MES (Smart Factory)': { ko: '제약 특화 MES (Smart Factory)', en: 'Pharma-Specific MES (Smart Factory)', ja: '製薬特化MES (Smart Factory)' },
+  'EBRS (전자 제조기록)': { ko: 'EBRS (전자 제조기록)', en: 'EBRS (Electronic Batch Records)', ja: 'EBRS (電子製造記録)' },
+  'SCM (공급망 협업 연계)': { ko: 'SCM (공급망 협업 연계)', en: 'SCM (Supply Chain Collaboration)', ja: 'SCM (サプライチェーン協業連係)' },
+  'AI Vision 결함 탐지 (ArcVision)': { ko: 'AI Vision 결함 탐지 (ArcVision)', en: 'AI Vision Defect Detection (ArcVision)', ja: 'AI Vision 欠陥検知 (ArcVision)' },
+  'A²LAB (AI 모듈 생성기)': { ko: 'A²LAB (AI 모듈 생성기)', en: 'A²LAB (AI Model Generator)', ja: 'A²LAB (AIモデル生成)' },
+  '다중 AI Agent 슈퍼바이저': { ko: '다중 AI Agent 슈퍼바이저', en: 'Multi-AI Agent Supervisor', ja: 'マルチAI Agent スーパーバイザー' },
+  '컨센스봇 (ConsensBot)': { ko: '컨센스봇 (ConsensBot)', en: 'ConsensBot (Regulatory sLM)', ja: 'コンセンスボット (ConsensBot)' },
+  '디지털 트윈 (Digital Twin)': { ko: '디지털 트윈 (Digital Twin)', en: 'Digital Twin', ja: 'デジタルツイン (Digital Twin)' },
+  'ArcMind (노코드/로우코드 플랫폼 빌더)': { ko: 'ArcMind (노코드/로우코드 플랫폼 빌더)', en: 'ArcMind (No-Code/Low-Code Platform Builder)', ja: 'ArcMind (ノーコード/ローコード プラットフォームビルダー)' },
+
+  // Module categories
+  '공통 기반': { ko: '공통 기반', en: 'Shared Core', ja: '共通基盤' },
+  '스위트 코어': { ko: '스위트 코어', en: 'Suite Core', ja: 'スイートコア' },
+  '스위트 확장': { ko: '스위트 확장', en: 'Suite Extension', ja: 'スイート拡張' },
+  '에너지': { ko: '에너지', en: 'Energy', ja: 'エネルギー' },
+  '시각화': { ko: '시각화', en: 'Visualization', ja: '可視化' },
+  '기반': { ko: '기반', en: 'Core', ja: '基盤' },
+  '빌더': { ko: '빌더', en: 'Builder', ja: 'ビルダー' },
+
+  // Runtime health / binding status
+  '방금 전 (정상 수신)': { ko: '방금 전 (정상 수신)', en: 'just now (healthy)', ja: 'たった今 (正常受信)' },
+  '3초 전 (정상 수신)': { ko: '3초 전 (정상 수신)', en: '3s ago (healthy)', ja: '3秒前 (正常受信)' },
+  '5초 전 (정상 수신)': { ko: '5초 전 (정상 수신)', en: '5s ago (healthy)', ja: '5秒前 (正常受信)' },
+  '12초 전 (정상 수신)': { ko: '12초 전 (정상 수신)', en: '12s ago (healthy)', ja: '12秒前 (正常受信)' },
+  'B²LAB 온톨로지 바인딩 완료': { ko: 'B²LAB 온톨로지 바인딩 완료', en: 'B²LAB ontology binding complete', ja: 'B²LAB オントロジーバインディング完了' },
+  '표준 스키마 48개 태그 매핑 완료 (AAS/OPC-UA)': {
+    ko: '표준 스키마 48개 태그 매핑 완료 (AAS/OPC-UA)',
+    en: 'Standard schema: 48 tags mapped (AAS/OPC-UA)',
+    ja: '標準スキーマ48タグのマッピング完了 (AAS/OPC-UA)'
+  },
+  '생산 LOT 및 GMP 전자서명 로컬 기록 중': {
+    ko: '생산 LOT 및 GMP 전자서명 로컬 기록 중',
+    en: 'Recording production LOTs and GMP e-signatures locally',
+    ja: '生産LOTおよびGMP電子署名をローカル記録中'
+  },
+  'CFR Part 11 감사추적 DB 동기화 중': {
+    ko: 'CFR Part 11 감사추적 DB 동기화 중',
+    en: 'Syncing the CFR Part 11 audit trail DB',
+    ja: 'CFR Part 11 監査証跡DBを同期中'
+  },
+
+  // Read-only retention
+  '협력사 발주 및 납기 검수 이력 12,480건 (암호화 압축)': {
+    ko: '협력사 발주 및 납기 검수 이력 12,480건 (암호화 압축)',
+    en: 'Supplier PO & delivery inspection history: 12,480 records (encrypted, compressed)',
+    ja: '協力会社の発注および納期検収履歴12,480件 (暗号化圧縮)'
+  },
+  '2029년 03월 31일 (의무 보존 5년)': {
+    ko: '2029년 03월 31일 (의무 보존 5년)',
+    en: 'March 31, 2029 (5-year mandatory retention)',
+    ja: '2029年03月31日 (義務保存5年)'
+  },
+  '사내 구매팀 ERP 직접 이관에 따른 구독 해지 후 감사용 읽기전용 보존 전환': {
+    ko: '사내 구매팀 ERP 직접 이관에 따른 구독 해지 후 감사용 읽기전용 보존 전환',
+    en: 'Subscription cancelled after migrating to the in-house purchasing ERP; converted to read-only retention for audit',
+    ja: '社内購買チームERPへの直接移管に伴う解約後、監査用の読み取り専用保存へ移行'
+  },
+
+  // PoC trial fields
+  '가공 표면 미세 스크래치 실시간 AI 검출률 99.2% 실증 및 오탐 최소화': {
+    ko: '가공 표면 미세 스크래치 실시간 AI 검출률 99.2% 실증 및 오탐 최소화',
+    en: 'Demonstrate 99.2% real-time AI detection of micro-scratches on machined surfaces while minimizing false positives',
+    ja: '加工表面の微細スクラッチのリアルタイムAI検出率99.2%の実証および誤検知の最小化'
+  },
+  '제조기술팀 / 김선임': { ko: '제조기술팀 / 김선임', en: 'Manufacturing Engineering / Senior Engineer Kim', ja: '製造技術チーム / キム主任' },
+  '사내 공정 적합성 실증': { ko: '사내 공정 적합성 실증', en: 'In-house process suitability validation', ja: '社内工程適合性の実証' },
+  '제조기술팀': { ko: '제조기술팀', en: 'Manufacturing Engineering', ja: '製造技術チーム' }
+};
+
+export function getLocalizedWorkspaceText(text: string, lang?: Language | string): string {
+  const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  return WORKSPACE_LOCALIZATIONS[text]?.[l] || text;
+}
+
+const GROWTH_METRIC_LOCALIZATIONS: Record<string, LocalizedString> = {
+  '생산 라인 수 / 배치 건수': {
+    ko: '생산 라인 수 / 배치 건수',
+    en: 'Production lines / batch records',
+    ja: '生産ライン数 / バッチ件数'
+  },
+  '월간 추론 호출 수 (단위: 만 건)': {
+    ko: '월간 추론 호출 수 (단위: 만 건)',
+    en: 'Monthly inference calls (unit: 10K calls)',
+    ja: '月間推論コール数 (単位: 万件)'
+  },
+  '연계 에이전트 수': { ko: '연계 에이전트 수', en: 'Connected agents', ja: '連係エージェント数' },
+  '운영 라이선스 사용자 수': { ko: '운영 라이선스 사용자 수', en: 'Licensed operating users', ja: '運用ライセンスユーザー数' },
+  '실시간 전력·유틸리티 계측점 수': {
+    ko: '실시간 전력·유틸리티 계측점 수',
+    en: 'Real-time power & utility measurement points',
+    ja: 'リアルタイム電力・ユーティリティ計測点数'
+  },
+  '디지털화 대상 사업장 면적 및 라인': {
+    ko: '디지털화 대상 사업장 면적 및 라인',
+    en: 'Digitized facility floor area and lines',
+    ja: 'デジタル化対象事業所の面積およびライン'
+  },
+  '제작 대시보드 시트 수': { ko: '제작 대시보드 시트 수', en: 'Authored dashboard sheets', ja: '作成ダッシュボードシート数' },
+  '데이터 용량 구간 (기본 1TB 포함)': {
+    ko: '데이터 용량 구간 (기본 1TB 포함)',
+    en: 'Data storage tier (1TB included)',
+    ja: 'データ容量区間 (基本1TB込み)'
+  }
+};
+
+export function getLocalizedGrowthMetric(metric: string, lang?: Language | string): string {
+  const l: Language = (lang === 'ja' || lang === 'en') ? lang : 'ko';
+  return GROWTH_METRIC_LOCALIZATIONS[metric]?.[l] || metric;
 }

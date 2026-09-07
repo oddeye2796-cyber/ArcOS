@@ -1,15 +1,45 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { HeaderLinkBar } from './components/HeaderLinkBar';
+// The catalog is the landing route, so it stays in the initial chunk.
 import { CatalogView } from './components/CatalogView';
-import { AppDetailModal } from './components/AppDetailModal';
-import { QuoteView } from './components/QuoteView';
-import { WorkspaceView } from './components/WorkspaceView';
-import { ArchitectureView } from './components/ArchitectureView';
-import { PatchNotesView } from './components/PatchNotesView';
-import { DeployModal } from './components/DeployModal';
-import { PoCApplyModal } from './components/PoCApplyModal';
+import { ViewFallback } from './components/ViewFallback';
 import { Language } from './i18n/translations';
+
+/**
+ * Routes and modals are loaded on demand. These components are only reachable
+ * after a navigation or a user action, so keeping them out of the initial chunk
+ * shortens first paint; Rollup derives one chunk per dynamic import below.
+ *
+ * The named exports are mapped to `default` because `lazy` expects a module
+ * whose default export is the component.
+ */
+const QuoteView = lazy(() =>
+  import('./components/QuoteView').then((m) => ({ default: m.QuoteView }))
+);
+const WorkspaceView = lazy(() =>
+  import('./components/WorkspaceView').then((m) => ({ default: m.WorkspaceView }))
+);
+const ArchitectureView = lazy(() =>
+  import('./components/ArchitectureView').then((m) => ({ default: m.ArchitectureView }))
+);
+const PatchNotesView = lazy(() =>
+  import('./components/PatchNotesView').then((m) => ({ default: m.PatchNotesView }))
+);
+const AppDetailModal = lazy(() =>
+  import('./components/AppDetailModal').then((m) => ({ default: m.AppDetailModal }))
+);
+const DeployModal = lazy(() =>
+  import('./components/DeployModal').then((m) => ({ default: m.DeployModal }))
+);
+const PoCApplyModal = lazy(() =>
+  import('./components/PoCApplyModal').then((m) => ({ default: m.PoCApplyModal }))
+);
+import { CurrencyCode, defaultCurrencyForLanguage, isCurrencyCode } from './lib/currency';
+import { applyDocumentLanguage, detectInitialLanguage, parseLanguage } from './lib/language';
+import { STORAGE_KEYS, readStored, usePersistentState, writeStored } from './lib/storage';
+import { parseCart } from './lib/scenarios';
+import { POC_EXTENSION_DAYS, canExtend } from './lib/poc';
 import {
   APPS_DATA,
   INITIAL_INSTALLED_MODULES,
@@ -31,10 +61,36 @@ export default function App() {
   const [currentRoute, setCurrentRoute] = useState<NavRoute>('catalog');
   const [selectedLocation, setSelectedLocation] = useState<string>('[경남/사천] 항공·정밀가공 사업장');
   const [tenantName] = useState<string>('[경남/사천] 항공·정밀기계 제조연합');
-  const [lang, setLang] = useState<Language>('ko');
+  // Stored preference, else the browser's language, else Korean.
+  const [lang, setLang] = useState<Language>(detectInitialLanguage);
 
-  // Initial cart with Pharma MES + EBRS as specified in prototype
-  const [cart, setCart] = useState<CartItem[]>([
+  const handleLangChange = useCallback((next: Language) => {
+    setLang(next);
+    // Persisted eagerly so the choice survives even if the tab closes at once.
+    writeStored(STORAGE_KEYS.lang, next);
+  }, []);
+
+  // Screen readers and CJK font fallback both key off <html lang>.
+  useEffect(() => {
+    applyDocumentLanguage(lang);
+  }, [lang]);
+
+  // First visit picks a currency from the detected language; after that the
+  // explicit choice is what matters, so it is never overwritten by a language switch.
+  const [currency, setCurrency] = useState<CurrencyCode>(() => {
+    const stored = readStored(STORAGE_KEYS.currency, (raw) => (isCurrencyCode(raw) ? raw : null));
+    return stored ?? defaultCurrencyForLanguage(detectInitialLanguage());
+  });
+
+  const handleCurrencyChange = useCallback((next: CurrencyCode) => {
+    setCurrency(next);
+    writeStored(STORAGE_KEYS.currency, next);
+  }, []);
+
+  // Initial cart with Pharma MES + EBRS as specified in prototype.
+  // Persisted: losing a half-built quote to an accidental refresh was the single
+  // most costly interaction in the simulator.
+  const [cart, setCart] = usePersistentState<CartItem[]>(STORAGE_KEYS.cart, [
     {
       id: 'mes-pharma',
       appId: 'smartfactory',
@@ -53,7 +109,7 @@ export default function App() {
       per: 'flat',
       unitLabel: '기본 120만원/월 (배치량 연동)'
     }
-  ]);
+  ], parseCart);
 
   const [installedModules, setInstalledModules] = useState<WorkspaceInstalledModule[]>(
     INITIAL_INSTALLED_MODULES
@@ -208,10 +264,46 @@ export default function App() {
     setPocTrials((prev) => prev.filter((t) => t.id !== trialId));
   };
 
+  /** Grants the one allowed extension, pushing back the expiry date with it. */
+  const handleExtendPoCTrial = (trialId: string) => {
+    setPocTrials((prev) =>
+      prev.map((trial) => {
+        if (trial.id !== trialId || !canExtend(trial)) return trial;
+        const expires = new Date(trial.expiresAt);
+        expires.setDate(expires.getDate() + POC_EXTENSION_DAYS);
+        return {
+          ...trial,
+          daysRemaining: trial.daysRemaining + POC_EXTENSION_DAYS,
+          expiresAt: expires.toISOString().split('T')[0],
+          extensionsUsed: (trial.extensionsUsed ?? 0) + 1,
+          status: 'active'
+        };
+      })
+    );
+  };
+
+  const handleRequestPoCEngineer = (trialId: string) => {
+    setPocTrials((prev) =>
+      prev.map((trial) => (trial.id === trialId ? { ...trial, engineerRequested: true } : trial))
+    );
+  };
+
   // Presets
   const handleApplyPreset = (preset: RecommendationPreset) => {
     setCart(preset.recommendedModules);
   };
+
+  // Stable identities: useModalDismiss keys its keydown listener on onClose,
+  // so an inline arrow would re-subscribe on every App render.
+  const closeDetailModal = useCallback(() => setIsDetailModalOpen(false), []);
+  const closeDeployModal = useCallback(
+    () => setDeployModalState((prev) => ({ ...prev, isOpen: false })),
+    []
+  );
+  const closePoCApplyModal = useCallback(
+    () => setPocApplyModalState((prev) => ({ ...prev, isOpen: false })),
+    []
+  );
 
   const handleBatchDeploy = () => {
     if (cart.length === 0) return;
@@ -242,11 +334,14 @@ export default function App() {
           selectedLocation={selectedLocation}
           onLocationChange={setSelectedLocation}
           lang={lang}
-          onLangChange={setLang}
+          onLangChange={handleLangChange}
+          currency={currency}
+          onCurrencyChange={handleCurrencyChange}
         />
 
         {/* View Switcher */}
         <main className="flex-1 overflow-y-auto">
+          <Suspense fallback={<ViewFallback />}>
           {currentRoute === 'catalog' && (
             <CatalogView
               apps={APPS_DATA}
@@ -258,6 +353,7 @@ export default function App() {
               onGoToQuote={() => setCurrentRoute('quote')}
               onApplyPreset={handleApplyPreset}
               lang={lang}
+              currency={currency}
             />
           )}
 
@@ -272,6 +368,7 @@ export default function App() {
               tenantName={tenantName}
               selectedLocation={selectedLocation}
               lang={lang}
+              currency={currency}
             />
           )}
 
@@ -284,52 +381,66 @@ export default function App() {
               onGoToCatalog={() => setCurrentRoute('catalog')}
               onConvertPoCToSub={handleConvertPoCToSub}
               onRemovePoCTrial={handleRemovePoCTrial}
+              onExtendPoCTrial={handleExtendPoCTrial}
+              onRequestPoCEngineer={handleRequestPoCEngineer}
               selectedLocation={selectedLocation}
               lang={lang}
+              currency={currency}
             />
           )}
 
           {currentRoute === 'patches' && (
             <PatchNotesView
               lang={lang}
-              onGoToCatalog={() => setCurrentRoute('catalog')}
+              selectedLocation={selectedLocation}
             />
           )}
 
-          {currentRoute === 'architecture' && <ArchitectureView />}
+          {currentRoute === 'architecture' && <ArchitectureView lang={lang} />}
+          </Suspense>
         </main>
       </div>
 
-      {/* Modals */}
+      {/* Modals are mounted only while open: their chunks load on first use, and
+          per-app state (selected node, permission toggles) starts clean each time. */}
+      <Suspense fallback={null}>
+      {isDetailModalOpen && (
       <AppDetailModal
         app={selectedAppForDetail}
         isOpen={isDetailModalOpen}
-        onClose={() => setIsDetailModalOpen(false)}
+        onClose={closeDetailModal}
         cart={cart}
         onToggleCartItem={handleToggleCartItem}
         onSelectRadioMES={handleSelectRadioMES}
         onDeployRequest={handleDeployRequest}
         onApplyPoC={handleOpenPoCModal}
         lang={lang}
+        currency={currency}
       />
+      )}
 
+      {deployModalState.isOpen && (
       <DeployModal
         isOpen={deployModalState.isOpen}
-        onClose={() => setDeployModalState((prev) => ({ ...prev, isOpen: false }))}
+        onClose={closeDeployModal}
         targetApp={deployModalState.app}
         targetLocation={deployModalState.location}
         onDeployComplete={handleDeployComplete}
         lang={lang}
       />
+      )}
 
+      {pocApplyModalState.isOpen && (
       <PoCApplyModal
         isOpen={pocApplyModalState.isOpen}
-        onClose={() => setPocApplyModalState((prev) => ({ ...prev, isOpen: false }))}
+        onClose={closePoCApplyModal}
         app={pocApplyModalState.app}
         selectedLocation={selectedLocation}
         onApplySuccess={handleApplyPoCSubmit}
         lang={lang}
       />
+      )}
+      </Suspense>
     </div>
   );
 }

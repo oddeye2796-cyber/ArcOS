@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { AppItem } from '../types';
 import { Language, TRANSLATIONS } from '../i18n/translations';
+import { useModalDismiss } from '../lib/useModalDismiss';
 import { getLocalizedAppName, getLocalizedLocationName } from '../i18n/localizedData';
 
 interface DeployModalProps {
@@ -32,16 +33,21 @@ export const DeployModal: React.FC<DeployModalProps> = ({
   lang = 'ko'
 }) => {
   const t = TRANSLATIONS[lang];
-  if (!isOpen || !targetApp) return null;
 
+  // Hooks stay above the `isOpen` guard so the hook count never changes.
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [logs, setLogs] = useState<string[]>([]);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
 
-  const localizedAppName = getLocalizedAppName(targetApp, lang);
+  const localizedAppName = targetApp ? getLocalizedAppName(targetApp, lang) : '';
   const localizedTargetLocation = getLocalizedLocationName(targetLocation, lang);
 
+  // Deployment is a sequenced simulation; dismissing it midway would leave the
+  // workspace without the module the timers are about to register.
+  const dismiss = useModalDismiss<HTMLDivElement>(isOpen, onClose, { locked: !isCompleted });
+
   useEffect(() => {
+    if (!isOpen || !targetApp) return;
     setCurrentStep(1);
     setIsCompleted(false);
 
@@ -123,7 +129,9 @@ export const DeployModal: React.FC<DeployModalProps> = ({
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
-  }, [targetApp, targetLocation, lang, localizedAppName, localizedTargetLocation]);
+  }, [isOpen, targetApp, targetLocation, lang, localizedAppName, localizedTargetLocation]);
+
+  if (!isOpen || !targetApp) return null;
 
   const steps = [
     { num: 1, title: t.deployStep1Title, desc: t.deployStep1Desc },
@@ -133,8 +141,18 @@ export const DeployModal: React.FC<DeployModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden animate-in zoom-in-95">
+    <div
+      ref={dismiss.backdropRef}
+      onMouseDown={dismiss.onBackdropMouseDown}
+      onClick={dismiss.onBackdropClick}
+      role="presentation"
+      className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4"
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden animate-in zoom-in-95"
+      >
         {/* Header */}
         <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -143,7 +161,7 @@ export const DeployModal: React.FC<DeployModalProps> = ({
             </div>
             <div>
               <h3 className="text-sm font-bold break-keep">
-                {t.deployModalTitle}
+                {t.deployOrchestratorTitle}
               </h3>
               <p className="text-[11px] text-slate-300">
                 {localizedAppName} → {localizedTargetLocation}
@@ -153,11 +171,11 @@ export const DeployModal: React.FC<DeployModalProps> = ({
           {!isCompleted ? (
             <div className="flex items-center gap-1.5 text-xs text-blue-300 font-mono">
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              <span>{t.deployModalDeploying}</span>
+              <span>{t.deployingProgress}</span>
             </div>
           ) : (
             <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
-              <CheckCircle2 className="w-4 h-4" /> {t.deployModalSuccess}
+              <CheckCircle2 className="w-4 h-4" /> {t.deploySuccess}
             </span>
           )}
         </div>
@@ -218,7 +236,7 @@ export const DeployModal: React.FC<DeployModalProps> = ({
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
               <span className="break-keep">
-                {t.deploySecurityNote}
+                {t.dataPlaneSecureGuarantee}
               </span>
             </div>
           </div>
@@ -234,14 +252,14 @@ export const DeployModal: React.FC<DeployModalProps> = ({
               }}
               className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors shadow-sm whitespace-nowrap"
             >
-              {t.deployViewInWorkspace}
+              {t.viewInWorkspace}
             </button>
           ) : (
             <button
               onClick={onClose}
               className="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-200 rounded-lg transition-colors whitespace-nowrap"
             >
-              {t.deployRunInBackground}
+              {t.runInBackground}
             </button>
           )}
         </div>
