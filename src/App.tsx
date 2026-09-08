@@ -40,6 +40,7 @@ const PoCApplyModal = lazy(() =>
 );
 import { CurrencyCode, defaultCurrencyForLanguage, isCurrencyCode } from './lib/currency';
 import { applyDocumentLanguage, detectInitialLanguage, parseLanguage } from './lib/language';
+import { loadLanguage } from './i18n/loadLanguage';
 import { STORAGE_KEYS, readStored, usePersistentState, writeStored } from './lib/storage';
 import { parseCart } from './lib/scenarios';
 import { POC_EXTENSION_DAYS, canExtend } from './lib/poc';
@@ -71,10 +72,24 @@ export default function App() {
   // Stored preference, else the browser's language, else Korean.
   const [lang, setLang] = useState<Language>(detectInitialLanguage);
 
+  /**
+   * Switches language once its strings are in hand. Rendering first and
+   * loading after would flash the old language, or crash on a missing table;
+   * the fetch is one small chunk, and the current language stays on screen
+   * meanwhile.
+   */
   const handleLangChange = useCallback((next: Language) => {
-    setLang(next);
-    // Persisted eagerly so the choice survives even if the tab closes at once.
-    writeStored(STORAGE_KEYS.lang, next);
+    void loadLanguage(next)
+      .then(() => {
+        setLang(next);
+        // Persisted eagerly so the choice survives even if the tab closes at once.
+        writeStored(STORAGE_KEYS.lang, next);
+      })
+      .catch((error) => {
+        // The current language stays on screen, which is the honest outcome:
+        // switching to strings that never arrived would blank the page.
+        console.error(`ArcOS: could not load "${next}" strings`, error);
+      });
   }, []);
 
   // Screen readers and CJK font fallback both key off <html lang>.

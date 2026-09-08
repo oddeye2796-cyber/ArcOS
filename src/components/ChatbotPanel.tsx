@@ -30,6 +30,7 @@ import {
   warmSearchIndex
 } from '../lib/moduleSearch';
 import { CHATBOT_COPY, fillTemplate } from '../i18n/chatbotLocalization';
+import { loadAllLanguages } from '../i18n/loadLanguage';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { CurrencyCode, formatMoney } from '../lib/currency';
 import { useExchangeRates } from '../lib/useExchangeRates';
@@ -283,27 +284,38 @@ export const ChatbotPanel: React.FC<ChatbotPanelProps> = ({
   }, []);
 
   /**
-   * Build the catalog index now rather than on the first question, where a few
-   * milliseconds of work would land between pressing Enter and seeing an
-   * answer. Deferred to idle time so it cannot delay the panel's first paint.
+   * Prepare the finder as soon as it opens, rather than on the first question
+   * where the work would land between pressing Enter and seeing an answer.
+   *
+   * The other two languages are fetched immediately — that is network work, so
+   * it cannot block anything — and the index is built from the result during
+   * idle time. Fetching them is what lets a question be asked in any language
+   * regardless of the UI language. A question asked before they land is
+   * answered from what has loaded, and the index rebuilds when the rest
+   * arrives.
    */
   useEffect(() => {
-    // Called on `window` rather than through a local alias: a detached
-    // reference to a DOM method throws on invocation.
-    if (typeof window.requestIdleCallback === 'function') {
-      const handle = window.requestIdleCallback(() => warmSearchIndex());
-      return () => window.cancelIdleCallback(handle);
-    }
-    const timer = window.setTimeout(warmSearchIndex, 0);
-    return () => window.clearTimeout(timer);
-  }, []);
+    let cancelled = false;
+    let cancelWarm: (() => void) | undefined;
 
-  // Keep the newest answer in view. `scrollTop` rather than `scrollIntoView`,
-  // which would also scroll the page behind the panel.
-  useEffect(() => {
-    const list = listRef.current;
-    if (list) list.scrollTop = list.scrollHeight;
-  }, [messages]);
+    void loadAllLanguages().then(() => {
+      if (cancelled) return;
+      // Called on `window` rather than through a local alias: a detached
+      // reference to a DOM method throws on invocation.
+      if (typeof window.requestIdleCallback === 'function') {
+        const handle = window.requestIdleCallback(() => warmSearchIndex());
+        cancelWarm = () => window.cancelIdleCallback(handle);
+        return;
+      }
+      const timer = window.setTimeout(warmSearchIndex, 0);
+      cancelWarm = () => window.clearTimeout(timer);
+    });
+
+    return () => {
+      cancelled = true;
+      cancelWarm?.();
+    };
+  }, []);
 
   const say = useCallback((message: Omit<Message, 'id' | 'role'>) => {
     setMessages((prev) => [...prev, { ...message, id: nextId(), role: 'bot' }]);

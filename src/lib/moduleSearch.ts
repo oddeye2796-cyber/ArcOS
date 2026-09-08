@@ -26,6 +26,7 @@ import {
 } from '../data/chatbotKeywords';
 import { Language } from '../i18n/translations';
 import {
+  getCatalogVersion,
   getLocalizedAppCategory,
   getLocalizedAppDesc,
   getLocalizedAppDetail,
@@ -185,13 +186,22 @@ function subModuleFields(app: AppItem, sub: SubModuleItem): IndexedField[] {
 }
 
 /**
- * Built once on first use and reused for every keystroke: the localization
- * lookups behind it are not free, and the catalog never changes at runtime.
+ * Built on first use and reused for every keystroke: the localization lookups
+ * behind it are not free.
+ *
+ * The catalog copy is not constant any more — languages arrive one chunk at a
+ * time — so the cache records which version of the string tables it was built
+ * from and rebuilds when a new language lands. Without that, an index built
+ * before the other languages loaded would keep answering as if they were still
+ * missing.
  */
 let cachedIndex: IndexEntry[] | null = null;
+let cachedIndexVersion = -1;
 
 function getIndex(): IndexEntry[] {
-  if (cachedIndex) return cachedIndex;
+  if (cachedIndex && cachedIndexVersion === getCatalogVersion()) return cachedIndex;
+  cachedIndexVersion = getCatalogVersion();
+  cachedIndexByKey = null;
 
   const entries: IndexEntry[] = [];
 
@@ -447,11 +457,13 @@ interface PresetIndexEntry {
   keywords: readonly string[];
 }
 
-/** Same reasoning as `getIndex`: the localization lookups are not free. */
+/** Same reasoning as `getIndex`, including the rebuild on a new language. */
 let cachedPresetIndex: PresetIndexEntry[] | null = null;
+let cachedPresetVersion = -1;
 
 function getPresetIndex(): PresetIndexEntry[] {
-  if (cachedPresetIndex) return cachedPresetIndex;
+  if (cachedPresetIndex && cachedPresetVersion === getCatalogVersion()) return cachedPresetIndex;
+  cachedPresetVersion = getCatalogVersion();
 
   cachedPresetIndex = RECOMMENDATION_PRESETS.map((preset) => ({
     preset,
@@ -544,8 +556,10 @@ export function presetById(id: string): RecommendationPreset | undefined {
 let cachedIndexByKey: Map<string, IndexEntry> | null = null;
 
 function getIndexByKey(): Map<string, IndexEntry> {
+  // getIndex clears this whenever it rebuilds, so the two never disagree.
+  const entries = getIndex();
   if (!cachedIndexByKey) {
-    cachedIndexByKey = new Map(getIndex().map((entry) => [entry.key, entry]));
+    cachedIndexByKey = new Map(entries.map((entry) => [entry.key, entry]));
   }
   return cachedIndexByKey;
 }

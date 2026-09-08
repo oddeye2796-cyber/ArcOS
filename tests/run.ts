@@ -1,11 +1,22 @@
 /**
  * Test entry point: `npm test`.
  *
- * Suites register themselves on import, so adding one is a matter of adding a
- * line here.
+ * Language strings are loaded first, the way `main.tsx` does before the first
+ * render: the catalog tables start empty and are filled per language, so a
+ * suite that ran before them would be testing an empty catalog. The suites are
+ * imported dynamically for the same reason — importing registers their cases,
+ * which run immediately.
  */
-import './searchRanking.test';
-import './i18n.test';
+import { loadAllLanguages } from '../src/i18n/loadLanguage';
 import { report } from './harness';
 
-report();
+void loadAllLanguages()
+  .then(async () => {
+    await import('./searchRanking.test');
+    await import('./i18n.test');
+    report();
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
