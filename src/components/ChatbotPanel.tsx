@@ -26,7 +26,8 @@ import {
   presetById,
   resolveModules,
   searchModules,
-  searchPresets
+  searchPresets,
+  warmSearchIndex
 } from '../lib/moduleSearch';
 import { CHATBOT_COPY, fillTemplate } from '../i18n/chatbotLocalization';
 import { Language, TRANSLATIONS } from '../i18n/translations';
@@ -85,6 +86,155 @@ export interface ChatbotPanelProps {
   onGoToQuote: () => void;
 }
 
+interface ResultCardProps {
+  match: ModuleMatch;
+  withReasons: boolean;
+  inCart: boolean;
+  pocRunning: boolean;
+  /** Formatted by the panel, which owns the currency and the rate snapshot. */
+  price: string;
+  lang: Language;
+  onOpenApp: (app: AppItem) => void;
+  onToggle: (match: ModuleMatch, inCart: boolean) => void;
+  onApplyPoC: (app: AppItem) => void;
+}
+
+/**
+ * One catalog entry inside the conversation.
+ *
+ * Memoized because the transcript only grows: every answer, and every "added
+ * to the quote" line, would otherwise re-render every card said so far. All
+ * props are primitives or references that outlive a render, so the comparison
+ * actually holds.
+ */
+const ResultCard = React.memo<ResultCardProps>(
+  ({ match, withReasons, inCart, pocRunning, price, lang, onOpenApp, onToggle, onApplyPoC }) => {
+    const copy = CHATBOT_COPY[lang];
+    const { app, subModule } = match;
+    const name = subModule
+      ? getLocalizedSubModuleName(subModule.id, subModule.name, lang)
+      : getLocalizedAppName(app, lang);
+    const desc = subModule
+      ? getLocalizedSubModuleDesc(subModule.id, subModule.desc, lang)
+      : getLocalizedAppDesc(app, lang);
+    const blockedDeps = app.deps.filter((dep) => !dep.ok).length;
+    const isFoundation = app.id === FOUNDATION_APP_ID;
+    // A suite has to be configured module by module, so the chat sends the user
+    // into the detail modal instead of guessing which core they meant.
+    const canAddDirectly = !isFoundation && (Boolean(subModule) || !app.suite);
+
+    return (
+      <div className="rounded-lg border border-slate-200 bg-white p-3 space-y-2 shadow-sm">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+              {getLocalizedAppCategory(app, lang)}
+            </div>
+            <div className="text-[13px] font-bold text-slate-900 break-keep leading-snug">
+              {name}
+            </div>
+          </div>
+          <div className="flex flex-col items-end gap-1 flex-shrink-0">
+            {(app.landing || subModule?.landing) && (
+              <span className="inline-flex items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800 border border-emerald-200 whitespace-nowrap">
+                <Rocket className="w-2.5 h-2.5" />
+                {copy.landing}
+              </span>
+            )}
+            {pocRunning && (
+              <span className="rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-800 border border-indigo-200 whitespace-nowrap">
+                {copy.pocActive}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <p className="text-[11.5px] leading-relaxed text-slate-600 break-keep line-clamp-3">
+          {desc}
+        </p>
+
+        {subModule && (
+          <div className="text-[10.5px] text-slate-500 flex items-center gap-1">
+            <Layers className="w-3 h-3 text-slate-400 flex-shrink-0" />
+            <span className="truncate">
+              {fillTemplate(copy.suiteMember, { suite: getLocalizedAppName(app, lang) })}
+            </span>
+          </div>
+        )}
+
+        {withReasons && match.reasons.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1 text-[10px] text-slate-500">
+            <span className="font-semibold text-slate-400">{copy.matchReason}</span>
+            {match.reasons.map((reason) => (
+              <span
+                key={reason}
+                className="rounded bg-blue-50 px-1.5 py-0.5 font-medium text-blue-700 border border-blue-100"
+              >
+                {reason}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-center gap-1.5 text-[10px]">
+          <span className="font-mono font-semibold text-slate-700">{price}</span>
+          {app.status === 'onprem' && (
+            <span className="inline-flex items-center gap-1 rounded bg-purple-50 px-1.5 py-0.5 text-purple-700 border border-purple-200">
+              <Lock className="w-2.5 h-2.5" />
+              {copy.onprem}
+            </span>
+          )}
+          {isFoundation && (
+            <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-1.5 py-0.5 text-emerald-700 border border-emerald-200">
+              <ShieldCheck className="w-2.5 h-2.5" />
+              {copy.subscribed}
+            </span>
+          )}
+          {blockedDeps > 0 && (
+            <span className="rounded bg-amber-50 px-1.5 py-0.5 text-amber-800 border border-amber-200">
+              {fillTemplate(copy.prereq, { count: blockedDeps })}
+            </span>
+          )}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+          <button
+            type="button"
+            onClick={() => onOpenApp(app)}
+            className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:border-slate-300"
+          >
+            {copy.detail}
+          </button>
+          {canAddDirectly && (
+            <button
+              type="button"
+              onClick={() => onToggle(match, inCart)}
+              className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+                inCart
+                  ? 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                  : 'bg-slate-900 text-white hover:bg-slate-800'
+              }`}
+            >
+              {inCart ? copy.added : copy.add}
+            </button>
+          )}
+          {!isFoundation && (
+            <button
+              type="button"
+              onClick={() => onApplyPoC(app)}
+              className="inline-flex items-center gap-1 rounded-lg border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-[11px] font-semibold text-indigo-700 transition-colors hover:bg-indigo-100"
+            >
+              <FlaskConical className="w-3 h-3" />
+              {copy.poc}
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
+);
+ResultCard.displayName = 'ResultCard';
+
 let messageSeq = 0;
 const nextId = () => `msg-${(messageSeq += 1)}`;
 
@@ -130,6 +280,22 @@ export const ChatbotPanel: React.FC<ChatbotPanelProps> = ({
 
   useEffect(() => {
     inputRef.current?.focus();
+  }, []);
+
+  /**
+   * Build the catalog index now rather than on the first question, where a few
+   * milliseconds of work would land between pressing Enter and seeing an
+   * answer. Deferred to idle time so it cannot delay the panel's first paint.
+   */
+  useEffect(() => {
+    // Called on `window` rather than through a local alias: a detached
+    // reference to a DOM method throws on invocation.
+    if (typeof window.requestIdleCallback === 'function') {
+      const handle = window.requestIdleCallback(() => warmSearchIndex());
+      return () => window.cancelIdleCallback(handle);
+    }
+    const timer = window.setTimeout(warmSearchIndex, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   // Keep the newest answer in view. `scrollTop` rather than `scrollIntoView`,
@@ -309,8 +475,7 @@ export const ChatbotPanel: React.FC<ChatbotPanelProps> = ({
     return cart.some((item) => item.id === match.app.id);
   };
 
-  const handleToggle = (match: ModuleMatch) => {
-    const wasInCart = isInCart(match);
+  const handleToggle = useCallback((match: ModuleMatch, wasInCart: boolean) => {
     const name = match.subModule
       ? getLocalizedSubModuleName(match.subModule.id, match.subModule.name, lang)
       : getLocalizedAppName(match.app, lang);
@@ -327,7 +492,7 @@ export const ChatbotPanel: React.FC<ChatbotPanelProps> = ({
       (group) => group.type === 'radio' && group.items.some((item) => item.id === match.subModule!.id)
     ));
     say({ text: fillTemplate(removed ? copy.removedToast : copy.addedToast, { name }) });
-  };
+  }, [copy, lang, onToggleApp, onToggleSubModule, say]);
 
   const handleApplyPreset = (preset: RecommendationPreset) => {
     onApplyPreset(preset);
@@ -344,135 +509,6 @@ export const ChatbotPanel: React.FC<ChatbotPanelProps> = ({
     if (match.app.suite) return t.cardPerModulePricing;
     if (!match.app.price) return t.cardIncludedInBase;
     return `${t.monthPrefix} ${formatMoney(match.app.price, currency, lang, rateSnapshot.rates)}~`;
-  };
-
-  const renderResult = (match: ModuleMatch, withReasons: boolean) => {
-    const { app, subModule } = match;
-    const name = subModule
-      ? getLocalizedSubModuleName(subModule.id, subModule.name, lang)
-      : getLocalizedAppName(app, lang);
-    const desc = subModule
-      ? getLocalizedSubModuleDesc(subModule.id, subModule.desc, lang)
-      : getLocalizedAppDesc(app, lang);
-    const inCart = isInCart(match);
-    const blockedDeps = app.deps.filter((dep) => !dep.ok).length;
-    const pocRunning = pocTrials.some((trial) => trial.appId === app.id);
-    const isFoundation = app.id === FOUNDATION_APP_ID;
-    // A suite has to be configured module by module, so the chat sends the user
-    // into the detail modal instead of guessing which core they meant.
-    const canAddDirectly = !isFoundation && (Boolean(subModule) || !app.suite);
-
-    return (
-      <div
-        key={match.key}
-        className="rounded-lg border border-slate-200 bg-white p-3 space-y-2 shadow-sm"
-      >
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-              {getLocalizedAppCategory(app, lang)}
-            </div>
-            <div className="text-[13px] font-bold text-slate-900 break-keep leading-snug">
-              {name}
-            </div>
-          </div>
-          <div className="flex flex-col items-end gap-1 flex-shrink-0">
-            {(app.landing || subModule?.landing) && (
-              <span className="inline-flex items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800 border border-emerald-200 whitespace-nowrap">
-                <Rocket className="w-2.5 h-2.5" />
-                {copy.landing}
-              </span>
-            )}
-            {pocRunning && (
-              <span className="rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-bold text-indigo-800 border border-indigo-200 whitespace-nowrap">
-                {copy.pocActive}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <p className="text-[11.5px] leading-relaxed text-slate-600 break-keep line-clamp-3">
-          {desc}
-        </p>
-
-        {subModule && (
-          <div className="text-[10.5px] text-slate-500 flex items-center gap-1">
-            <Layers className="w-3 h-3 text-slate-400 flex-shrink-0" />
-            <span className="truncate">
-              {fillTemplate(copy.suiteMember, { suite: getLocalizedAppName(app, lang) })}
-            </span>
-          </div>
-        )}
-
-        {withReasons && match.reasons.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1 text-[10px] text-slate-500">
-            <span className="font-semibold text-slate-400">{copy.matchReason}</span>
-            {match.reasons.map((reason) => (
-              <span
-                key={reason}
-                className="rounded bg-blue-50 px-1.5 py-0.5 font-medium text-blue-700 border border-blue-100"
-              >
-                {reason}
-              </span>
-            ))}
-          </div>
-        )}
-
-        <div className="flex flex-wrap items-center gap-1.5 text-[10px]">
-          <span className="font-mono font-semibold text-slate-700">{priceLabel(match)}</span>
-          {app.status === 'onprem' && (
-            <span className="inline-flex items-center gap-1 rounded bg-purple-50 px-1.5 py-0.5 text-purple-700 border border-purple-200">
-              <Lock className="w-2.5 h-2.5" />
-              {copy.onprem}
-            </span>
-          )}
-          {isFoundation && (
-            <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-1.5 py-0.5 text-emerald-700 border border-emerald-200">
-              <ShieldCheck className="w-2.5 h-2.5" />
-              {copy.subscribed}
-            </span>
-          )}
-          {blockedDeps > 0 && (
-            <span className="rounded bg-amber-50 px-1.5 py-0.5 text-amber-800 border border-amber-200">
-              {fillTemplate(copy.prereq, { count: blockedDeps })}
-            </span>
-          )}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-1.5 pt-1">
-          <button
-            type="button"
-            onClick={() => onOpenApp(app)}
-            className="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:border-slate-300"
-          >
-            {copy.detail}
-          </button>
-          {canAddDirectly && (
-            <button
-              type="button"
-              onClick={() => handleToggle(match)}
-              className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-colors ${
-                inCart
-                  ? 'bg-blue-100 text-blue-800 hover:bg-blue-200'
-                  : 'bg-slate-900 text-white hover:bg-slate-800'
-              }`}
-            >
-              {inCart ? copy.added : copy.add}
-            </button>
-          )}
-          {!isFoundation && (
-            <button
-              type="button"
-              onClick={() => onApplyPoC(app)}
-              className="inline-flex items-center gap-1 rounded-lg border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-[11px] font-semibold text-indigo-700 transition-colors hover:bg-indigo-100"
-            >
-              <FlaskConical className="w-3 h-3" />
-              {copy.poc}
-            </button>
-          )}
-        </div>
-      </div>
-    );
   };
 
   const renderPreset = (preset: RecommendationPreset) => (
@@ -591,9 +627,20 @@ export const ChatbotPanel: React.FC<ChatbotPanelProps> = ({
 
                 {message.results && message.results.length > 0 && (
                   <div className="space-y-2">
-                    {message.results.map((result) =>
-                      renderResult(result, Boolean(message.withReasons))
-                    )}
+                    {message.results.map((result) => (
+                      <ResultCard
+                        key={result.key}
+                        match={result}
+                        withReasons={Boolean(message.withReasons)}
+                        inCart={isInCart(result)}
+                        pocRunning={pocTrials.some((trial) => trial.appId === result.app.id)}
+                        price={priceLabel(result)}
+                        lang={lang}
+                        onOpenApp={onOpenApp}
+                        onToggle={handleToggle}
+                        onApplyPoC={onApplyPoC}
+                      />
+                    ))}
                   </div>
                 )}
 

@@ -150,7 +150,7 @@ export default function App() {
 
 
   // Toggle single item in cart
-  const handleToggleCartItem = (item: CartItem) => {
+  const handleToggleCartItem = useCallback((item: CartItem) => {
     setCart((prev) => {
       const exists = prev.some((c) => c.id === item.id);
       if (exists) {
@@ -158,10 +158,10 @@ export default function App() {
       }
       return [...prev, item];
     });
-  };
+  }, [setCart]);
 
   // MES radio selection (mutual exclusivity among MES core: pharma, food, general)
-  const handleSelectRadioMES = (item: SubModuleItem, suiteApp: AppItem) => {
+  const handleSelectRadioMES = useCallback((item: SubModuleItem, suiteApp: AppItem) => {
     setCart((prev) => {
       const filtered = prev.filter((c) => !MES_CORE_IDS.includes(c.id));
       return [
@@ -177,14 +177,14 @@ export default function App() {
         }
       ];
     });
-  };
+  }, [setCart]);
 
   /**
    * Adds a suite member from outside the detail modal (the module finder).
    * MES cores are mutually exclusive, so they go through the radio handler
    * instead of a plain toggle, which would otherwise leave two cores selected.
    */
-  const handleToggleSubModule = (item: SubModuleItem, suiteApp: AppItem) => {
+  const handleToggleSubModule = useCallback((item: SubModuleItem, suiteApp: AppItem) => {
     if (MES_CORE_IDS.includes(item.id)) {
       handleSelectRadioMES(item, suiteApp);
       return;
@@ -198,10 +198,10 @@ export default function App() {
       per: item.per,
       unitLabel: item.unitLabel
     });
-  };
+  }, [handleSelectRadioMES, handleToggleCartItem]);
 
   // Quick toggle from card
-  const handleQuickToggleCart = (app: AppItem) => {
+  const handleQuickToggleCart = useCallback((app: AppItem) => {
     if (app.suite) {
       setSelectedAppForDetail(app);
       setIsDetailModalOpen(true);
@@ -216,12 +216,12 @@ export default function App() {
       per: app.per || 'flat',
       unitLabel: app.unit
     });
-  };
+  }, [handleToggleCartItem]);
 
-  const handleOpenDetailModal = (app: AppItem) => {
+  const handleOpenDetailModal = useCallback((app: AppItem) => {
     setSelectedAppForDetail(app);
     setIsDetailModalOpen(true);
-  };
+  }, []);
 
   const handleDeployRequest = (app: AppItem, location: string) => {
     setIsDetailModalOpen(false);
@@ -259,12 +259,12 @@ export default function App() {
   };
 
   // PoC Trial Handlers
-  const handleOpenPoCModal = (app: AppItem) => {
+  const handleOpenPoCModal = useCallback((app: AppItem) => {
     setPocApplyModalState({
       isOpen: true,
       app
     });
-  };
+  }, []);
 
   const handleApplyPoCSubmit = (trialData: PoCTrial) => {
     setPocTrials((prev) => [trialData, ...prev.filter((t) => t.id !== trialData.id)]);
@@ -316,9 +316,11 @@ export default function App() {
   };
 
   // Presets
-  const handleApplyPreset = (preset: RecommendationPreset) => {
+  const handleApplyPreset = useCallback((preset: RecommendationPreset) => {
     setCart(preset.recommendedModules);
-  };
+  }, [setCart]);
+
+  const handleGoToQuote = useCallback(() => setCurrentRoute('quote'), []);
 
   // Stable identities: useModalDismiss keys its keydown listener on onClose,
   // so an inline arrow would re-subscribe on every App render.
@@ -497,7 +499,7 @@ export default function App() {
         onToggleSubModule={handleToggleSubModule}
         onApplyPoC={handleOpenPoCModal}
         onApplyPreset={handleApplyPreset}
-        onGoToQuote={() => setCurrentRoute('quote')}
+        onGoToQuote={handleGoToQuote}
       />
     </div>
     </ExchangeRateProvider>

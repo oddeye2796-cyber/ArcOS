@@ -260,10 +260,49 @@ function variantsOf(token: string): Variant[] {
   return variants;
 }
 
-function tokenize(query: string): string[] {
-  return normalize(query)
-    .split(' ')
-    .filter((token) => token.length >= 2 && !STOP_WORDS.has(token));
+/** A query token together with the catalog spellings it could appear as. */
+interface PreparedToken {
+  token: string;
+  variants: Variant[];
+}
+
+/**
+ * Everything a query needs, computed once.
+ *
+ * Variant expansion is quadratic in token length for CJK, and it used to run
+ * inside the per-entry loop — the same substrings rebuilt for all fourteen
+ * catalog entries. Hoisting it here makes it fourteen times cheaper without
+ * changing a single score.
+ */
+interface PreparedQuery {
+  /** The query exactly as given, so the cache below can identify a repeat. */
+  raw: string;
+  /** Space-padded, so `containsTerm` can test word starts on both edges. */
+  padded: string;
+  tokens: PreparedToken[];
+}
+
+/**
+ * Last prepared query, reused across the calls that answer one question.
+ *
+ * `searchModules` and `searchPresets` are always given the same string, so a
+ * single-entry cache removes the second, identical expansion. Anything larger
+ * would be bookkeeping for a cache that is never asked for an older query.
+ */
+let lastPrepared: PreparedQuery | null = null;
+
+function prepareQuery(query: string): PreparedQuery {
+  if (lastPrepared?.raw === query) return lastPrepared;
+
+  const normalized = normalize(query);
+  const tokens: PreparedToken[] = [];
+  for (const token of normalized.split(' ')) {
+    if (token.length < 2 || STOP_WORDS.has(token)) continue;
+    tokens.push({ token, variants: variantsOf(token) });
+  }
+
+  lastPrepared = { raw: query, padded: ` ${normalized} `, tokens };
+  return lastPrepared;
 }
 
 interface Scored {
@@ -286,8 +325,7 @@ function dedupeReasons(reasons: string[]): string[] {
 function scoreAgainst(
   fields: IndexedField[],
   keywords: readonly string[],
-  tokens: string[],
-  normalizedQuery: string
+  query: PreparedQuery
 ): Scored {
   const reasons: string[] = [];
   let score = 0;
@@ -295,7 +333,7 @@ function scoreAgainst(
   // Curated synonyms are matched against the whole query so multi-word entries
   // ("audit trail", "no code") work without depending on how it was tokenized.
   const keywordHits = keywords
-    .filter((keyword) => keyword.length >= 2 && containsTerm(normalizedQuery, keyword))
+    .filter((keyword) => keyword.length >= 2 && containsTerm(query.padded, keyword))
     .sort((a, b) => b.length - a.length)
     .slice(0, MAX_KEYWORD_HITS);
 
@@ -305,12 +343,12 @@ function scoreAgainst(
     reasons.push(keyword);
   }
 
-  for (const token of tokens) {
+  for (const { token, variants } of query.tokens) {
     let bestScore = 0;
     let bestText = '';
     let bestCoverage = 0;
 
-    for (const variant of variantsOf(token)) {
+    for (const variant of variants) {
       // Variants come longest-first; once a shorter one is reached and a match
       // is already in hand, nothing shorter can be more specific.
       if (bestScore > 0 && variant.coverage < bestCoverage) break;
@@ -338,15 +376,28 @@ function scoreAgainst(
   return { score, reasons: dedupeReasons(reasons) };
 }
 
+/**
+ * Builds both indexes ahead of time.
+ *
+ * They are lazy so the chunk can load without paying for them, but building
+ * them costs a few milliseconds — enough to be felt if it lands on the first
+ * question. The panel calls this when it opens, while the user is still
+ * reading the greeting.
+ */
+export function warmSearchIndex(): void {
+  getIndex();
+  getIndexByKey();
+  getPresetIndex();
+}
+
 /** Ranked catalog entries for a free-text question. Empty when nothing fits. */
 export function searchModules(query: string, limit = 4): ModuleMatch[] {
-  const normalizedQuery = ` ${normalize(query)} `;
-  const tokens = tokenize(query);
-  if (tokens.length === 0) return [];
+  const prepared = prepareQuery(query);
+  if (prepared.tokens.length === 0) return [];
 
   const scored: ModuleMatch[] = [];
   for (const entry of getIndex()) {
-    const { score, reasons } = scoreAgainst(entry.fields, entry.keywords, tokens, normalizedQuery);
+    const { score, reasons } = scoreAgainst(entry.fields, entry.keywords, prepared);
     if (score <= 0) continue;
     scored.push({
       key: entry.key,
@@ -367,14 +418,22 @@ export function searchModules(query: string, limit = 4): ModuleMatch[] {
     .slice(0, limit);
 }
 
-/** Presets ranked for the same question, so a whole bundle can be offered. */
-export function searchPresets(query: string, limit = 1): PresetMatch[] {
-  const normalizedQuery = ` ${normalize(query)} `;
-  const tokens = tokenize(query);
-  if (tokens.length === 0) return [];
+interface PresetIndexEntry {
+  preset: RecommendationPreset;
+  fields: IndexedField[];
+  keywords: readonly string[];
+}
 
-  const scored: PresetMatch[] = RECOMMENDATION_PRESETS.map((preset) => {
-    const fields: IndexedField[] = [
+/** Same reasoning as `getIndex`: the localization lookups are not free. */
+let cachedPresetIndex: PresetIndexEntry[] | null = null;
+
+function getPresetIndex(): PresetIndexEntry[] {
+  if (cachedPresetIndex) return cachedPresetIndex;
+
+  cachedPresetIndex = RECOMMENDATION_PRESETS.map((preset) => ({
+    preset,
+    keywords: PRESET_KEYWORDS[preset.id] ?? [],
+    fields: [
       {
         text: joinLocalized([
           ...ALL_LANGUAGES.map((l) => getLocalizedPresetTitle(preset, l)),
@@ -399,15 +458,20 @@ export function searchPresets(query: string, limit = 1): PresetMatch[] {
         ]),
         weight: WEIGHT.detail
       }
-    ];
-    const { score } = scoreAgainst(
-      fields,
-      PRESET_KEYWORDS[preset.id] ?? [],
-      tokens,
-      normalizedQuery
-    );
-    return { preset, score };
-  });
+    ]
+  }));
+  return cachedPresetIndex;
+}
+
+/** Presets ranked for the same question, so a whole bundle can be offered. */
+export function searchPresets(query: string, limit = 1): PresetMatch[] {
+  const prepared = prepareQuery(query);
+  if (prepared.tokens.length === 0) return [];
+
+  const scored: PresetMatch[] = getPresetIndex().map((entry) => ({
+    preset: entry.preset,
+    score: scoreAgainst(entry.fields, entry.keywords, prepared).score
+  }));
 
   scored.sort((a, b) => b.score - a.score);
   return scored.filter((entry) => entry.score >= PRESET_MIN_SCORE).slice(0, limit);
@@ -417,15 +481,15 @@ function detectIntent<Id extends string>(
   intents: readonly IntentDefinition<Id>[],
   query: string
 ): IntentDefinition<Id> | null {
-  const normalizedQuery = ` ${normalize(query)} `;
-  if (!normalizedQuery.trim()) return null;
+  const padded = ` ${normalize(query)} `;
+  if (!padded.trim()) return null;
 
   let best: IntentDefinition<Id> | null = null;
   let bestLength = 0;
   for (const intent of intents) {
     for (const keyword of intent.keywords) {
       // Longest keyword wins: "의료기기" should beat a bare "기기" elsewhere.
-      if (keyword.length > bestLength && containsTerm(normalizedQuery, keyword)) {
+      if (keyword.length > bestLength && containsTerm(padded, keyword)) {
         best = intent;
         bestLength = keyword.length;
       }
@@ -454,36 +518,42 @@ export function presetById(id: string): RecommendationPreset | undefined {
   return RECOMMENDATION_PRESETS.find((preset) => preset.id === id);
 }
 
-/**
- * Catalog entries for an explicit id list, keeping the order given. Used by the
- * guided path, where the recommendation is curated rather than searched.
- */
-export function resolveModules(ids: readonly string[]): ModuleMatch[] {
-  const index = getIndex();
-  const matches: ModuleMatch[] = [];
-  for (const id of ids) {
-    const entry = index.find((candidate) => candidate.key === id);
-    if (!entry) continue;
-    matches.push({
-      key: entry.key,
-      kind: entry.kind,
-      app: entry.app,
-      subModule: entry.subModule,
-      score: 0,
-      reasons: []
-    });
+let cachedIndexByKey: Map<string, IndexEntry> | null = null;
+
+function getIndexByKey(): Map<string, IndexEntry> {
+  if (!cachedIndexByKey) {
+    cachedIndexByKey = new Map(getIndex().map((entry) => [entry.key, entry]));
   }
-  return matches;
+  return cachedIndexByKey;
 }
 
-/** Every entry, suite members included — the "just show me everything" answer. */
-export function allModules(): ModuleMatch[] {
-  return getIndex().map((entry) => ({
+/** An index entry as a result with no score — the curated paths do not rank. */
+function toMatch(entry: IndexEntry): ModuleMatch {
+  return {
     key: entry.key,
     kind: entry.kind,
     app: entry.app,
     subModule: entry.subModule,
     score: 0,
     reasons: []
-  }));
+  };
+}
+
+/**
+ * Catalog entries for an explicit id list, keeping the order given. Used by the
+ * guided path, where the recommendation is curated rather than searched.
+ */
+export function resolveModules(ids: readonly string[]): ModuleMatch[] {
+  const byKey = getIndexByKey();
+  const matches: ModuleMatch[] = [];
+  for (const id of ids) {
+    const entry = byKey.get(id);
+    if (entry) matches.push(toMatch(entry));
+  }
+  return matches;
+}
+
+/** Every entry, suite members included — the "just show me everything" answer. */
+export function allModules(): ModuleMatch[] {
+  return getIndex().map(toMatch);
 }
