@@ -225,9 +225,24 @@ function getIndex(): IndexEntry[] {
 
 interface Variant {
   text: string;
-  /** Share of the original token this variant covers, 0–1. */
-  coverage: number;
+  /**
+   * How much of a term this fragment is, 0–1 — the multiplier on the field
+   * weight when it matches.
+   */
+  specificity: number;
 }
+
+/**
+ * Characters that make a CJK fragment a real term rather than a coincidence.
+ *
+ * Japanese is written without spaces and Korean glues particles on, so a whole
+ * question can arrive as one token: "設備の故障予知" is three words. Scoring a
+ * fragment by the share of the token it covers would discount a perfectly good
+ * "故障" match to a fifth of its weight purely because the user did not press
+ * space — so a fragment is scored by its own length instead, and four
+ * characters is treated as a full term.
+ */
+const SPECIFIC_CJK_LENGTH = 4;
 
 /**
  * Query terms as they might actually appear in the catalog.
@@ -240,10 +255,11 @@ interface Variant {
  */
 function variantsOf(token: string): Variant[] {
   if (!CJK_PATTERN.test(token)) {
-    const variants: Variant[] = [{ text: token, coverage: 1 }];
-    // English morphology: "monitoring" should still find "monitor".
+    // A Latin token is already a word: the whole of it is the term, and only a
+    // morphological stem ("monitor" for "monitoring") is worth less.
+    const variants: Variant[] = [{ text: token, specificity: 1 }];
     for (let len = token.length - 1; len >= 4 && len >= token.length - 3; len -= 1) {
-      variants.push({ text: token.slice(0, len), coverage: len / token.length });
+      variants.push({ text: token.slice(0, len), specificity: len / token.length });
     }
     return variants;
   }
@@ -251,10 +267,15 @@ function variantsOf(token: string): Variant[] {
   const variants: Variant[] = [];
   const maxLen = Math.min(token.length, 8);
   for (let len = maxLen; len >= 2; len -= 1) {
+    // Whichever reads as more of a term: the fragment's own length, or the
+    // share of the token it covers. A short word typed on its own ("기록") is
+    // a whole term and keeps full weight; the same two characters inside a
+    // seven-character run-on phrase are scored on their own merit instead.
+    const specificity = Math.min(1, Math.max(len / SPECIFIC_CJK_LENGTH, len / token.length));
     for (let start = 0; start + len <= token.length; start += 1) {
       const text = token.slice(start, start + len);
       if (NOISE_FRAGMENTS.has(text)) continue;
-      variants.push({ text, coverage: len / token.length });
+      variants.push({ text, specificity });
     }
   }
   return variants;
@@ -346,19 +367,21 @@ function scoreAgainst(
   for (const { token, variants } of query.tokens) {
     let bestScore = 0;
     let bestText = '';
-    let bestCoverage = 0;
+    let bestSpecificity = 0;
+    let bestLength = 0;
 
     for (const variant of variants) {
       // Variants come longest-first; once a shorter one is reached and a match
       // is already in hand, nothing shorter can be more specific.
-      if (bestScore > 0 && variant.coverage < bestCoverage) break;
+      if (bestScore > 0 && variant.text.length < bestLength) break;
       for (const field of fields) {
         if (!containsTerm(field.text, variant.text)) continue;
-        const candidate = field.weight * variant.coverage;
+        const candidate = field.weight * variant.specificity;
         if (candidate > bestScore) {
           bestScore = candidate;
           bestText = variant.text;
-          bestCoverage = variant.coverage;
+          bestSpecificity = variant.specificity;
+          bestLength = variant.text.length;
         }
       }
     }
@@ -368,7 +391,7 @@ function scoreAgainst(
       // A truncated Latin stem ("cleanroo") is meaningless to read, so the word
       // the user actually typed is shown instead. A CJK fragment is the
       // meaningful part of a particle-glued phrase, so it is kept as matched.
-      const label = !CJK_PATTERN.test(token) && bestCoverage < 1 ? token : bestText;
+      const label = !CJK_PATTERN.test(token) && bestSpecificity < 1 ? token : bestText;
       if (!reasons.includes(label)) reasons.push(label);
     }
   }

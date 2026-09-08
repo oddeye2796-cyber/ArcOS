@@ -24,13 +24,13 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     '제약', '바이오', '의약품', '원료의약품', 'gmp', '밸리데이션', '배치', '배치기록', '일탈',
     '무균', '주사제', '완제의약품', '의료기기', 'deviation', 'validation', 'pharma',
     'pharmaceutical', 'biotech', 'batch record', 'sterile',
-    '製薬', 'バイオ', '医薬品', '逸脱', 'バリデーション', '無菌'
+    '製薬', 'バイオ', '医薬品', '逸脱', 'バリデーション', '無菌', 'バッチ記録', '製造指図'
   ],
   'mes-food': [
     '식품', '음료', '화장품', '건강기능식품', 'haccp', 'ccp', '위생', '유통기한', '소비기한',
     '원료', '역추적', '이력추적', '배합', '충진', 'food', 'beverage', 'cosmetics', 'hygiene',
     'shelf life', 'expiry', 'recall', 'lot tracing',
-    '食品', '化粧品', '衛生', '賞味期限', 'トレーサビリティ', '原料'
+    '食品', '化粧品', '衛生', '賞味期限', 'トレーサビリティ', '原料', '自動記録'
   ],
   'mes-general': [
     '일반제조', '표준', '기계', '부품', '가공', '조립', '금속', '열처리', '자동차', '항공',
@@ -63,8 +63,10 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     '검사', '결함', 'automl',
     '노코드 ai', 'mlops', '추론', 'artificial intelligence', 'machine learning',
     'deep learning', 'predictive maintenance', 'anomaly detection', 'defect', 'yield',
-    'inference', 'model training',
-    '人工知能', '機械学習', '予知保全', '異常検知', '品質予測', '推論'
+    'inference', 'model training', 'downtime', 'machine failure', 'breakdown',
+    'failure prediction', 'scrap rate',
+    '人工知能', '機械学習', '予知保全', '異常検知', '品質予測', '推論',
+    '不良', '不良率', '歩留', '歩留まり', '故障', '故障予知', '設備保全', '品質改善'
   ],
   orch: [
     '에이전트', '멀티 에이전트', '다중 ai', '오케스트레이션', '슈퍼바이저', '조율', '교차검증',
@@ -78,7 +80,8 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     '감사대응', '일탈원인', '원인분석', '폐쇄망', '온프레미스 ai', '보안', 'rag', '검색증강',
     'chatbot', 'language model', 'document search', 'knowledge', 'question answering',
     'audit report', 'draft', 'on premise ai', 'air gapped',
-    'チャットボット', '言語モデル', '社内文書', '規程', '質問応答', '監査対応'
+    'チャットボット', '言語モデル', '社内文書', '規程', '質問応答', '監査対応',
+    '報告書', 'ドラフト', '原因分析'
   ],
   aesg: [
     '에너지', '전력', '전기요금', '전기세', '피크', '피크전력', '절감', '탄소', '탄소중립',
