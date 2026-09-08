@@ -4,6 +4,9 @@ import { HeaderLinkBar } from './components/HeaderLinkBar';
 // The catalog is the landing route, so it stays in the initial chunk.
 import { CatalogView } from './components/CatalogView';
 import { ViewFallback } from './components/ViewFallback';
+// The finder's launcher has to be present from first paint; the conversation
+// panel behind it is what loads on demand (see ChatbotWidget).
+import { ChatbotWidget } from './components/ChatbotWidget';
 import { Language } from './i18n/translations';
 
 /**
@@ -37,6 +40,7 @@ const PoCApplyModal = lazy(() =>
 );
 import { CurrencyCode, defaultCurrencyForLanguage, isCurrencyCode } from './lib/currency';
 import { applyDocumentLanguage, detectInitialLanguage, parseLanguage } from './lib/language';
+import { loadLanguage } from './i18n/loadLanguage';
 import { STORAGE_KEYS, readStored, usePersistentState, writeStored } from './lib/storage';
 import { parseCart } from './lib/scenarios';
 import { POC_EXTENSION_DAYS, canExtend } from './lib/poc';
@@ -68,10 +72,24 @@ export default function App() {
   // Stored preference, else the browser's language, else Korean.
   const [lang, setLang] = useState<Language>(detectInitialLanguage);
 
+  /**
+   * Switches language once its strings are in hand. Rendering first and
+   * loading after would flash the old language, or crash on a missing table;
+   * the fetch is one small chunk, and the current language stays on screen
+   * meanwhile.
+   */
   const handleLangChange = useCallback((next: Language) => {
-    setLang(next);
-    // Persisted eagerly so the choice survives even if the tab closes at once.
-    writeStored(STORAGE_KEYS.lang, next);
+    void loadLanguage(next)
+      .then(() => {
+        setLang(next);
+        // Persisted eagerly so the choice survives even if the tab closes at once.
+        writeStored(STORAGE_KEYS.lang, next);
+      })
+      .catch((error) => {
+        // The current language stays on screen, which is the honest outcome:
+        // switching to strings that never arrived would blank the page.
+        console.error(`ArcOS: could not load "${next}" strings`, error);
+      });
   }, []);
 
   // Screen readers and CJK font fallback both key off <html lang>.
@@ -147,7 +165,7 @@ export default function App() {
 
 
   // Toggle single item in cart
-  const handleToggleCartItem = (item: CartItem) => {
+  const handleToggleCartItem = useCallback((item: CartItem) => {
     setCart((prev) => {
       const exists = prev.some((c) => c.id === item.id);
       if (exists) {
@@ -155,10 +173,10 @@ export default function App() {
       }
       return [...prev, item];
     });
-  };
+  }, [setCart]);
 
   // MES radio selection (mutual exclusivity among MES core: pharma, food, general)
-  const handleSelectRadioMES = (item: SubModuleItem, suiteApp: AppItem) => {
+  const handleSelectRadioMES = useCallback((item: SubModuleItem, suiteApp: AppItem) => {
     setCart((prev) => {
       const filtered = prev.filter((c) => !MES_CORE_IDS.includes(c.id));
       return [
@@ -174,10 +192,31 @@ export default function App() {
         }
       ];
     });
-  };
+  }, [setCart]);
+
+  /**
+   * Adds a suite member from outside the detail modal (the module finder).
+   * MES cores are mutually exclusive, so they go through the radio handler
+   * instead of a plain toggle, which would otherwise leave two cores selected.
+   */
+  const handleToggleSubModule = useCallback((item: SubModuleItem, suiteApp: AppItem) => {
+    if (MES_CORE_IDS.includes(item.id)) {
+      handleSelectRadioMES(item, suiteApp);
+      return;
+    }
+    handleToggleCartItem({
+      id: item.id,
+      appId: suiteApp.id,
+      name: item.name,
+      category: suiteApp.category,
+      price: item.price,
+      per: item.per,
+      unitLabel: item.unitLabel
+    });
+  }, [handleSelectRadioMES, handleToggleCartItem]);
 
   // Quick toggle from card
-  const handleQuickToggleCart = (app: AppItem) => {
+  const handleQuickToggleCart = useCallback((app: AppItem) => {
     if (app.suite) {
       setSelectedAppForDetail(app);
       setIsDetailModalOpen(true);
@@ -192,12 +231,12 @@ export default function App() {
       per: app.per || 'flat',
       unitLabel: app.unit
     });
-  };
+  }, [handleToggleCartItem]);
 
-  const handleOpenDetailModal = (app: AppItem) => {
+  const handleOpenDetailModal = useCallback((app: AppItem) => {
     setSelectedAppForDetail(app);
     setIsDetailModalOpen(true);
-  };
+  }, []);
 
   const handleDeployRequest = (app: AppItem, location: string) => {
     setIsDetailModalOpen(false);
@@ -235,12 +274,12 @@ export default function App() {
   };
 
   // PoC Trial Handlers
-  const handleOpenPoCModal = (app: AppItem) => {
+  const handleOpenPoCModal = useCallback((app: AppItem) => {
     setPocApplyModalState({
       isOpen: true,
       app
     });
-  };
+  }, []);
 
   const handleApplyPoCSubmit = (trialData: PoCTrial) => {
     setPocTrials((prev) => [trialData, ...prev.filter((t) => t.id !== trialData.id)]);
@@ -292,9 +331,11 @@ export default function App() {
   };
 
   // Presets
-  const handleApplyPreset = (preset: RecommendationPreset) => {
+  const handleApplyPreset = useCallback((preset: RecommendationPreset) => {
     setCart(preset.recommendedModules);
-  };
+  }, [setCart]);
+
+  const handleGoToQuote = useCallback(() => setCurrentRoute('quote'), []);
 
   // Stable identities: useModalDismiss keys its keydown listener on onClose,
   // so an inline arrow would re-subscribe on every App render.
@@ -460,6 +501,21 @@ export default function App() {
       />
       )}
       </Suspense>
+
+      {/* Module finder: reachable from every route, so it lives here rather
+          than inside the catalog view. */}
+      <ChatbotWidget
+        cart={cart}
+        pocTrials={pocTrials}
+        lang={lang}
+        currency={currency}
+        onOpenApp={handleOpenDetailModal}
+        onToggleApp={handleQuickToggleCart}
+        onToggleSubModule={handleToggleSubModule}
+        onApplyPoC={handleOpenPoCModal}
+        onApplyPreset={handleApplyPreset}
+        onGoToQuote={handleGoToQuote}
+      />
     </div>
     </ExchangeRateProvider>
   );
