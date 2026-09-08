@@ -4,6 +4,9 @@ import { HeaderLinkBar } from './components/HeaderLinkBar';
 // The catalog is the landing route, so it stays in the initial chunk.
 import { CatalogView } from './components/CatalogView';
 import { ViewFallback } from './components/ViewFallback';
+// The finder's launcher has to be present from first paint; the conversation
+// panel behind it is what loads on demand (see ChatbotWidget).
+import { ChatbotWidget } from './components/ChatbotWidget';
 import { Language } from './i18n/translations';
 
 /**
@@ -173,6 +176,27 @@ export default function App() {
           unitLabel: item.unitLabel
         }
       ];
+    });
+  };
+
+  /**
+   * Adds a suite member from outside the detail modal (the module finder).
+   * MES cores are mutually exclusive, so they go through the radio handler
+   * instead of a plain toggle, which would otherwise leave two cores selected.
+   */
+  const handleToggleSubModule = (item: SubModuleItem, suiteApp: AppItem) => {
+    if (MES_CORE_IDS.includes(item.id)) {
+      handleSelectRadioMES(item, suiteApp);
+      return;
+    }
+    handleToggleCartItem({
+      id: item.id,
+      appId: suiteApp.id,
+      name: item.name,
+      category: suiteApp.category,
+      price: item.price,
+      per: item.per,
+      unitLabel: item.unitLabel
     });
   };
 
@@ -460,6 +484,21 @@ export default function App() {
       />
       )}
       </Suspense>
+
+      {/* Module finder: reachable from every route, so it lives here rather
+          than inside the catalog view. */}
+      <ChatbotWidget
+        cart={cart}
+        pocTrials={pocTrials}
+        lang={lang}
+        currency={currency}
+        onOpenApp={handleOpenDetailModal}
+        onToggleApp={handleQuickToggleCart}
+        onToggleSubModule={handleToggleSubModule}
+        onApplyPoC={handleOpenPoCModal}
+        onApplyPreset={handleApplyPreset}
+        onGoToQuote={() => setCurrentRoute('quote')}
+      />
     </div>
     </ExchangeRateProvider>
   );
