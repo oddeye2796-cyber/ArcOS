@@ -90,9 +90,9 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
         unitLabel: '기본 120만원/월'
       },
       {
-        id: 'consensbot',
-        appId: 'consensbot',
-        name: '컨센스봇 (ConsensBot)',
+        id: 'consensebot',
+        appId: 'consensebot',
+        name: '컨센스봇 (ConsenseBot)',
         category: 'LLM',
         price: 180,
         per: 'flat',
@@ -352,9 +352,9 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
         unitLabel: '사업장당'
       },
       {
-        id: 'consensbot',
-        appId: 'consensbot',
-        name: '컨센스봇 (ConsensBot)',
+        id: 'consensebot',
+        appId: 'consensebot',
+        name: '컨센스봇 (ConsenseBot)',
         category: 'LLM',
         price: 180,
         per: 'flat',
@@ -406,9 +406,9 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
         unitLabel: '활성 에이전트 모듈 수'
       },
       {
-        id: 'consensbot',
-        appId: 'consensbot',
-        name: '컨센스봇 (ConsensBot)',
+        id: 'consensebot',
+        appId: 'consensebot',
+        name: '컨센스봇 (ConsenseBot)',
         category: 'LLM',
         price: 180,
         per: 'flat',
@@ -468,9 +468,9 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
         unitLabel: '기본 120만원/월'
       },
       {
-        id: 'consensbot',
-        appId: 'consensbot',
-        name: '컨센스봇 (ConsensBot)',
+        id: 'consensebot',
+        appId: 'consensebot',
+        name: '컨센스봇 (ConsenseBot)',
         category: 'LLM',
         price: 180,
         per: 'flat',

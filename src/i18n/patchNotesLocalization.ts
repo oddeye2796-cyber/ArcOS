@@ -46,7 +46,7 @@ const PATCH_NOTE_LOCALIZATIONS: Record<string, PatchNoteLocalization> = {
     },
     affectedModules: {
       ko: ['ArcTunnel 게이트웨이', 'B²LAB 온톨로지', '컨센스봇 sLM'],
-      en: ['ArcTunnel Gateway', 'B²LAB Ontology', 'ConsensBot sLM'],
+      en: ['ArcTunnel Gateway', 'B²LAB Ontology', 'ConsenseBot sLM'],
       ja: ['ArcTunnel ゲートウェイ', 'B²LAB オントロジー', 'コンセンスボット sLM']
     },
     migrationMechanism: {
@@ -112,7 +112,7 @@ const PATCH_NOTE_LOCALIZATIONS: Record<string, PatchNoteLocalization> = {
     },
     affectedModules: {
       ko: ['제약 특화 MES', 'EBRS (전자 제조기록)', '컨센스봇'],
-      en: ['Pharma-Specific MES', 'EBRS (Electronic Batch Records)', 'ConsensBot'],
+      en: ['Pharma-Specific MES', 'EBRS (Electronic Batch Records)', 'ConsenseBot'],
       ja: ['製薬特化MES', 'EBRS (電子製造記録)', 'コンセンスボット']
     },
     migrationMechanism: {
@@ -139,7 +139,7 @@ const PATCH_NOTE_LOCALIZATIONS: Record<string, PatchNoteLocalization> = {
         ],
         en: [
           'Automatic SHA-256 evidence block chaining fields added to prevent operator e-signature tampering',
-          'Batch deviations are forwarded to the on-premise ConsensBot sLM as real-time audit references',
+          'Batch deviations are forwarded to the on-premise ConsenseBot sLM as real-time audit references',
           'Finer-grained auditor read-only viewer permissions (linked to the tenant SSO audit profile)'
         ],
         ja: [
@@ -272,7 +272,7 @@ const PATCH_NOTE_LOCALIZATIONS: Record<string, PatchNoteLocalization> = {
     typeLabel: { ko: '보안 패치', en: 'Security Patch', ja: 'セキュリティパッチ' },
     title: {
       ko: '온프레미스 sLM 컨센스봇 사내 문서 색인 격리 및 메모리 누수 방지 패치',
-      en: 'On-premise sLM ConsensBot internal document index isolation and memory leak fix',
+      en: 'On-premise sLM ConsenseBot internal document index isolation and memory leak fix',
       ja: 'オンプレミスsLMコンセンスボットの社内文書インデックス隔離およびメモリリーク防止パッチ'
     },
     summary: {
@@ -281,9 +281,9 @@ const PATCH_NOTE_LOCALIZATIONS: Record<string, PatchNoteLocalization> = {
       ja: '閉域網GPUノードでPDFおよび製造マニュアルをインデックスする際に発生していたMilvusベクターキャッシュのリークを解消しました。'
     },
     affectedModules: {
-      ko: ['컨센스봇 (ConsensBot)', '온프레미스 GPU 추론 런타임'],
-      en: ['ConsensBot', 'On-Premise GPU Inference Runtime'],
-      ja: ['コンセンスボット (ConsensBot)', 'オンプレミスGPU推論ランタイム']
+      ko: ['컨센스봇 (ConsenseBot)', '온프레미스 GPU 추론 런타임'],
+      en: ['ConsenseBot', 'On-Premise GPU Inference Runtime'],
+      ja: ['コンセンスボット (ConsenseBot)', 'オンプレミスGPU推論ランタイム']
     },
     migrationMechanism: {
       ko: 'Model Worker Rolling Restart (GPU VRAM 무단절 교체)',

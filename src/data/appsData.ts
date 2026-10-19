@@ -174,9 +174,9 @@ export const APPS_DATA: AppItem[] = [
     ]
   },
   {
-    id: 'consensbot',
+    id: 'consensebot',
     landing: true,
-    name: '컨센스봇 (ConsensBot)',
+    name: '컨센스봇 (ConsenseBot)',
     category: 'LLM',
     categoryLabel: '온프레미스 sLM',
     status: 'onprem',

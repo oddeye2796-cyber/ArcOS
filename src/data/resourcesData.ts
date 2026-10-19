@@ -55,9 +55,9 @@ export const RESOURCE_DOCS: ResourceDoc[] = [
     readingMinutes: 8
   },
   {
-    id: 'consensbot-manual',
+    id: 'consensebot-manual',
     kind: 'manual',
-    relatedModuleIds: ['consensbot'],
+    relatedModuleIds: ['consensebot'],
     updatedAt: '2025-11-04',
     readingMinutes: 7
   },

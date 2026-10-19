@@ -39,10 +39,10 @@ const TERM_BY_MODULE: Record<string, CommitmentTerm> = {
   aesg: 'quarterly',
   twin: 'quarterly',
   arcforge: 'quarterly',
-  // AI modules and ConsensBot: monthly, with the usage floor above.
+  // AI modules and ConsenseBot: monthly, with the usage floor above.
   a2lab: 'monthly',
   orch: 'monthly',
-  consensbot: 'monthly'
+  consensebot: 'monthly'
 };
 
 /** Anything not named in the policy defaults to the quarterly middle ground. */

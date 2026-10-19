@@ -441,7 +441,7 @@ const EN_TRANSLATIONS: Translations = {
   archPnpItem3Title: '③ Authentication & authorization contract (ArcOS Tenant SSO)',
   archPnpItem3Desc: 'ArcOS exclusively owns tenant-level unified SSO, and per-app permission matrices are enforced consistently down to the ARCFORGE component level.',
   archPnpItem4Title: '④ Event contract (shared Pub/Sub event bus)',
-  archPnpItem4Desc: 'Apps never couple directly; they communicate over the event bus — ConsensBot, for example, subscribes to equipment alarm events.',
+  archPnpItem4Desc: 'Apps never couple directly; they communicate over the event bus — ConsenseBot, for example, subscribes to equipment alarm events.',
   archPnpManifestTitle: 'A²LAB generated agent manifest example (JSON spec):',
   archPnpManifestTarget: 'Predictive detection of extrusion thickness defects',
   archPricingTitle: '3-Tier Pricing Model & Natural Growth Metric per Module',
@@ -457,7 +457,7 @@ const EN_TRANSLATIONS: Translations = {
     { module: 'EBRS', growth: 'Batch record volume', basis: 'KRW 1.2M/mo (base batches)', mechanism: 'Metered overage as output grows' },
     { module: 'REMS / A.ESG', growth: 'Sensor measurement points', basis: 'KRW 900K-1.3M/mo', mechanism: 'Expanding instrumented plant zones' },
     { module: 'A²LAB', growth: 'Inference calls', basis: 'KRW 1.5M/mo + metered calls', mechanism: 'Scales with continuous AI module workload' },
-    { module: 'ConsensBot', growth: 'Users', basis: 'KRW 1.8M/mo (20 concurrent users)', mechanism: 'More QA/QC/production staff onboarded' }
+    { module: 'ConsenseBot', growth: 'Users', basis: 'KRW 1.8M/mo (20 concurrent users)', mechanism: 'More QA/QC/production staff onboarded' }
   ],
   archPolicyTitle: 'Operating Policy: Regulated Data [Read-Only Retention] & Runtime Support',
   archPolicy1Title: '1. The third state: [Read-Only Retention]',
@@ -468,7 +468,7 @@ const EN_TRANSLATIONS: Translations = {
   archPolicy3Desc: 'Production lines running around the clock cannot accept maintenance downtime. **Zero-downtime hotfixes** are applied through Blue/Green and on-premise node rolling updates, and the in-platform “Zero-Downtime Patch Notes” menu tracks change history and rollback guarantees instantly.',
 
   archPolicy4Title: '4. Minimum commitment term per module',
-  archPolicy4Desc: 'Adoption cost and churn risk differ by module, so the commitment unit differs too. **The three MES cores are annual**, **regulated domain extensions such as EBRS, REMS and SCM are quarterly**, and **AI modules such as A²LAB, the orchestrator and ConsensBot may be cancelled monthly, subject to a {floor}/month minimum charge**. When terms are mixed in one quote, the longest one binds the whole subscription.',
+  archPolicy4Desc: 'Adoption cost and churn risk differ by module, so the commitment unit differs too. **The three MES cores are annual**, **regulated domain extensions such as EBRS, REMS and SCM are quarterly**, and **AI modules such as A²LAB, the orchestrator and ConsenseBot may be cancelled monthly, subject to a {floor}/month minimum charge**. When terms are mixed in one quote, the longest one binds the whole subscription.',
 
   commitmentTermAnnual: 'Annual (12 months)',
   commitmentTermQuarterly: 'Quarterly (3 months)',
@@ -480,7 +480,7 @@ const EN_TRANSLATIONS: Translations = {
 
   landingBadge: 'Recommended first module',
   landingBadgeWith: 'Recommended first module: {module}',
-  landingCatalogNote: 'New to the platform? Start with ConsensBot and the General Manufacturing MES. Both are entry points that show results fastest without replacing an existing system.',
+  landingCatalogNote: 'New to the platform? Start with ConsenseBot and the General Manufacturing MES. Both are entry points that show results fastest without replacing an existing system.',
 
   ariaSelectFacility: 'Select facility (region + industry)',
   ariaSelectDeployNode: 'Select target facility node for deployment',

@@ -120,7 +120,7 @@ export const PATCH_NOTES_DATA: PatchNoteItem[] = [
     title: '온프레미스 sLM 컨센스봇 사내 문서 색인 격리 및 메모리 누수 방지 패치',
     summary: '폐쇄망 GPU 노드에서 PDF 및 제조 매뉴얼 색인 시 발생하던 Milvus 벡터 캐시 누수를 해결했습니다.',
     zeroDowntimeVerified: true,
-    affectedModules: ['컨센스봇 (ConsensBot)', '온프레미스 GPU 추론 런타임'],
+    affectedModules: ['컨센스봇 (ConsenseBot)', '온프레미스 GPU 추론 런타임'],
     targetRuntimes: ['v4.1', 'v4.2'],
     migrationMechanism: 'Model Worker Rolling Restart (GPU VRAM 무단절 교체)',
     rollbackSafety: '초기화 실패 시 예비 GPU 워커로 즉각 스탠바이 복귀',

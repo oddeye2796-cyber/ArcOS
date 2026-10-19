@@ -30,8 +30,8 @@ const CATALOG: CatalogStrings = {
       "detail": "品質診断、省エネ、物流ディスパッチエージェント間の相反する制御判断を監視・調停。安全閾値を超えるコマンドは現場の安全管理者承認ゲートを経由してのみ実行されます。",
       "unit": "稼働エージェント数"
     },
-    "consensbot": {
-      "name": "コンセンスボット (ConsensBot)",
+    "consensebot": {
+      "name": "コンセンスボット (ConsenseBot)",
       "categoryLabel": "オンプレミス sLM",
       "desc": "社内規程および製造指針書を完全学習し、工程逸脱原因の分析や監査報告書ドラフトを作成",
       "detail": "社内文書を外部クラウドへ1バイトも送信しないオンプレミス専用の製造特化型小規模言語モデル(sLM)です。製薬・食品の厳格な監査(Audit)対応の質疑応答や製造記録書の自動起案を引用根拠リンク付きで提供します。",
@@ -318,7 +318,7 @@ const CATALOG: CatalogStrings = {
     "AI Vision 결함 탐지 (ArcVision)": "AI Vision 欠陥検知 (ArcVision)",
     "A²LAB (AI 모듈 생성기)": "A²LAB (AIモデル生成)",
     "다중 AI Agent 슈퍼바이저": "マルチAI Agent スーパーバイザー",
-    "컨센스봇 (ConsensBot)": "コンセンスボット (ConsensBot)",
+    "컨센스봇 (ConsenseBot)": "コンセンスボット (ConsenseBot)",
     "디지털 트윈 (Digital Twin)": "デジタルツイン (Digital Twin)",
     "ARCFORGE (노코드/로우코드 플랫폼 빌더)": "ARCFORGE (ノーコード/ローコード プラットフォームビルダー)",
     "공통 기반": "共通基盤",

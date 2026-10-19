@@ -30,8 +30,8 @@ const CATALOG: CatalogStrings = {
       "detail": "Monitors and arbitrates conflicting decisions between quality inspection, energy saving, and AGV dispatch agents. Control commands exceeding safety thresholds strictly require on-site operator approval gates.",
       "unit": "Per active agent module"
     },
-    "consensbot": {
-      "name": "ConsensBot (Regulatory sLM)",
+    "consensebot": {
+      "name": "ConsenseBot (Regulatory sLM)",
       "categoryLabel": "On-premise sLM",
       "desc": "Learns in-house SOPs and GMP guidelines to analyze deviations and draft audit reports",
       "detail": "On-premises specialized small language model (sLM) that guarantees zero bytes of internal SOPs/GMP documents leave the corporate firewall. Rapidly answers audit queries and drafts regulatory compliance reports with source document citations.",
@@ -266,7 +266,7 @@ const CATALOG: CatalogStrings = {
       "title": "Autonomous AI Manufacturing (Full Agent Architecture)",
       "subtitle": "AI agent generation · Supervisor orchestration · sLM regulatory analysis",
       "badge": "Autonomous AI",
-      "desc": "The Multi-AI Agent Supervisor orchestrates the quality, equipment and energy agents generated in A²LAB, combined with the air-gapped ConsensBot sLM and a 3D digital twin.",
+      "desc": "The Multi-AI Agent Supervisor orchestrates the quality, equipment and energy agents generated in A²LAB, combined with the air-gapped ConsenseBot sLM and a 3D digital twin.",
       "targetAudience": "Lighthouse factory programs / large multi-process production sites"
     },
     "preset-inhouse-diy": {
@@ -318,7 +318,7 @@ const CATALOG: CatalogStrings = {
     "AI Vision 결함 탐지 (ArcVision)": "AI Vision Defect Detection (ArcVision)",
     "A²LAB (AI 모듈 생성기)": "A²LAB (AI Model Generator)",
     "다중 AI Agent 슈퍼바이저": "Multi-AI Agent Supervisor",
-    "컨센스봇 (ConsensBot)": "ConsensBot (Regulatory sLM)",
+    "컨센스봇 (ConsenseBot)": "ConsenseBot (Regulatory sLM)",
     "디지털 트윈 (Digital Twin)": "Digital Twin",
     "ARCFORGE (노코드/로우코드 플랫폼 빌더)": "ARCFORGE (No-Code/Low-Code Platform Builder)",
     "공통 기반": "Shared Core",

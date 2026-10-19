@@ -74,7 +74,7 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     'supervisor', 'autonomous', 'lighthouse factory', 'coordination',
     'エージェント', '自律製造', 'オーケストレーション', 'スーパーバイザー'
   ],
-  consensbot: [
+  consensebot: [
     '챗봇', '챗봇 도입', 'llm', 'slm', '언어모델', '생성형', '생성형 ai', 'sop', '기준서',
     '규정', '지침서', '문서', '문서검색', '질의응답', '질문', '보고서', '초안', '작성',
     '감사대응', '일탈원인', '원인분석', '폐쇄망', '온프레미스 ai', '보안', 'rag', '검색증강',
@@ -196,7 +196,7 @@ export const INDUSTRY_INTENTS: readonly IntentDefinition<IndustryId>[] = [
       '製薬', 'バイオ', '医薬品', '医療機器'
     ],
     presetId: 'preset-pharma',
-    moduleIds: ['mes-pharma', 'ebrs', 'rems', 'consensbot']
+    moduleIds: ['mes-pharma', 'ebrs', 'rems', 'consensebot']
   },
   {
     id: 'food',
@@ -270,7 +270,7 @@ export const GOAL_INTENTS: readonly IntentDefinition<GoalId>[] = [
       '規制', '監査', '記録', '電子署名'
     ],
     presetId: 'preset-pharma',
-    moduleIds: ['ebrs', 'consensbot', 'rems']
+    moduleIds: ['ebrs', 'consensebot', 'rems']
   },
   {
     id: 'energy',
@@ -310,7 +310,7 @@ export const GOAL_INTENTS: readonly IntentDefinition<GoalId>[] = [
       '文書', '規程', '質問', '検索', 'レポート'
     ],
     presetId: 'preset-pharma',
-    moduleIds: ['consensbot', 'ebrs']
+    moduleIds: ['consensebot', 'ebrs']
   },
   {
     id: 'buildOwn',
@@ -330,7 +330,7 @@ export const GOAL_INTENTS: readonly IntentDefinition<GoalId>[] = [
       '自律', 'エージェント', '自動化', '最適化'
     ],
     presetId: 'preset-autonomous',
-    moduleIds: ['orch', 'a2lab', 'consensbot']
+    moduleIds: ['orch', 'a2lab', 'consensebot']
   },
   {
     id: 'data',

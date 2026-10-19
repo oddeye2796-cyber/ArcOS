@@ -157,7 +157,7 @@ const APP_VALUE_PROPS: Record<string, LocalizedValueProp> = {
     }
   },
 
-  consensbot: {
+  consensebot: {
     ko: {
       headline: '사내 기준서와 제조 지침을 학습한 sLM이 폐쇄망 안에서 일탈 원인 분석과 감사 답변을 작성합니다.',
       outcomes: [
