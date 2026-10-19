@@ -225,7 +225,7 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang }) => {
               </p>
             </div>
 
-            {/* ArcMind vs MES Distinction */}
+            {/* ARCFORGE vs MES Distinction */}
             <div className="bg-white p-5 rounded-xl border border-slate-200 space-y-3">
               <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <Cpu className="w-4 h-4 text-indigo-600" />

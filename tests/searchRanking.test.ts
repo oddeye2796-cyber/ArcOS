@@ -34,7 +34,7 @@ const EXPECTATIONS: Expectation[] = [
   { query: '불량률 줄이는 AI 있나요', top: 'a2lab', goal: 'quality' },
   { query: '사내 규정 문서 검색되는 챗봇 찾아요', top: 'consensbot', goal: 'knowledge' },
   { query: '3D로 공장 현황 보고 싶어', top: 'twin', goal: 'visibility' },
-  { query: '우리 전산팀이 직접 노코드로 만들고 싶어요', top: 'arcmind', goal: 'buildOwn' },
+  { query: '우리 전산팀이 직접 노코드로 만들고 싶어요', top: 'arcforge', goal: 'buildOwn' },
   { query: '협력사 발주랑 납기 관리', top: 'scm', goal: 'supply' },
   { query: '데이터 통합 온톨로지', top: 'b2lab', goal: 'data' },
   { query: '청정실 차압 온습도 미립자 모니터링', top: 'rems' },
@@ -46,7 +46,7 @@ const EXPECTATIONS: Expectation[] = [
   { query: 'predictive maintenance for machining lines', top: 'a2lab', industry: 'precision' },
   { query: 'cleanroom particle monitoring', top: 'rems' },
   { query: 'audit trail and electronic signature', top: 'ebrs' },
-  { query: 'no code builder for our own IT team', top: 'arcmind', goal: 'buildOwn' },
+  { query: 'no code builder for our own IT team', top: 'arcforge', goal: 'buildOwn' },
   { query: '不良を減らすAI', top: 'a2lab' },
   { query: 'クリーンルームの温湿度モニタリング', top: 'rems' },
   { query: 'ピーク電力と脱炭素', top: 'aesg', goal: 'energy' }
@@ -102,8 +102,8 @@ const NATURAL_PHRASINGS: [query: string, expectedTop: string][] = [
   ['CO2排出量の管理', 'aesg'],
   ['3Dで工場を可視化', 'twin'],
   ['ボトルネックの把握', 'twin'],
-  ['ノーコードで内製したい', 'arcmind'],
-  ['自社開発したい', 'arcmind'],
+  ['ノーコードで内製したい', 'arcforge'],
+  ['自社開発したい', 'arcforge'],
   ['データ統合とオントロジー', 'b2lab'],
   ['既存システムとの連携', 'b2lab'],
   ['複数エージェントの調整', 'orch'],
@@ -116,7 +116,7 @@ const NATURAL_PHRASINGS: [query: string, expectedTop: string][] = [
   ['ask questions about internal SOPs', 'consensbot'],
   ['cut peak power cost', 'aesg'],
   ['3d factory visualization', 'twin'],
-  ['build our own dashboards', 'arcmind'],
+  ['build our own dashboards', 'arcforge'],
   ['connect legacy ERP data', 'b2lab']
 ];
 

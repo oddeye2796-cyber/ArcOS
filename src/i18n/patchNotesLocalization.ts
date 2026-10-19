@@ -219,9 +219,9 @@ const PATCH_NOTE_LOCALIZATIONS: Record<string, PatchNoteLocalization> = {
   'patch-4-2-0': {
     typeLabel: { ko: '기능 개선', en: 'Feature Update', ja: '機能改善' },
     title: {
-      ko: 'ArcMind 노코드/로우코드 플랫폼 빌더 분리 출시 및 자체 IT 구축형 지원',
-      en: 'ArcMind no-code/low-code platform builder released as a separate SKU with self-build IT support',
-      ja: 'ArcMind ノーコード/ローコード プラットフォームビルダーの分離リリースおよび自社IT構築型サポート'
+      ko: 'ARCFORGE 노코드/로우코드 플랫폼 빌더 분리 출시 및 자체 IT 구축형 지원',
+      en: 'ARCFORGE no-code/low-code platform builder released as a separate SKU with self-build IT support',
+      ja: 'ARCFORGE ノーコード/ローコード プラットフォームビルダーの分離リリースおよび自社IT構築型サポート'
     },
     summary: {
       ko: '자체 IT 인력을 보유한 제조기업이 기성 MES 도입 없이 사내 맞춤형 스마트팩토리를 노코드로 제작할 수 있도록 지원합니다.',
@@ -229,9 +229,9 @@ const PATCH_NOTE_LOCALIZATIONS: Record<string, PatchNoteLocalization> = {
       ja: '自社IT要員を抱える製造企業が、既製MESを導入せずに社内カスタムのスマートファクトリーをノーコードで制作できるよう支援します。'
     },
     affectedModules: {
-      ko: ['ArcMind (노코드/로우코드 빌더)', 'B²LAB 온톨로지', 'A²LAB'],
-      en: ['ArcMind (No-Code/Low-Code Builder)', 'B²LAB Ontology', 'A²LAB'],
-      ja: ['ArcMind (ノーコード/ローコードビルダー)', 'B²LAB オントロジー', 'A²LAB']
+      ko: ['ARCFORGE (노코드/로우코드 빌더)', 'B²LAB 온톨로지', 'A²LAB'],
+      en: ['ARCFORGE (No-Code/Low-Code Builder)', 'B²LAB Ontology', 'A²LAB'],
+      ja: ['ARCFORGE (ノーコード/ローコードビルダー)', 'B²LAB オントロジー', 'A²LAB']
     },
     migrationMechanism: {
       ko: 'Dynamic Component Plugin Load (무중단 런타임 탑재)',

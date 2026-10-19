@@ -58,10 +58,10 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>('all');
 
-  // Check for duplicate ArcMind vs Smart Factory suite
+  // Check for duplicate ARCFORGE vs Smart Factory suite
   const hasSmartFactoryInCart = cart.some((item) => item.appId === 'smartfactory');
-  const hasArcMindInCart = cart.some((item) => item.id === 'arcmind');
-  const hasConflict = hasSmartFactoryInCart && hasArcMindInCart;
+  const hasArcForgeInCart = cart.some((item) => item.id === 'arcforge');
+  const hasConflict = hasSmartFactoryInCart && hasArcForgeInCart;
 
   const categories = ['전체', 'Smart Factory', 'AI', 'LLM', '에너지', '시각화', '기반', '빌더'];
 
@@ -193,19 +193,19 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
         </div>
       </div>
 
-      {/* ArcMind vs MES Duplicate Conflict Alert Banner */}
+      {/* ARCFORGE vs MES Duplicate Conflict Alert Banner */}
       {hasConflict && (
         <div className="bg-amber-50 border-2 border-amber-300/90 rounded-xl p-4 text-amber-900 shadow-sm flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
           <div className="space-y-1.5 flex-1">
             <div className="font-bold text-xs sm:text-sm text-amber-950 flex items-center gap-1.5">
-              <span>{t.arcMindNoticeTitle}</span>
+              <span>{t.arcForgeNoticeTitle}</span>
               <span className="text-[10.5px] px-1.5 py-0.2 rounded bg-amber-200/80 text-amber-900 font-mono font-semibold">
                 {t.duplicateReviewBadge}
               </span>
             </div>
             <p className="text-xs text-amber-800 leading-relaxed break-keep">
-              {t.arcMindDuplicateWarning}
+              {t.arcForgeDuplicateWarning}
             </p>
           </div>
         </div>
@@ -423,17 +423,17 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                     <span className="font-medium text-slate-700">{getLocalizedGrowthMetric(app.growthMetric, lang)}</span>
                   </div>
 
-                  {/* ArcMind Special Distinction Badge */}
-                  {app.id === 'arcmind' && (
+                  {/* ARCFORGE Special Distinction Badge */}
+                  {app.id === 'arcforge' && (
                     <div className="p-2.5 rounded-lg bg-indigo-50/90 border border-indigo-200 text-indigo-950 text-[11px] space-y-1">
                       <div className="font-bold flex items-center gap-1 text-indigo-900">
                         <Cpu className="w-3.5 h-3.5 text-indigo-600" />
                         <span>
-                          {t.arcMindCardBadge}
+                          {t.arcForgeCardBadge}
                         </span>
                       </div>
                       <p className="text-indigo-800 text-[10.5px] leading-relaxed break-keep">
-                        {t.arcMindCardDesc}
+                        {t.arcForgeCardDesc}
                       </p>
                     </div>
                   )}

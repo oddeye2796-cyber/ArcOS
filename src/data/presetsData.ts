@@ -311,11 +311,11 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
   {
     id: 'preset-inhouse-diy',
     title: '자체 IT 인력 노코드 플랫폼 구축형 (In-House IT DIY)',
-    subtitle: 'ArcMind 노코드·로우코드 빌더 · B²LAB 온톨로지 · A²LAB · 3D 트윈',
+    subtitle: 'ARCFORGE 노코드·로우코드 빌더 · B²LAB 온톨로지 · A²LAB · 3D 트윈',
     type: 'requirement',
     targetAudience: '자체 IT/전산 인력을 보유하여 기성 MES 대신 사내 스마트팩토리를 직접 개발하는 제조기업',
     badge: '자체 IT 전용',
-    desc: '기성 제조 운영 스위트(MES)를 도입하지 않고, 사내 IT 인력이 ArcMind(No-Code/Low-Code)로 공정 화면·작업 지시서·모바일 뷰를 직접 개발합니다. 기성 MES 구독료 없이 B²LAB 온톨로지 위에서 100% 사내 맞춤형 플랫폼을 내재화합니다.',
+    desc: '기성 제조 운영 스위트(MES)를 도입하지 않고, 사내 IT 인력이 ARCFORGE(No-Code/Low-Code)로 공정 화면·작업 지시서·모바일 뷰를 직접 개발합니다. 기성 MES 구독료 없이 B²LAB 온톨로지 위에서 100% 사내 맞춤형 플랫폼을 내재화합니다.',
     highlights: [
       '기성 제조 운영 스위트(MES)와 기능 중복 없는 100% 자체 IT 맞춤 설계',
       'B²LAB 온톨로지 표준 스키마 드래그앤드롭 화면 바인딩',
@@ -325,9 +325,9 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
     recommendedLines: 1,
     recommendedModules: [
       {
-        id: 'arcmind',
-        appId: 'arcmind',
-        name: 'ArcMind (노코드/로우코드 플랫폼 빌더)',
+        id: 'arcforge',
+        appId: 'arcforge',
+        name: 'ARCFORGE (노코드/로우코드 플랫폼 빌더)',
         category: '빌더',
         price: 90,
         per: 'flat',

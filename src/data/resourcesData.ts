@@ -28,7 +28,7 @@ export const RESOURCE_DOCS: ResourceDoc[] = [
   {
     id: 'arch-whitepaper',
     kind: 'whitepaper',
-    relatedModuleIds: ['b2lab', 'smartfactory', 'arcmind'],
+    relatedModuleIds: ['b2lab', 'smartfactory', 'arcforge'],
     updatedAt: '2026-03-02',
     readingMinutes: 12,
     component: 'architecture'

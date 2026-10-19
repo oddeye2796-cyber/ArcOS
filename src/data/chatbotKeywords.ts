@@ -96,7 +96,7 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     'visualization', 'layout', 'bottleneck', 'control room', 'virtual factory', 'webgl',
     'デジタルツイン', '可視化', '3次元', 'レイアウト', 'ボトルネック'
   ],
-  arcmind: [
+  arcforge: [
     '노코드', '로우코드', '자체구축', '자체개발', '직접 개발', '직접 구축', '내재화', '커스텀',
     '맞춤', '빌더', '사내 it', '전산팀', '개발팀', '화면 제작', '대시보드 제작', '자유롭게',
     'no code', 'low code', 'builder', 'custom', 'in house', 'diy', 'self build', 'dashboard builder',
@@ -290,7 +290,7 @@ export const GOAL_INTENTS: readonly IntentDefinition<GoalId>[] = [
       '可視化', '見える化', 'モニタリング', 'ダッシュボード'
     ],
     presetId: 'preset-precision',
-    moduleIds: ['twin', 'mes-general', 'arcmind']
+    moduleIds: ['twin', 'mes-general', 'arcforge']
   },
   {
     id: 'supply',
@@ -320,7 +320,7 @@ export const GOAL_INTENTS: readonly IntentDefinition<GoalId>[] = [
       '内製', 'ノーコード', '自社開発'
     ],
     presetId: 'preset-inhouse-diy',
-    moduleIds: ['arcmind', 'b2lab', 'a2lab']
+    moduleIds: ['arcforge', 'b2lab', 'a2lab']
   },
   {
     id: 'autonomous',

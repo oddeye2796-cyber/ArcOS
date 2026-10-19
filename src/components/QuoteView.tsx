@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { CartItem, RecommendationPreset } from '../types';
 import { RECOMMENDATION_PRESETS } from '../data/presetsData';
-import { ARCMIND_ID, MES_CORE_IDS } from '../data/appsData';
+import { ARCFORGE_ID, MES_CORE_IDS } from '../data/appsData';
 import {
   Trash2,
   Sparkles,
@@ -195,14 +195,14 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
 
   // Conflict Check
   const hasMesApp = cart.some((item) => MES_CORE_IDS.includes(item.id));
-  const hasArcMind = cart.some((item) => item.id === ARCMIND_ID);
-  const hasConflict = hasMesApp && hasArcMind;
+  const hasArcForge = cart.some((item) => item.id === ARCFORGE_ID);
+  const hasConflict = hasMesApp && hasArcForge;
 
   const handleResolveConflictKeepMES = () => {
-    onRemoveItem(ARCMIND_ID);
+    onRemoveItem(ARCFORGE_ID);
   };
 
-  const handleResolveConflictKeepArcMind = () => {
+  const handleResolveConflictKeepArcForge = () => {
     cart
       .filter((item) => MES_CORE_IDS.includes(item.id))
       .forEach((item) => onRemoveItem(item.id));
@@ -619,17 +619,17 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
 
           {/* Section 2: Selected Modules (2층 모듈별 과금) */}
           <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-4">
-            {/* ArcMind vs MES Duplicate Warning */}
+            {/* ARCFORGE vs MES Duplicate Warning */}
             {hasConflict && (
               <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 text-amber-900 shadow-sm space-y-2.5">
                 <div className="flex items-start gap-2.5">
                   <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                   <div className="space-y-1">
                     <h4 className="text-xs sm:text-sm font-bold text-amber-950 break-keep">
-                      {t.arcMindNoticeTitle}
+                      {t.arcForgeNoticeTitle}
                     </h4>
                     <p className="text-xs text-amber-800 leading-relaxed break-keep">
-                      {t.arcMindDuplicateWarning}
+                      {t.arcForgeDuplicateWarning}
                     </p>
                   </div>
                 </div>
@@ -639,13 +639,13 @@ export const QuoteView: React.FC<QuoteViewProps> = ({
                     className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 rounded text-xs font-semibold shadow-xs transition-colors"
                   >
                     {lang === 'ja'
-                      ? '既製MESスイートを維持 (ArcMindを除外)'
+                      ? '既製MESスイートを維持 (ARCFORGEを除外)'
                       : lang === 'en'
-                      ? 'Keep Prebuilt MES (Remove ArcMind)'
-                      : '기성 MES 스위트 유지 (ArcMind 제외)'}
+                      ? 'Keep Prebuilt MES (Remove ARCFORGE)'
+                      : '기성 MES 스위트 유지 (ARCFORGE 제외)'}
                   </button>
                   <button
-                    onClick={handleResolveConflictKeepArcMind}
+                    onClick={handleResolveConflictKeepArcForge}
                     className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold shadow-xs transition-colors"
                   >
                     {lang === 'ja'

@@ -51,8 +51,8 @@ const CATALOG: CatalogStrings = {
       "detail": "生産ラインのセンサー計測値、異常アラーム、AGV位置を3D Webキャンバスにリアルタイム描画。高価な専用クライアントを導入することなく、ブラウザ上で直感的な現場の仮想巡回点検が可能です。",
       "unit": "登録事業所・ライン数"
     },
-    "arcmind": {
-      "name": "ArcMind (ノーコード/ローコード開発)",
+    "arcforge": {
+      "name": "ARCFORGE (ノーコード/ローコード開発)",
       "categoryLabel": "社内ITプラットフォーム開発",
       "desc": "社内IT人材を保有する企業が、既成MESを導入せずNo-Code / Low-Codeで自社独自のSmart Factoryを直接構築する専用ビルダー",
       "detail": "自社IT・システム人材を保有するエンタープライズ向けの専用ビルダーです。既製品の製造運用スイート(MES)を導入する代わりに、B²LABオントロジーデータをベースにノーコード/ローコードを活用し、作業指示書、生産工程ビュー、日別ダッシュボード、業務ロジックを社内ITチームが100%独自構築します。既製Smart Factoryスイートとの重複導入を防ぐ独立構築パスとして提供されます。",
@@ -171,7 +171,7 @@ const CATALOG: CatalogStrings = {
     "B²LAB 온톨로지 스트리밍 버스": "B²LAB オントロジーストリーミングバス",
     "B²LAB 온톨로지 GraphQL & REST API": "B²LAB オントロジー GraphQL & REST API",
     "사업장 레거시 DB 전체 가상화 인터페이스": "事業所レガシーDB全仮想化インターフェース",
-    "ArcMind JSON Schema 컴포넌트 규약 (KS X 9101 매핑)": "ArcMind JSON Schema コンポーネント規約 (KS X 9101 マッピング)",
+    "ARCFORGE JSON Schema 컴포넌트 규약 (KS X 9101 매핑)": "ARCFORGE JSON Schema コンポーネント規約 (KS X 9101 マッピング)",
     "PDF/Docx 온톨로지 청킹 및 사내 Milvus 벡터DB": "PDF/Docx オントロジーチャンキングおよび社内MilvusベクトルDB",
     "AAS / OPC-UA / KS X 9101 표준 온톨로지": "AAS / OPC-UA / KS X 9101 標準オントロジー",
     "GLTF / glTF 3D + OPC-UA Telemetry": "GLTF / glTF 3D + OPC-UA Telemetry",
@@ -271,9 +271,9 @@ const CATALOG: CatalogStrings = {
     },
     "preset-inhouse-diy": {
       "title": "自社IT要員によるノーコード基盤構築型 (In-House IT DIY)",
-      "subtitle": "ArcMind ノーコード・ローコードビルダー・B²LAB オントロジー・A²LAB・3Dツイン",
+      "subtitle": "ARCFORGE ノーコード・ローコードビルダー・B²LAB オントロジー・A²LAB・3Dツイン",
       "badge": "自社IT専用",
-      "desc": "既製の製造運用スイート(MES)を導入せず、社内IT要員がArcMind(No-Code/Low-Code)で工程画面・作業指示書・モバイルビューを直接開発します。既製MESの購読料なしにB²LABオントロジー上で100%自社カスタムのプラットフォームを内製化します。",
+      "desc": "既製の製造運用スイート(MES)を導入せず、社内IT要員がARCFORGE(No-Code/Low-Code)で工程画面・作業指示書・モバイルビューを直接開発します。既製MESの購読料なしにB²LABオントロジー上で100%自社カスタムのプラットフォームを内製化します。",
       "targetAudience": "自社IT/情報システム要員を擁し、既製MESの代わりに社内スマートファクトリーを自ら開発する製造企業"
     },
     "preset-scm-audit": {
@@ -320,7 +320,7 @@ const CATALOG: CatalogStrings = {
     "다중 AI Agent 슈퍼바이저": "マルチAI Agent スーパーバイザー",
     "컨센스봇 (ConsensBot)": "コンセンスボット (ConsensBot)",
     "디지털 트윈 (Digital Twin)": "デジタルツイン (Digital Twin)",
-    "ArcMind (노코드/로우코드 플랫폼 빌더)": "ArcMind (ノーコード/ローコード プラットフォームビルダー)",
+    "ARCFORGE (노코드/로우코드 플랫폼 빌더)": "ARCFORGE (ノーコード/ローコード プラットフォームビルダー)",
     "공통 기반": "共通基盤",
     "스위트 코어": "スイートコア",
     "스위트 확장": "スイート拡張",

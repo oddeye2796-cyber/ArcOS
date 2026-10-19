@@ -51,8 +51,8 @@ const CATALOG: CatalogStrings = {
       "detail": "생산 라인의 센서 값, 불량 알람, 물류 AGV 위치를 3D 웹 캔버스에 실시간 렌더링합니다. 별도의 고가 클라이언트 설치 없이 웹 브라우저에서 직관적인 현장 가상 순찰이 가능합니다.",
       "unit": "등록 사업장 및 라인 수"
     },
-    "arcmind": {
-      "name": "ArcMind (노코드/로우코드 플랫폼 빌더)",
+    "arcforge": {
+      "name": "ARCFORGE (노코드/로우코드 플랫폼 빌더)",
       "categoryLabel": "자체 IT 플랫폼 빌더",
       "desc": "자체 IT 인력을 보유한 기업이 기성 MES 도입 없이 No-Code / Low-Code로 기업 고유의 Smart Factory 플랫폼을 직접 구축하는 전용 빌더",
       "detail": "자체 IT/전산 인력을 보유한 엔터프라이즈를 위한 전용 빌더입니다. 기성 제조 운영 스위트(MES)를 도입하는 대신, B²LAB 온톨로지 데이터를 기반으로 노코드/로우코드를 통해 작업 지시서, 생산 공정 뷰, 일별 현황판, 로직을 사내 IT 인력이 100% 맞춤 제작합니다. 기성 Smart Factory 스위트와 중복 도입되지 않도록 독립된 자체 구축 경로로 제공됩니다.",
@@ -171,7 +171,7 @@ const CATALOG: CatalogStrings = {
     "B²LAB 온톨로지 스트리밍 버스": "B²LAB 온톨로지 스트리밍 버스",
     "B²LAB 온톨로지 GraphQL & REST API": "B²LAB 온톨로지 GraphQL & REST API",
     "사업장 레거시 DB 전체 가상화 인터페이스": "사업장 레거시 DB 전체 가상화 인터페이스",
-    "ArcMind JSON Schema 컴포넌트 규약 (KS X 9101 매핑)": "ArcMind JSON Schema 컴포넌트 규약 (KS X 9101 매핑)",
+    "ARCFORGE JSON Schema 컴포넌트 규약 (KS X 9101 매핑)": "ARCFORGE JSON Schema 컴포넌트 규약 (KS X 9101 매핑)",
     "PDF/Docx 온톨로지 청킹 및 사내 Milvus 벡터DB": "PDF/Docx 온톨로지 청킹 및 사내 Milvus 벡터DB",
     "AAS / OPC-UA / KS X 9101 표준 온톨로지": "AAS / OPC-UA / KS X 9101 표준 온톨로지",
     "GLTF / glTF 3D + OPC-UA Telemetry": "GLTF / glTF 3D + OPC-UA Telemetry",
@@ -271,9 +271,9 @@ const CATALOG: CatalogStrings = {
     },
     "preset-inhouse-diy": {
       "title": "자체 IT 인력 노코드 플랫폼 구축형 (In-House IT DIY)",
-      "subtitle": "ArcMind 노코드·로우코드 빌더 · B²LAB 온톨로지 · A²LAB · 3D 트윈",
+      "subtitle": "ARCFORGE 노코드·로우코드 빌더 · B²LAB 온톨로지 · A²LAB · 3D 트윈",
       "badge": "자체 IT 전용",
-      "desc": "기성 제조 운영 스위트(MES)를 도입하지 않고, 사내 IT 인력이 ArcMind(No-Code/Low-Code)로 공정 화면·작업 지시서·모바일 뷰를 직접 개발합니다. 기성 MES 구독료 없이 B²LAB 온톨로지 위에서 100% 사내 맞춤형 플랫폼을 내재화합니다.",
+      "desc": "기성 제조 운영 스위트(MES)를 도입하지 않고, 사내 IT 인력이 ARCFORGE(No-Code/Low-Code)로 공정 화면·작업 지시서·모바일 뷰를 직접 개발합니다. 기성 MES 구독료 없이 B²LAB 온톨로지 위에서 100% 사내 맞춤형 플랫폼을 내재화합니다.",
       "targetAudience": "자체 IT/전산 인력을 보유하여 기성 MES 대신 사내 스마트팩토리를 직접 개발하는 제조기업"
     },
     "preset-scm-audit": {
@@ -320,7 +320,7 @@ const CATALOG: CatalogStrings = {
     "다중 AI Agent 슈퍼바이저": "다중 AI Agent 슈퍼바이저",
     "컨센스봇 (ConsensBot)": "컨센스봇 (ConsensBot)",
     "디지털 트윈 (Digital Twin)": "디지털 트윈 (Digital Twin)",
-    "ArcMind (노코드/로우코드 플랫폼 빌더)": "ArcMind (노코드/로우코드 플랫폼 빌더)",
+    "ARCFORGE (노코드/로우코드 플랫폼 빌더)": "ARCFORGE (노코드/로우코드 플랫폼 빌더)",
     "공통 기반": "공통 기반",
     "스위트 코어": "스위트 코어",
     "스위트 확장": "스위트 확장",

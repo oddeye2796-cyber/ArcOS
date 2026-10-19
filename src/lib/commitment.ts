@@ -38,7 +38,7 @@ const TERM_BY_MODULE: Record<string, CommitmentTerm> = {
   scm: 'quarterly',
   aesg: 'quarterly',
   twin: 'quarterly',
-  arcmind: 'quarterly',
+  arcforge: 'quarterly',
   // AI modules and ConsensBot: monthly, with the usage floor above.
   a2lab: 'monthly',
   orch: 'monthly',

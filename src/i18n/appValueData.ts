@@ -288,7 +288,7 @@ const APP_VALUE_PROPS: Record<string, LocalizedValueProp> = {
     }
   },
 
-  arcmind: {
+  arcforge: {
     ko: {
       headline: '사내 IT 인력이 기성 MES에 종속되지 않고 공정 화면을 직접 만들어 운영합니다.',
       outcomes: [
