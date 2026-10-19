@@ -174,9 +174,9 @@ export const APPS_DATA: AppItem[] = [
     ]
   },
   {
-    id: 'consensbot',
+    id: 'consensebot',
     landing: true,
-    name: '컨센스봇 (ConsensBot)',
+    name: '컨센스봇 (ConsenseBot)',
     category: 'LLM',
     categoryLabel: '온프레미스 sLM',
     status: 'onprem',
@@ -272,8 +272,8 @@ export const APPS_DATA: AppItem[] = [
     ]
   },
   {
-    id: 'arcmind',
-    name: 'ArcMind (노코드/로우코드 플랫폼 빌더)',
+    id: 'arcforge',
+    name: 'ARCFORGE (노코드/로우코드 플랫폼 빌더)',
     category: '빌더',
     categoryLabel: '자체 IT 플랫폼 빌더',
     status: 'ready',
@@ -291,7 +291,7 @@ export const APPS_DATA: AppItem[] = [
     ],
     dataScope: {
       domainDb: 'B²LAB 온톨로지 GraphQL & REST API',
-      schemaStd: 'ArcMind JSON Schema 컴포넌트 규약 (KS X 9101 매핑)',
+      schemaStd: 'ARCFORGE JSON Schema 컴포넌트 규약 (KS X 9101 매핑)',
       outboundAllowed: false,
       mappingProgress: 100
     },
@@ -342,9 +342,9 @@ export const APPS_DATA: AppItem[] = [
 /**
  * The no-code builder that conflicts with a packaged MES core. Named here for
  * the same reason as above: the quote's conflict check referred to an
- * 'arcmind-builder' id that has never existed in the catalog.
+ * 'arcforge-builder' id that has never existed in the catalog.
  */
-export const ARCMIND_ID = 'arcmind';
+export const ARCFORGE_ID = 'arcforge';
 
 export const MES_CORE_IDS: readonly string[] = APPS_DATA.flatMap(
   (app) => app.groups?.filter((g) => g.type === 'radio').flatMap((g) => g.items.map((i) => i.id)) ?? []

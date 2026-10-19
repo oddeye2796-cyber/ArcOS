@@ -30,8 +30,8 @@ const CATALOG: CatalogStrings = {
       "detail": "Monitors and arbitrates conflicting decisions between quality inspection, energy saving, and AGV dispatch agents. Control commands exceeding safety thresholds strictly require on-site operator approval gates.",
       "unit": "Per active agent module"
     },
-    "consensbot": {
-      "name": "ConsensBot (Regulatory sLM)",
+    "consensebot": {
+      "name": "ConsenseBot (Regulatory sLM)",
       "categoryLabel": "On-premise sLM",
       "desc": "Learns in-house SOPs and GMP guidelines to analyze deviations and draft audit reports",
       "detail": "On-premises specialized small language model (sLM) that guarantees zero bytes of internal SOPs/GMP documents leave the corporate firewall. Rapidly answers audit queries and drafts regulatory compliance reports with source document citations.",
@@ -51,8 +51,8 @@ const CATALOG: CatalogStrings = {
       "detail": "Renders telemetry, alarm states, and AGV locations on a WebGL 3D canvas in real time. Enables intuitive virtual facility walk-throughs in standard modern browsers without proprietary thick clients.",
       "unit": "Per facility and line"
     },
-    "arcmind": {
-      "name": "ArcMind (No-Code Platform Builder)",
+    "arcforge": {
+      "name": "ARCFORGE (No-Code Platform Builder)",
       "categoryLabel": "In-House IT Platform Builder",
       "desc": "Dedicated builder for enterprises with in-house IT to build proprietary Smart Factory systems via No-Code/Low-Code without off-the-shelf MES",
       "detail": "A dedicated builder for enterprises with in-house IT engineering teams. Instead of purchasing off-the-shelf MES suites, internal IT teams build 100% tailored work order dispatchers, shopfloor views, daily KPI dashboards, and business logic using No-Code/Low-Code on top of standardized B²LAB ontology data.",
@@ -171,7 +171,7 @@ const CATALOG: CatalogStrings = {
     "B²LAB 온톨로지 스트리밍 버스": "B²LAB Ontology Streaming Bus",
     "B²LAB 온톨로지 GraphQL & REST API": "B²LAB Ontology GraphQL & REST API",
     "사업장 레거시 DB 전체 가상화 인터페이스": "Enterprise legacy DB virtualization interface",
-    "ArcMind JSON Schema 컴포넌트 규약 (KS X 9101 매핑)": "ArcMind JSON Schema component spec (KS X 9101 mapped)",
+    "ARCFORGE JSON Schema 컴포넌트 규약 (KS X 9101 매핑)": "ARCFORGE JSON Schema component spec (KS X 9101 mapped)",
     "PDF/Docx 온톨로지 청킹 및 사내 Milvus 벡터DB": "PDF/Docx ontology chunking & in-house Milvus vector DB",
     "AAS / OPC-UA / KS X 9101 표준 온톨로지": "AAS / OPC-UA / KS X 9101 standard ontology",
     "GLTF / glTF 3D + OPC-UA Telemetry": "GLTF / glTF 3D + OPC-UA Telemetry",
@@ -266,14 +266,14 @@ const CATALOG: CatalogStrings = {
       "title": "Autonomous AI Manufacturing (Full Agent Architecture)",
       "subtitle": "AI agent generation · Supervisor orchestration · sLM regulatory analysis",
       "badge": "Autonomous AI",
-      "desc": "The Multi-AI Agent Supervisor orchestrates the quality, equipment and energy agents generated in A²LAB, combined with the air-gapped ConsensBot sLM and a 3D digital twin.",
+      "desc": "The Multi-AI Agent Supervisor orchestrates the quality, equipment and energy agents generated in A²LAB, combined with the air-gapped ConsenseBot sLM and a 3D digital twin.",
       "targetAudience": "Lighthouse factory programs / large multi-process production sites"
     },
     "preset-inhouse-diy": {
       "title": "In-House IT No-Code Platform Build (DIY)",
-      "subtitle": "ArcMind no-code/low-code builder · B²LAB ontology · A²LAB · 3D twin",
+      "subtitle": "ARCFORGE no-code/low-code builder · B²LAB ontology · A²LAB · 3D twin",
       "badge": "In-House IT",
-      "desc": "Instead of adopting an off-the-shelf MES suite, in-house IT staff build process screens, work instructions and mobile views themselves with ArcMind (No-Code/Low-Code) — a 100% custom platform on top of the B²LAB ontology, with no MES subscription fee.",
+      "desc": "Instead of adopting an off-the-shelf MES suite, in-house IT staff build process screens, work instructions and mobile views themselves with ARCFORGE (No-Code/Low-Code) — a 100% custom platform on top of the B²LAB ontology, with no MES subscription fee.",
       "targetAudience": "Manufacturers with in-house IT staff who build their own smart factory instead of buying an off-the-shelf MES"
     },
     "preset-scm-audit": {
@@ -318,9 +318,9 @@ const CATALOG: CatalogStrings = {
     "AI Vision 결함 탐지 (ArcVision)": "AI Vision Defect Detection (ArcVision)",
     "A²LAB (AI 모듈 생성기)": "A²LAB (AI Model Generator)",
     "다중 AI Agent 슈퍼바이저": "Multi-AI Agent Supervisor",
-    "컨센스봇 (ConsensBot)": "ConsensBot (Regulatory sLM)",
+    "컨센스봇 (ConsenseBot)": "ConsenseBot (Regulatory sLM)",
     "디지털 트윈 (Digital Twin)": "Digital Twin",
-    "ArcMind (노코드/로우코드 플랫폼 빌더)": "ArcMind (No-Code/Low-Code Platform Builder)",
+    "ARCFORGE (노코드/로우코드 플랫폼 빌더)": "ARCFORGE (No-Code/Low-Code Platform Builder)",
     "공통 기반": "Shared Core",
     "스위트 코어": "Suite Core",
     "스위트 확장": "Suite Extension",

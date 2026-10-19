@@ -447,7 +447,7 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
     }
   },
 
-  'consensbot-manual': {
+  'consensebot-manual': {
     ko: {
       title: '컨센스봇 sLM 운영 매뉴얼',
       summary: '사내 문서를 색인하고, 감사 답변과 일탈 분석에 활용하는 방법입니다.',
@@ -489,7 +489,7 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
       ]
     },
     en: {
-      title: 'ConsensBot sLM Operating Manual',
+      title: 'ConsenseBot sLM Operating Manual',
       summary: 'Indexing your internal documents and using them for audit answers and deviation analysis.',
       audience: 'QA · regulatory affairs',
       sections: [
@@ -514,7 +514,7 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
           heading: 'Deviation analysis',
           items: [
             'When EBRS records a batch deviation, the relevant standard clauses are forwarded automatically',
-            'ConsensBot proposes candidate causes; the final determination stays with the responsible person',
+            'ConsenseBot proposes candidate causes; the final determination stays with the responsible person',
             'The analysis history is written into the audit trail alongside the deviation'
           ]
         },

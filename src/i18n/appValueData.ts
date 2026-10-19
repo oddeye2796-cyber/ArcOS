@@ -157,7 +157,7 @@ const APP_VALUE_PROPS: Record<string, LocalizedValueProp> = {
     }
   },
 
-  consensbot: {
+  consensebot: {
     ko: {
       headline: '사내 기준서와 제조 지침을 학습한 sLM이 폐쇄망 안에서 일탈 원인 분석과 감사 답변을 작성합니다.',
       outcomes: [
@@ -288,7 +288,7 @@ const APP_VALUE_PROPS: Record<string, LocalizedValueProp> = {
     }
   },
 
-  arcmind: {
+  arcforge: {
     ko: {
       headline: '사내 IT 인력이 기성 MES에 종속되지 않고 공정 화면을 직접 만들어 운영합니다.',
       outcomes: [

@@ -68,12 +68,12 @@ export interface Translations {
   duplicateReviewBadge: string;
   suiteBadgeText: string;
 
-  // ArcMind vs Suite Distinction
-  arcMindNoticeTitle: string;
-  arcMindNoticeDesc: string;
-  arcMindDuplicateWarning: string;
-  arcMindConflictResolveKeepSuite: string;
-  arcMindConflictResolveKeepArcMind: string;
+  // ARCFORGE vs Suite Distinction
+  arcForgeNoticeTitle: string;
+  arcForgeNoticeDesc: string;
+  arcForgeDuplicateWarning: string;
+  arcForgeConflictResolveKeepSuite: string;
+  arcForgeConflictResolveKeepArcForge: string;
 
   // Quote
   quoteTitle: string;
@@ -208,8 +208,8 @@ export interface Translations {
   cardSelectModules: string;
   cardPerModulePricing: string;
   cardIncludedInBase: string;
-  arcMindCardBadge: string;
-  arcMindCardDesc: string;
+  arcForgeCardBadge: string;
+  arcForgeCardDesc: string;
 
   // Quote View Simulator & Presets
   threeTierBillingBadge: string;

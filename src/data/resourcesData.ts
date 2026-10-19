@@ -28,7 +28,7 @@ export const RESOURCE_DOCS: ResourceDoc[] = [
   {
     id: 'arch-whitepaper',
     kind: 'whitepaper',
-    relatedModuleIds: ['b2lab', 'smartfactory', 'arcmind'],
+    relatedModuleIds: ['b2lab', 'smartfactory', 'arcforge'],
     updatedAt: '2026-03-02',
     readingMinutes: 12,
     component: 'architecture'
@@ -55,9 +55,9 @@ export const RESOURCE_DOCS: ResourceDoc[] = [
     readingMinutes: 8
   },
   {
-    id: 'consensbot-manual',
+    id: 'consensebot-manual',
     kind: 'manual',
-    relatedModuleIds: ['consensbot'],
+    relatedModuleIds: ['consensebot'],
     updatedAt: '2025-11-04',
     readingMinutes: 7
   },

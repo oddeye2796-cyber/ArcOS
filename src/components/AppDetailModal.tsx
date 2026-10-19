@@ -161,15 +161,15 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({
             {getLocalizedAppDetail(app, lang)}
           </div>
 
-          {/* ArcMind Special Distinction Notice */}
-          {app.id === 'arcmind' && (
+          {/* ARCFORGE Special Distinction Notice */}
+          {app.id === 'arcforge' && (
             <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-xl text-xs text-indigo-950 space-y-1.5">
               <div className="font-bold flex items-center gap-1.5 text-indigo-900 text-xs sm:text-sm">
                 <Cpu className="w-4 h-4 text-indigo-600" />
-                <span>{t.arcMindNoticeTitle}</span>
+                <span>{t.arcForgeNoticeTitle}</span>
               </div>
               <p className="text-indigo-800 leading-relaxed text-xs break-keep">
-                {t.arcMindNoticeDesc}
+                {t.arcForgeNoticeDesc}
               </p>
             </div>
           )}

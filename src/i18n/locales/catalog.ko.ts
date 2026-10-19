@@ -30,8 +30,8 @@ const CATALOG: CatalogStrings = {
       "detail": "품질 진단 에이전트, 에너지 절감 에이전트, 물류 디스패치 에이전트 간의 상충되는 제어 결정을 감시하고 중재합니다. 안전 임계치를 초과하는 명령은 사내 안전 관리자 승인 게이트를 통해서만 발령됩니다.",
       "unit": "활성 에이전트 모듈 수"
     },
-    "consensbot": {
-      "name": "컨센스봇 (ConsensBot)",
+    "consensebot": {
+      "name": "컨센스봇 (ConsenseBot)",
       "categoryLabel": "온프레미스 sLM",
       "desc": "사내 규정 및 제조 지침서를 완벽 학습해 공정 일탈 원인 분석 및 감사 보고서 초안을 작성합니다",
       "detail": "외부 클라우드로 내부 문서를 단 1바이트도 전송하지 않는 온프레미스 전용 도메인 특화 경량 언어모델(sLM)입니다. 제약·식품 분야의 까다로운 감사(Audit) 대응 질의응답 및 제조기록서 자동 초안 작성을 근거 문서 링크와 함께 제공합니다.",
@@ -51,8 +51,8 @@ const CATALOG: CatalogStrings = {
       "detail": "생산 라인의 센서 값, 불량 알람, 물류 AGV 위치를 3D 웹 캔버스에 실시간 렌더링합니다. 별도의 고가 클라이언트 설치 없이 웹 브라우저에서 직관적인 현장 가상 순찰이 가능합니다.",
       "unit": "등록 사업장 및 라인 수"
     },
-    "arcmind": {
-      "name": "ArcMind (노코드/로우코드 플랫폼 빌더)",
+    "arcforge": {
+      "name": "ARCFORGE (노코드/로우코드 플랫폼 빌더)",
       "categoryLabel": "자체 IT 플랫폼 빌더",
       "desc": "자체 IT 인력을 보유한 기업이 기성 MES 도입 없이 No-Code / Low-Code로 기업 고유의 Smart Factory 플랫폼을 직접 구축하는 전용 빌더",
       "detail": "자체 IT/전산 인력을 보유한 엔터프라이즈를 위한 전용 빌더입니다. 기성 제조 운영 스위트(MES)를 도입하는 대신, B²LAB 온톨로지 데이터를 기반으로 노코드/로우코드를 통해 작업 지시서, 생산 공정 뷰, 일별 현황판, 로직을 사내 IT 인력이 100% 맞춤 제작합니다. 기성 Smart Factory 스위트와 중복 도입되지 않도록 독립된 자체 구축 경로로 제공됩니다.",
@@ -171,7 +171,7 @@ const CATALOG: CatalogStrings = {
     "B²LAB 온톨로지 스트리밍 버스": "B²LAB 온톨로지 스트리밍 버스",
     "B²LAB 온톨로지 GraphQL & REST API": "B²LAB 온톨로지 GraphQL & REST API",
     "사업장 레거시 DB 전체 가상화 인터페이스": "사업장 레거시 DB 전체 가상화 인터페이스",
-    "ArcMind JSON Schema 컴포넌트 규약 (KS X 9101 매핑)": "ArcMind JSON Schema 컴포넌트 규약 (KS X 9101 매핑)",
+    "ARCFORGE JSON Schema 컴포넌트 규약 (KS X 9101 매핑)": "ARCFORGE JSON Schema 컴포넌트 규약 (KS X 9101 매핑)",
     "PDF/Docx 온톨로지 청킹 및 사내 Milvus 벡터DB": "PDF/Docx 온톨로지 청킹 및 사내 Milvus 벡터DB",
     "AAS / OPC-UA / KS X 9101 표준 온톨로지": "AAS / OPC-UA / KS X 9101 표준 온톨로지",
     "GLTF / glTF 3D + OPC-UA Telemetry": "GLTF / glTF 3D + OPC-UA Telemetry",
@@ -271,9 +271,9 @@ const CATALOG: CatalogStrings = {
     },
     "preset-inhouse-diy": {
       "title": "자체 IT 인력 노코드 플랫폼 구축형 (In-House IT DIY)",
-      "subtitle": "ArcMind 노코드·로우코드 빌더 · B²LAB 온톨로지 · A²LAB · 3D 트윈",
+      "subtitle": "ARCFORGE 노코드·로우코드 빌더 · B²LAB 온톨로지 · A²LAB · 3D 트윈",
       "badge": "자체 IT 전용",
-      "desc": "기성 제조 운영 스위트(MES)를 도입하지 않고, 사내 IT 인력이 ArcMind(No-Code/Low-Code)로 공정 화면·작업 지시서·모바일 뷰를 직접 개발합니다. 기성 MES 구독료 없이 B²LAB 온톨로지 위에서 100% 사내 맞춤형 플랫폼을 내재화합니다.",
+      "desc": "기성 제조 운영 스위트(MES)를 도입하지 않고, 사내 IT 인력이 ARCFORGE(No-Code/Low-Code)로 공정 화면·작업 지시서·모바일 뷰를 직접 개발합니다. 기성 MES 구독료 없이 B²LAB 온톨로지 위에서 100% 사내 맞춤형 플랫폼을 내재화합니다.",
       "targetAudience": "자체 IT/전산 인력을 보유하여 기성 MES 대신 사내 스마트팩토리를 직접 개발하는 제조기업"
     },
     "preset-scm-audit": {
@@ -318,9 +318,9 @@ const CATALOG: CatalogStrings = {
     "AI Vision 결함 탐지 (ArcVision)": "AI Vision 결함 탐지 (ArcVision)",
     "A²LAB (AI 모듈 생성기)": "A²LAB (AI 모듈 생성기)",
     "다중 AI Agent 슈퍼바이저": "다중 AI Agent 슈퍼바이저",
-    "컨센스봇 (ConsensBot)": "컨센스봇 (ConsensBot)",
+    "컨센스봇 (ConsenseBot)": "컨센스봇 (ConsenseBot)",
     "디지털 트윈 (Digital Twin)": "디지털 트윈 (Digital Twin)",
-    "ArcMind (노코드/로우코드 플랫폼 빌더)": "ArcMind (노코드/로우코드 플랫폼 빌더)",
+    "ARCFORGE (노코드/로우코드 플랫폼 빌더)": "ARCFORGE (노코드/로우코드 플랫폼 빌더)",
     "공통 기반": "공통 기반",
     "스위트 코어": "스위트 코어",
     "스위트 확장": "스위트 확장",

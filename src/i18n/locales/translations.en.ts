@@ -85,11 +85,11 @@ const EN_TRANSLATIONS: Translations = {
   duplicateReviewBadge: 'Review Recommended',
   suiteBadgeText: 'Suite',
 
-  arcMindNoticeTitle: 'ArcMind Notice: Custom Platform Builder for In-House IT',
-  arcMindNoticeDesc: 'ArcMind is designed for enterprises with in-house IT engineers to build custom Smart Factory platforms via No-Code / Low-Code. It is recommended to avoid duplicate selection with out-of-the-box MES suites.',
-  arcMindDuplicateWarning: '⚠️ [Duplicate Adoption Alert] Both ready-made Manufacturing Operation Suite (MES) and ArcMind (In-House IT No-Code Builder) are selected. ArcMind is intended for in-house IT to build MES directly, which may cause overlapping investment.',
-  arcMindConflictResolveKeepSuite: 'Keep Ready-Made MES (Exclude ArcMind)',
-  arcMindConflictResolveKeepArcMind: 'Adopt In-House DIY (Exclude MES, Keep ArcMind)',
+  arcForgeNoticeTitle: 'ARCFORGE Notice: Custom Platform Builder for In-House IT',
+  arcForgeNoticeDesc: 'ARCFORGE is designed for enterprises with in-house IT engineers to build custom Smart Factory platforms via No-Code / Low-Code. It is recommended to avoid duplicate selection with out-of-the-box MES suites.',
+  arcForgeDuplicateWarning: '⚠️ [Duplicate Adoption Alert] Both ready-made Manufacturing Operation Suite (MES) and ARCFORGE (In-House IT No-Code Builder) are selected. ARCFORGE is intended for in-house IT to build MES directly, which may cause overlapping investment.',
+  arcForgeConflictResolveKeepSuite: 'Keep Ready-Made MES (Exclude ARCFORGE)',
+  arcForgeConflictResolveKeepArcForge: 'Adopt In-House DIY (Exclude MES, Keep ARCFORGE)',
 
   quoteTitle: 'ArcOS Monthly Subscription Quote Simulator',
   quoteSubtitle: 'Unit prices remain fixed; volume discounts apply only on module quantity tiers. MES costs scale dynamically with production lines.',
@@ -220,8 +220,8 @@ const EN_TRANSLATIONS: Translations = {
   cardSelectModules: 'Select Modules',
   cardPerModulePricing: 'Per-module pricing',
   cardIncludedInBase: 'Included in Base',
-  arcMindCardBadge: 'Dedicated Builder for In-House IT',
-  arcMindCardDesc: 'Enables internal dev teams to build bespoke Smart Factory UI & logic without buying off-the-shelf MES (avoids duplicate MES costs).',
+  arcForgeCardBadge: 'Dedicated Builder for In-House IT',
+  arcForgeCardDesc: 'Enables internal dev teams to build bespoke Smart Factory UI & logic without buying off-the-shelf MES (avoids duplicate MES costs).',
 
   // Quote View Simulator & Presets
   threeTierBillingBadge: '3-Tier Transparent Billing Model',
@@ -430,18 +430,18 @@ const EN_TRANSLATIONS: Translations = {
   archSuiteOrchTitle: 'Multi-AI Agent Supervisor (Orchestration)',
   archSuiteOrchDesc: 'The **command runtime** that cross-verifies the decisions of individual agents and arbitrates conflicts between them.',
   archSuiteSec2Note: 'With only one or two agents, orchestration is unnecessary, so it ships inside the A²LAB upper tier at first; customers running three or more in-house agents move onto a separate SKU.',
-  archSuiteSec3Title: '3. Clear Role Separation: ArcMind (No-Code Builder) vs Off-the-Shelf Smart Factory Suites',
-  archSuiteSec3Desc: '**ArcMind** is a specialist builder for companies with dedicated in-house IT/software staff, letting them drag and drop No-Code/Low-Code components to build a plant-specific Smart Factory platform themselves instead of locking into an off-the-shelf MES product.',
-  archSuiteSec3Warning: '**💡 Duplicate-purchase prevention policy:** An off-the-shelf MES suite already ships finished process, batch and equipment screens, so the marketplace and quote simulator review ArcMind as mutually exclusive and provide separation guidance.',
+  archSuiteSec3Title: '3. Clear Role Separation: ARCFORGE (No-Code Builder) vs Off-the-Shelf Smart Factory Suites',
+  archSuiteSec3Desc: '**ARCFORGE** is a specialist builder for companies with dedicated in-house IT/software staff, letting them drag and drop No-Code/Low-Code components to build a plant-specific Smart Factory platform themselves instead of locking into an off-the-shelf MES product.',
+  archSuiteSec3Warning: '**💡 Duplicate-purchase prevention policy:** An off-the-shelf MES suite already ships finished process, batch and equipment screens, so the marketplace and quote simulator review ARCFORGE as mutually exclusive and provide separation guidance.',
   archPnpTitle: 'Four Plug & Play contracts that let new modules ship without touching existing code',
   archPnpItem1Title: '① Packaging contract (Container + Manifest)',
   archPnpItem1Desc: 'Every app registers as an OCI-standard container image with a JSON manifest that declares required data schemas, exposed APIs and dependent apps.',
   archPnpItem2Title: '② Data contract (AAS, OPC-UA, KS X 9101)',
   archPnpItem2Desc: 'Apps never read legacy DBs directly — they query only the B²LAB ontology layer, so an app never needs to know each customer’s DB structure.',
   archPnpItem3Title: '③ Authentication & authorization contract (ArcOS Tenant SSO)',
-  archPnpItem3Desc: 'ArcOS exclusively owns tenant-level unified SSO, and per-app permission matrices are enforced consistently down to the ArcMind component level.',
+  archPnpItem3Desc: 'ArcOS exclusively owns tenant-level unified SSO, and per-app permission matrices are enforced consistently down to the ARCFORGE component level.',
   archPnpItem4Title: '④ Event contract (shared Pub/Sub event bus)',
-  archPnpItem4Desc: 'Apps never couple directly; they communicate over the event bus — ConsensBot, for example, subscribes to equipment alarm events.',
+  archPnpItem4Desc: 'Apps never couple directly; they communicate over the event bus — ConsenseBot, for example, subscribes to equipment alarm events.',
   archPnpManifestTitle: 'A²LAB generated agent manifest example (JSON spec):',
   archPnpManifestTarget: 'Predictive detection of extrusion thickness defects',
   archPricingTitle: '3-Tier Pricing Model & Natural Growth Metric per Module',
@@ -457,7 +457,7 @@ const EN_TRANSLATIONS: Translations = {
     { module: 'EBRS', growth: 'Batch record volume', basis: 'KRW 1.2M/mo (base batches)', mechanism: 'Metered overage as output grows' },
     { module: 'REMS / A.ESG', growth: 'Sensor measurement points', basis: 'KRW 900K-1.3M/mo', mechanism: 'Expanding instrumented plant zones' },
     { module: 'A²LAB', growth: 'Inference calls', basis: 'KRW 1.5M/mo + metered calls', mechanism: 'Scales with continuous AI module workload' },
-    { module: 'ConsensBot', growth: 'Users', basis: 'KRW 1.8M/mo (20 concurrent users)', mechanism: 'More QA/QC/production staff onboarded' }
+    { module: 'ConsenseBot', growth: 'Users', basis: 'KRW 1.8M/mo (20 concurrent users)', mechanism: 'More QA/QC/production staff onboarded' }
   ],
   archPolicyTitle: 'Operating Policy: Regulated Data [Read-Only Retention] & Runtime Support',
   archPolicy1Title: '1. The third state: [Read-Only Retention]',
@@ -468,7 +468,7 @@ const EN_TRANSLATIONS: Translations = {
   archPolicy3Desc: 'Production lines running around the clock cannot accept maintenance downtime. **Zero-downtime hotfixes** are applied through Blue/Green and on-premise node rolling updates, and the in-platform “Zero-Downtime Patch Notes” menu tracks change history and rollback guarantees instantly.',
 
   archPolicy4Title: '4. Minimum commitment term per module',
-  archPolicy4Desc: 'Adoption cost and churn risk differ by module, so the commitment unit differs too. **The three MES cores are annual**, **regulated domain extensions such as EBRS, REMS and SCM are quarterly**, and **AI modules such as A²LAB, the orchestrator and ConsensBot may be cancelled monthly, subject to a {floor}/month minimum charge**. When terms are mixed in one quote, the longest one binds the whole subscription.',
+  archPolicy4Desc: 'Adoption cost and churn risk differ by module, so the commitment unit differs too. **The three MES cores are annual**, **regulated domain extensions such as EBRS, REMS and SCM are quarterly**, and **AI modules such as A²LAB, the orchestrator and ConsenseBot may be cancelled monthly, subject to a {floor}/month minimum charge**. When terms are mixed in one quote, the longest one binds the whole subscription.',
 
   commitmentTermAnnual: 'Annual (12 months)',
   commitmentTermQuarterly: 'Quarterly (3 months)',
@@ -480,7 +480,7 @@ const EN_TRANSLATIONS: Translations = {
 
   landingBadge: 'Recommended first module',
   landingBadgeWith: 'Recommended first module: {module}',
-  landingCatalogNote: 'New to the platform? Start with ConsensBot and the General Manufacturing MES. Both are entry points that show results fastest without replacing an existing system.',
+  landingCatalogNote: 'New to the platform? Start with ConsenseBot and the General Manufacturing MES. Both are entry points that show results fastest without replacing an existing system.',
 
   ariaSelectFacility: 'Select facility (region + industry)',
   ariaSelectDeployNode: 'Select target facility node for deployment',
