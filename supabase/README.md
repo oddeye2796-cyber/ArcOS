@@ -37,6 +37,16 @@ so it cannot be reached from a browser. Columns: email, product, kind, language,
 consent flag and the consent wording version (`CONSENT_VERSION` in
 `downloadRequest.ts`).
 
+## Retention (1 year)
+
+The privacy policy (`src/expo/privacyContent.ts`) states a one-year retention.
+Delete expired rows with `select expo.purge_expired();` in the SQL editor, for
+example once a month; it returns how many rows it removed. `pg_cron` is not
+enabled in the shared `pms` project, so nothing runs it automatically. To
+delete everything sooner (the policy asks for deletion once the purpose is
+achieved, e.g. after the follow-up campaign), run
+`select expo.purge_expired(interval '0');`.
+
 ## Sharing a database with another app
 
 The migration only adds the `expo` schema and the `expo-docs` bucket; it does

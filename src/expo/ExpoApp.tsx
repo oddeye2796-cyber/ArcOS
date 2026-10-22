@@ -6,13 +6,14 @@ import { Language } from '../i18n/translations';
 import { applyDocumentLanguage } from '../lib/language';
 import { EXPO_COPY, EXPO_DOC_IDS, EXPO_SUMMARY_OVERRIDES } from './expoCopy';
 import { detectExpoLanguage, storeExpoLanguage } from './expoLanguage';
+import { PrivacyView } from './PrivacyView';
 import { ProductsView } from './ProductsView';
 
 const ResourcesView = lazy(() =>
   import('../components/ResourcesView').then((m) => ({ default: m.ResourcesView }))
 );
 
-type ExpoRoute = 'products' | 'manuals';
+type ExpoRoute = 'products' | 'manuals' | 'privacy';
 
 const LANG_BUTTONS: { code: Language; label: string }[] = [
   { code: 'ja', label: '日本語' },
@@ -26,7 +27,10 @@ const LANG_BUTTONS: { code: Language; label: string }[] = [
  */
 export function ExpoApp() {
   const [lang, setLang] = useState<Language>(detectExpoLanguage);
-  const [route, setRoute] = useState<ExpoRoute>('products');
+  // `#privacy` lets the consent form link straight to the policy in a new tab.
+  const [route, setRoute] = useState<ExpoRoute>(() =>
+    typeof window !== 'undefined' && window.location.hash === '#privacy' ? 'privacy' : 'products'
+  );
   const [productId, setProductId] = useState<string | null>(null);
   const [pendingDocId, setPendingDocId] = useState<string | null>(null);
   const copy = EXPO_COPY[lang];
@@ -159,6 +163,8 @@ export function ExpoApp() {
           </>
         )}
 
+        {route === 'privacy' && <PrivacyView lang={lang} onBack={() => goto('products')} />}
+
         {route === 'manuals' && (
           <Suspense fallback={<ViewFallback />}>
             <ResourcesView
@@ -173,7 +179,12 @@ export function ExpoApp() {
         )}
       </main>
 
-      <footer className="bg-slate-900 text-slate-400 text-xs text-center py-4">{copy.footer}</footer>
+      <footer className="bg-slate-900 text-slate-400 text-xs py-4 px-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+        <span>{copy.footer}</span>
+        <button onClick={() => goto('privacy')} className="underline hover:text-white">
+          {copy.privacyLink}
+        </button>
+      </footer>
     </div>
   );
 }

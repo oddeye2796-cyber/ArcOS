@@ -154,6 +154,14 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
               />
               <span className="break-keep">{copy.dlConsent}</span>
             </label>
+            <a
+              href="#privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-xs text-blue-700 hover:underline"
+            >
+              {copy.dlPrivacyLink}
+            </a>
 
             {phase.name === 'error' && (
               <p role="alert" className="text-xs text-red-600">
