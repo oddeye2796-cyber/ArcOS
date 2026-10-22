@@ -23,6 +23,24 @@ export interface ExpoCopy {
   openManual: string;
   viewDetails: string;
   footer: string;
+  downloadsTitle: string;
+  downloadBrochure: string;
+  downloadManual: string;
+  dlModalTitle: string;
+  dlModalIntro: string;
+  dlEmailLabel: string;
+  dlEmailPlaceholder: string;
+  dlEmailInvalid: string;
+  /** Consent wording. Changing it means bumping CONSENT_VERSION. */
+  dlConsent: string;
+  dlSubmit: string;
+  dlSending: string;
+  dlCancel: string;
+  dlDone: string;
+  dlDoneBody: string;
+  dlNotAvailable: string;
+  dlFailed: string;
+  dlNotConfigured: string;
 }
 
 export const EXPO_COPY: Record<Language, ExpoCopy> = {
@@ -45,7 +63,25 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     includedModules: '構成モジュール',
     openManual: '関連マニュアルを開く',
     viewDetails: '詳しく見る',
-    footer: 'ArcOS by IMPIX'
+    footer: 'ArcOS by IMPIX',
+    downloadsTitle: '資料ダウンロード',
+    downloadBrochure: '製品紹介書',
+    downloadManual: 'マニュアル',
+    dlModalTitle: '資料のダウンロード',
+    dlModalIntro: 'メールアドレスをご入力のうえ、同意にチェックしてください。ダウンロードが始まります。',
+    dlEmailLabel: 'メールアドレス',
+    dlEmailPlaceholder: 'name@example.com',
+    dlEmailInvalid: 'メールアドレスの形式をご確認ください。',
+    dlConsent:
+      '製品情報のご案内およびお問い合わせ対応のため、入力したメールアドレスをIMPIXが取得・利用することに同意します。同意いただけない場合、資料をダウンロードすることはできません。',
+    dlSubmit: 'ダウンロード',
+    dlSending: '確認中…',
+    dlCancel: 'キャンセル',
+    dlDone: '閉じる',
+    dlDoneBody: 'ダウンロードを開始しました。始まらない場合は下のボタンをご利用ください。',
+    dlNotAvailable: 'この資料は現在準備中です。',
+    dlFailed: '処理に失敗しました。しばらくしてからもう一度お試しください。',
+    dlNotConfigured: 'ダウンロードは現在準備中です。'
   },
   en: {
     brandSub: 'Hybrid cloud platform for manufacturing operations',
@@ -66,7 +102,25 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     includedModules: 'Included modules',
     openManual: 'Open the related manual',
     viewDetails: 'View details',
-    footer: 'ArcOS by IMPIX'
+    footer: 'ArcOS by IMPIX',
+    downloadsTitle: 'Downloads',
+    downloadBrochure: 'Product brochure',
+    downloadManual: 'Manual',
+    dlModalTitle: 'Download',
+    dlModalIntro: 'Enter your email address and tick the consent box. The download will start.',
+    dlEmailLabel: 'Email address',
+    dlEmailPlaceholder: 'name@example.com',
+    dlEmailInvalid: 'Please check the email address format.',
+    dlConsent:
+      'I agree that IMPIX may collect and use the email address I enter to send product information and respond to inquiries. Without this consent the document cannot be downloaded.',
+    dlSubmit: 'Download',
+    dlSending: 'Checking…',
+    dlCancel: 'Cancel',
+    dlDone: 'Close',
+    dlDoneBody: 'Your download has started. If it did not, use the button below.',
+    dlNotAvailable: 'This document is not available yet.',
+    dlFailed: 'Something went wrong. Please try again in a moment.',
+    dlNotConfigured: 'Downloads are not available yet.'
   },
   ko: {
     brandSub: '제조 운영 하이브리드 클라우드 플랫폼',
@@ -87,7 +141,25 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     includedModules: '구성 모듈',
     openManual: '관련 매뉴얼 열기',
     viewDetails: '자세히 보기',
-    footer: 'ArcOS by IMPIX'
+    footer: 'ArcOS by IMPIX',
+    downloadsTitle: '자료 다운로드',
+    downloadBrochure: '제품소개서',
+    downloadManual: '매뉴얼',
+    dlModalTitle: '자료 다운로드',
+    dlModalIntro: '이메일 주소를 입력하고 동의에 체크하면 다운로드가 시작됩니다.',
+    dlEmailLabel: '이메일 주소',
+    dlEmailPlaceholder: 'name@example.com',
+    dlEmailInvalid: '이메일 주소 형식을 확인해 주세요.',
+    dlConsent:
+      '제품 정보 안내 및 문의 대응을 위해 입력한 이메일 주소를 IMPIX가 수집·이용하는 데 동의합니다. 동의하지 않으면 자료를 다운로드할 수 없습니다.',
+    dlSubmit: '다운로드',
+    dlSending: '확인 중…',
+    dlCancel: '취소',
+    dlDone: '닫기',
+    dlDoneBody: '다운로드를 시작했습니다. 시작되지 않으면 아래 버튼을 눌러 주세요.',
+    dlNotAvailable: '이 자료는 현재 준비 중입니다.',
+    dlFailed: '처리에 실패했습니다. 잠시 후 다시 시도해 주세요.',
+    dlNotConfigured: '다운로드는 현재 준비 중입니다.'
   }
 };
 

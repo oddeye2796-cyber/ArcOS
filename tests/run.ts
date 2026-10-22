@@ -14,6 +14,7 @@ void loadAllLanguages()
   .then(async () => {
     await import('./searchRanking.test');
     await import('./i18n.test');
+    await import('./expoDownloads.test');
     report();
   })
   .catch((error) => {

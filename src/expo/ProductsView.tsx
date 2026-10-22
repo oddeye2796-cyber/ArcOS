@@ -1,5 +1,5 @@
-import React from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, Boxes, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowLeft, ArrowRight, BookOpen, Boxes, CheckCircle2, Download } from 'lucide-react';
 import { APPS_DATA } from '../data/appsData';
 import { findDocForModule } from '../data/resourcesData';
 import {
@@ -13,6 +13,8 @@ import { getAppValueProp } from '../i18n/appValueData';
 import { Language } from '../i18n/translations';
 import { AppItem } from '../types';
 import { EXPO_COPY, EXPO_DOC_IDS } from './expoCopy';
+import { DownloadModal } from './DownloadModal';
+import { DownloadKind } from './downloadRequest';
 import { expoAppDesc, expoAppDetail, isPricingOutcome } from './pricingScrub';
 
 interface ProductsViewProps {
@@ -99,6 +101,7 @@ const ProductDetail: React.FC<{
 }> = ({ app, lang, onBack, onOpenManual }) => {
   const copy = EXPO_COPY[lang];
   const value = expoValueProp(app.id, lang);
+  const [downloadKind, setDownloadKind] = useState<DownloadKind | null>(null);
   const doc = findDocForModule(app.id);
   const manualId = doc && (EXPO_DOC_IDS as readonly string[]).includes(doc.id) ? doc.id : null;
 
@@ -177,6 +180,31 @@ const ProductDetail: React.FC<{
             ))}
           </div>
         </Card>
+      )}
+
+      <Card title={copy.downloadsTitle}>
+        <div className="flex flex-wrap gap-2">
+          {(['brochure', 'manual'] as const).map((kind) => (
+            <button
+              key={kind}
+              onClick={() => setDownloadKind(kind)}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:border-blue-500 hover:text-blue-700 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
+            </button>
+          ))}
+        </div>
+      </Card>
+
+      {downloadKind && (
+        <DownloadModal
+          lang={lang}
+          productId={app.id}
+          productName={getLocalizedAppName(app, lang)}
+          kind={downloadKind}
+          onClose={() => setDownloadKind(null)}
+        />
       )}
 
       {manualId && (
