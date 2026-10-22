@@ -37,8 +37,25 @@ so it cannot be reached from a browser. Columns: email, product, kind, language,
 consent flag and the consent wording version (`CONSENT_VERSION` in
 `downloadRequest.ts`).
 
+## Retention and automatic deletion
+
+Records are deleted automatically once they are older than the retention
+period (default 180 days), by `expo.purge_expired_downloads()`, which pg_cron
+runs daily at 03:00 JST (`migrations/20261022010000_expo_downloads_retention.sql`).
+
+Change the period (30 to 1095 days; applies to existing records too):
+
+```sql
+update expo.retention_settings set retention_days = 365, updated_at = now();
+```
+
+Each run writes a row to `expo.purge_log` (time, period, count; no emails), kept
+for two years as evidence that deletion happens. To run by hand:
+`select expo.purge_expired_downloads();`. If pg_cron is not available the
+migration only prints a notice; call the function from another scheduler.
+
 ## Sharing a database with another app
 
 The migration only adds the `expo` schema and the `expo-docs` bucket; it does
-not touch `public`. To remove everything: `drop schema expo cascade;`, delete
+not touch `public`. To remove everything: `select cron.unschedule('expo-purge-expired-downloads'); drop schema expo cascade;`, delete
 the `expo-docs` bucket and the `expo-download` function.
