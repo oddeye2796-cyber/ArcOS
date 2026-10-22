@@ -37,18 +37,25 @@ so it cannot be reached from a browser. Columns: email, product, kind, language,
 consent flag and the consent wording version (`CONSENT_VERSION` in
 `downloadRequest.ts`).
 
-## Retention (1 year)
+## Retention and automatic deletion
 
-The privacy policy (`src/expo/privacyContent.ts`) states a one-year retention.
-Delete expired rows with `select expo.purge_expired();` in the SQL editor, for
-example once a month; it returns how many rows it removed. `pg_cron` is not
-enabled in the shared `pms` project, so nothing runs it automatically. To
-delete everything sooner (the policy asks for deletion once the purpose is
-achieved, e.g. after the follow-up campaign), run
-`select expo.purge_expired(interval '0');`.
+Records are deleted automatically once they are older than the retention
+period (365 days, matching the privacy policy), by `expo.purge_expired_downloads()`, which pg_cron
+runs daily at 03:00 JST (`migrations/20261022010000_expo_downloads_retention.sql`).
+
+Change the period (30 to 1095 days; applies to existing records too):
+
+```sql
+update expo.retention_settings set retention_days = 365, updated_at = now();  -- keep in step with RETENTION_YEARS in src/expo/privacyContent.ts
+```
+
+Each run writes a row to `expo.purge_log` (time, period, count; no emails), kept
+for two years as evidence that deletion happens. To run by hand:
+`select expo.purge_expired_downloads();`. If pg_cron is not available the
+migration only prints a notice; call the function from another scheduler.
 
 ## Sharing a database with another app
 
 The migration only adds the `expo` schema and the `expo-docs` bucket; it does
-not touch `public`. To remove everything: `drop schema expo cascade;`, delete
+not touch `public`. To remove everything: `select cron.unschedule('expo-purge-expired-downloads'); drop schema expo cascade;`, delete
 the `expo-docs` bucket and the `expo-download` function.
