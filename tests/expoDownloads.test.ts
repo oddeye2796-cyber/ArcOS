@@ -10,6 +10,8 @@ import {
   isValidEmail,
   requestDownload
 } from '../src/expo/downloadRequest';
+import { OPERATOR, PRIVACY_CONTENT, RETENTION_YEARS } from '../src/expo/privacyContent';
+import { EXPO_COPY } from '../src/expo/expoCopy';
 import { assert, suite, test } from './harness';
 
 suite('expo downloads', () => {
@@ -50,6 +52,25 @@ suite('expo downloads', () => {
       for (const id of ids) {
         assert(source.includes(`'${id}'`), `Edge Function allowlist is missing ${appId}/${id}`);
       }
+    }
+  });
+
+  test('the consent wording states the retention period the policy promises', () => {
+    const expected = { ja: `${RETENTION_YEARS}年間`, en: `${RETENTION_YEARS} year`, ko: `${RETENTION_YEARS}년간` };
+    for (const lang of ['ja', 'en', 'ko'] as const) {
+      assert(EXPO_COPY[lang].dlConsent.includes(expected[lang]), `${lang} consent mentions retention`);
+    }
+  });
+});
+
+suite('expo privacy policy', () => {
+  test('every language carries the operator, retention and a contact point', () => {
+    for (const lang of ['ja', 'en', 'ko'] as const) {
+      const content = PRIVACY_CONTENT[lang];
+      const text = JSON.stringify(content);
+      assert(content.sections.length === PRIVACY_CONTENT.ja.sections.length, `${lang} has the same sections as ja`);
+      assert(text.includes(`${RETENTION_YEARS}`), `${lang} states the retention period`);
+      assert(OPERATOR.email.includes('@') && OPERATOR.tel.length > 0, 'contact details are filled in');
     }
   });
 });

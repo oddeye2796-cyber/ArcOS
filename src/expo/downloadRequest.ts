@@ -6,7 +6,7 @@ export type DownloadKind = 'brochure' | 'manual';
 export const DOWNLOAD_KINDS: readonly DownloadKind[] = ['brochure', 'manual'] as const;
 
 /** Bumped whenever the consent wording in expoCopy changes. Stored with each record. */
-export const CONSENT_VERSION = '2026-10-v1';
+export const CONSENT_VERSION = '2026-10-v2';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

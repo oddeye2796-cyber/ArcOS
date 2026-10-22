@@ -5,6 +5,7 @@ import { Language } from '../i18n/translations';
 import { applyDocumentLanguage } from '../lib/language';
 import { EXPO_COPY } from './expoCopy';
 import { detectExpoLanguage, storeExpoLanguage } from './expoLanguage';
+import { PrivacyView } from './PrivacyView';
 import { ProductsView } from './ProductsView';
 
 const LANG_BUTTONS: { code: Language; label: string }[] = [
@@ -20,6 +21,10 @@ const LANG_BUTTONS: { code: Language; label: string }[] = [
 export function ExpoApp() {
   const [lang, setLang] = useState<Language>(detectExpoLanguage);
   const [productId, setProductId] = useState<string | null>(null);
+  // `#privacy` lets the consent form link straight to the policy in a new tab.
+  const [showPrivacy, setShowPrivacy] = useState<boolean>(
+    () => typeof window !== 'undefined' && window.location.hash === '#privacy'
+  );
   const copy = EXPO_COPY[lang];
 
   useEffect(() => {
@@ -38,6 +43,7 @@ export function ExpoApp() {
 
   const goHome = useCallback(() => {
     setProductId(null);
+    setShowPrivacy(false);
     window.scrollTo({ top: 0 });
   }, []);
 
@@ -74,6 +80,10 @@ export function ExpoApp() {
       </header>
 
       <main className="flex-1">
+        {showPrivacy ? (
+          <PrivacyView lang={lang} onBack={goHome} />
+        ) : (
+          <>
         {productId === null && (
           <section className="bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950 text-white">
             <div className="max-w-6xl mx-auto px-6 md:px-8 py-14 md:py-20 space-y-5">
@@ -105,9 +115,22 @@ export function ExpoApp() {
             window.scrollTo({ top: 0 });
           }}
         />
+          </>
+        )}
       </main>
 
-      <footer className="bg-slate-900 text-slate-400 text-xs text-center py-4">{copy.footer}</footer>
+      <footer className="bg-slate-900 text-slate-400 text-xs py-4 px-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+        <span>{copy.footer}</span>
+        <button
+          onClick={() => {
+            setShowPrivacy(true);
+            window.scrollTo({ top: 0 });
+          }}
+          className="underline hover:text-white"
+        >
+          {copy.privacyLink}
+        </button>
+      </footer>
     </div>
   );
 }

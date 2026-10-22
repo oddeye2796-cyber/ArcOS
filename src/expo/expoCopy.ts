@@ -20,6 +20,7 @@ export interface ExpoCopy {
   includedModules: string;
   viewDetails: string;
   footer: string;
+  privacyLink: string;
   downloadsTitle: string;
   downloadBrochure: string;
   downloadManual: string;
@@ -30,6 +31,7 @@ export interface ExpoCopy {
   dlEmailInvalid: string;
   /** Consent wording. Changing it means bumping CONSENT_VERSION. */
   dlConsent: string;
+  dlPrivacyLink: string;
   dlSubmit: string;
   dlSending: string;
   dlCancel: string;
@@ -58,6 +60,7 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     includedModules: '構成モジュール',
       viewDetails: '詳しく見る',
     footer: 'ArcOS by IMPIX',
+    privacyLink: 'プライバシーポリシー',
     downloadsTitle: '資料ダウンロード',
     downloadBrochure: '製品紹介書',
     downloadManual: 'マニュアル',
@@ -67,7 +70,8 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     dlEmailPlaceholder: 'name@example.com',
     dlEmailInvalid: 'メールアドレスの形式をご確認ください。',
     dlConsent:
-      '製品情報のご案内およびお問い合わせ対応のため、入力したメールアドレスをIMPIXが取得・利用することに同意します。同意いただけない場合、資料をダウンロードすることはできません。',
+      '製品情報のご案内およびお問い合わせ対応のため、入力したメールアドレスをIMPIXが取得し、取得から1年間保管・利用することに同意します。同意いただけない場合、資料をダウンロードすることはできません。',
+    dlPrivacyLink: 'プライバシーポリシーを確認する',
     dlSubmit: 'ダウンロード',
     dlSending: '確認中…',
     dlCancel: 'キャンセル',
@@ -94,6 +98,7 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     includedModules: 'Included modules',
       viewDetails: 'View details',
     footer: 'ArcOS by IMPIX',
+    privacyLink: 'Privacy Policy',
     downloadsTitle: 'Downloads',
     downloadBrochure: 'Product brochure',
     downloadManual: 'Manual',
@@ -103,7 +108,8 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     dlEmailPlaceholder: 'name@example.com',
     dlEmailInvalid: 'Please check the email address format.',
     dlConsent:
-      'I agree that IMPIX may collect and use the email address I enter to send product information and respond to inquiries. Without this consent the document cannot be downloaded.',
+      'I agree that IMPIX may collect the email address I enter, and keep and use it for 1 year from collection, to send product information and respond to inquiries. Without this consent the document cannot be downloaded.',
+    dlPrivacyLink: 'Read the Privacy Policy',
     dlSubmit: 'Download',
     dlSending: 'Checking…',
     dlCancel: 'Cancel',
@@ -130,6 +136,7 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     includedModules: '구성 모듈',
       viewDetails: '자세히 보기',
     footer: 'ArcOS by IMPIX',
+    privacyLink: '개인정보 처리방침',
     downloadsTitle: '자료 다운로드',
     downloadBrochure: '제품소개서',
     downloadManual: '매뉴얼',
@@ -139,7 +146,8 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     dlEmailPlaceholder: 'name@example.com',
     dlEmailInvalid: '이메일 주소 형식을 확인해 주세요.',
     dlConsent:
-      '제품 정보 안내 및 문의 대응을 위해 입력한 이메일 주소를 IMPIX가 수집·이용하는 데 동의합니다. 동의하지 않으면 자료를 다운로드할 수 없습니다.',
+      '제품 정보 안내 및 문의 대응을 위해 입력한 이메일 주소를 IMPIX가 수집하고, 수집일로부터 1년간 보관·이용하는 데 동의합니다. 동의하지 않으면 자료를 다운로드할 수 없습니다.',
+    dlPrivacyLink: '개인정보 처리방침 보기',
     dlSubmit: '다운로드',
     dlSending: '확인 중…',
     dlCancel: '취소',

@@ -14,7 +14,7 @@
 -- tomorrow (minimum 30 days) or keeping everything forever (maximum 3 years).
 create table if not exists expo.retention_settings (
   singleton boolean primary key default true check (singleton),
-  retention_days integer not null default 180
+  retention_days integer not null default 365
     check (retention_days between 30 and 1095),
   updated_at timestamptz not null default now()
 );
