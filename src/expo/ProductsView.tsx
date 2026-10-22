@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, Boxes, CheckCircle2, Download } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Boxes, CheckCircle2, Download } from 'lucide-react';
 import { APPS_DATA } from '../data/appsData';
-import { findDocForModule } from '../data/resourcesData';
 import {
   getLocalizedAppCategory,
   getLocalizedAppName,
@@ -12,7 +11,7 @@ import {
 import { getAppValueProp } from '../i18n/appValueData';
 import { Language } from '../i18n/translations';
 import { AppItem } from '../types';
-import { EXPO_COPY, EXPO_DOC_IDS } from './expoCopy';
+import { EXPO_COPY } from './expoCopy';
 import { DownloadModal } from './DownloadModal';
 import { DOWNLOAD_KINDS, DownloadKind } from './downloadRequest';
 import { expoAppDesc, expoAppDetail, isPricingOutcome } from './pricingScrub';
@@ -21,7 +20,6 @@ interface ProductsViewProps {
   lang: Language;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
-  onOpenManual: (docId: string) => void;
 }
 
 function expoValueProp(appId: string, lang: Language) {
@@ -34,14 +32,13 @@ function expoValueProp(appId: string, lang: Language) {
 export const ProductsView: React.FC<ProductsViewProps> = ({
   lang,
   selectedId,
-  onSelect,
-  onOpenManual
+  onSelect
 }) => {
   const copy = EXPO_COPY[lang];
   const selected = selectedId ? APPS_DATA.find((a) => a.id === selectedId) : undefined;
 
   if (selected) {
-    return <ProductDetail app={selected} lang={lang} onBack={() => onSelect(null)} onOpenManual={onOpenManual} />;
+    return <ProductDetail app={selected} lang={lang} onBack={() => onSelect(null)} />;
   }
 
   return (
@@ -97,13 +94,10 @@ const ProductDetail: React.FC<{
   app: AppItem;
   lang: Language;
   onBack: () => void;
-  onOpenManual: (docId: string) => void;
-}> = ({ app, lang, onBack, onOpenManual }) => {
+}> = ({ app, lang, onBack }) => {
   const copy = EXPO_COPY[lang];
   const value = expoValueProp(app.id, lang);
   const [download, setDownload] = useState<{ kind: DownloadKind; moduleId?: string; name: string } | null>(null);
-  const doc = findDocForModule(app.id);
-  const manualId = doc && (EXPO_DOC_IDS as readonly string[]).includes(doc.id) ? doc.id : null;
 
   return (
     <article className="max-w-5xl mx-auto px-6 md:px-8 py-8 space-y-6">
@@ -200,20 +194,23 @@ const ProductDetail: React.FC<{
         </Card>
       )}
 
-      <Card title={copy.downloadsTitle}>
-        <div className="flex flex-wrap gap-2">
-          {(['brochure', 'manual'] as const).map((kind) => (
-            <button
-              key={kind}
-              onClick={() => setDownload({ kind, name: getLocalizedAppName(app, lang) })}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:border-blue-500 hover:text-blue-700 transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
-            </button>
-          ))}
-        </div>
-      </Card>
+      {/* Products with modules get a download pair per module instead. */}
+      {!app.groups && (
+        <Card title={copy.downloadsTitle}>
+          <div className="flex flex-wrap gap-2">
+            {(['brochure', 'manual'] as const).map((kind) => (
+              <button
+                key={kind}
+                onClick={() => setDownload({ kind, name: getLocalizedAppName(app, lang) })}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:border-blue-500 hover:text-blue-700 transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
+              </button>
+            ))}
+          </div>
+        </Card>
+      )}
 
       {download && (
         <DownloadModal
@@ -226,15 +223,6 @@ const ProductDetail: React.FC<{
         />
       )}
 
-      {manualId && (
-        <button
-          onClick={() => onOpenManual(manualId)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-700 text-white text-sm font-semibold hover:bg-blue-800 transition-colors"
-        >
-          <BookOpen className="w-4 h-4" />
-          {copy.openManual}
-        </button>
-      )}
     </article>
   );
 };
