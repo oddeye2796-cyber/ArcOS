@@ -17,6 +17,8 @@ import { MONTHLY_MINIMUM_CHARGE } from '../lib/commitment';
 
 interface ArchitectureViewProps {
   lang: Language;
+  /** Drops the pricing and policy tabs, for audiences who are not being quoted. */
+  hidePricing?: boolean;
 }
 
 /**
@@ -29,7 +31,7 @@ const rich = (text: string): React.ReactNode[] =>
     i % 2 === 1 ? <strong key={i}>{part}</strong> : <React.Fragment key={i}>{part}</React.Fragment>
   );
 
-export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang }) => {
+export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang, hidePricing = false }) => {
   const t = TRANSLATIONS[lang];
   // The whitepaper states policy figures in the contractual currency (KRW),
   // independent of whatever display currency the marketplace is set to.
@@ -44,9 +46,11 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang }) => {
           <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
             {t.archBadge}
           </span>
-          <span className="text-xs text-slate-500">
-            {t.archBadgeSub}
-          </span>
+          {!hidePricing && (
+            <span className="text-xs text-slate-500">
+              {t.archBadgeSub}
+            </span>
+          )}
         </div>
         <h1 className="text-2xl font-bold text-slate-900 mt-1 tracking-tight">
           {t.archTitle}
@@ -64,7 +68,9 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang }) => {
           { id: 'plugandplay', label: t.archTab3, icon: FileCode2 },
           { id: 'pricing', label: t.archTab4, icon: Table },
           { id: 'policy', label: t.archTab5, icon: ShieldCheck }
-        ].map((tab) => {
+        ]
+          .filter((tab) => !hidePricing || (tab.id !== 'pricing' && tab.id !== 'policy'))
+          .map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
@@ -197,9 +203,11 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang }) => {
               <div className="p-3 bg-slate-50 rounded-lg font-mono text-slate-800 border border-slate-200">
                 {rich(t.archSuiteFormula)}
               </div>
-              <p className="text-slate-500">
-                {rich(t.archSuiteSec1Note)}
-              </p>
+              {!hidePricing && (
+                <p className="text-slate-500">
+                  {rich(t.archSuiteSec1Note)}
+                </p>
+              )}
             </div>
 
             <div className="bg-white p-5 rounded-xl border border-slate-200 space-y-3">
@@ -234,9 +242,11 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ lang }) => {
               <p className="text-slate-600 leading-relaxed">
                 {rich(t.archSuiteSec3Desc)}
               </p>
-              <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-lg text-amber-900 text-xs">
-                {rich(t.archSuiteSec3Warning)}
-              </div>
+              {!hidePricing && (
+                <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-lg text-amber-900 text-xs">
+                  {rich(t.archSuiteSec3Warning)}
+                </div>
+              )}
             </div>
           </div>
         )}

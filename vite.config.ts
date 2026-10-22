@@ -13,6 +13,12 @@ export default defineConfig(() => {
     },
     build: {
       rollupOptions: {
+        // The exhibition edition (expo.html) ships beside the marketplace and
+        // shares its chunks, so one deploy serves both.
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+          expo: path.resolve(__dirname, 'expo.html'),
+        },
         output: {
           /**
            * React and its renderer are half the bundle by source size and change

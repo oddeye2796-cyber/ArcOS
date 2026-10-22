@@ -23,6 +23,12 @@ interface ResourcesViewProps {
   /** Document to open directly, set when arriving from a contextual link. */
   initialDocId?: string | null;
   onConsumeInitialDoc?: () => void;
+  /** Restricts the library to these documents; the full set when omitted. */
+  docIds?: readonly string[];
+  /** Hides the pricing and policy tabs of the architecture whitepaper. */
+  hidePricing?: boolean;
+  /** Replaces a document's summary line, for copy that mentions pricing. */
+  summaryOverrides?: Record<string, string>;
 }
 
 const KIND_ICON: Record<ResourceKind, React.ComponentType<{ className?: string }>> = {
@@ -39,10 +45,16 @@ const KIND_STYLE: Record<ResourceKind, string> = {
   spec: 'bg-slate-100 text-slate-700 border-slate-200'
 };
 
+/** Manual lines that state a billing basis, dropped when pricing is hidden. */
+const BILLING_LINE = /課金|과금|価格|가격|ライセンス|라이선스|billing|billed|pricing|licen[cs]e/i;
+
 export const ResourcesView: React.FC<ResourcesViewProps> = ({
   lang,
   initialDocId,
-  onConsumeInitialDoc
+  onConsumeInitialDoc,
+  docIds,
+  hidePricing,
+  summaryOverrides
 }) => {
   const t = TRANSLATIONS[lang];
   const [selectedId, setSelectedId] = useState<string | null>(initialDocId ?? null);
@@ -63,9 +75,14 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
     spec: t.resourcesKindSpec
   };
 
+  const docs = useMemo(
+    () => (docIds ? RESOURCE_DOCS.filter((doc) => docIds.includes(doc.id)) : RESOURCE_DOCS),
+    [docIds]
+  );
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return RESOURCE_DOCS.filter((doc) => {
+    return docs.filter((doc) => {
       if (kindFilter !== 'all' && doc.kind !== kindFilter) return false;
       if (!q) return true;
       const content = getResourceContent(doc.id, lang);
@@ -82,10 +99,10 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
         .toLowerCase();
       return haystack.includes(q);
     });
-  }, [query, kindFilter, lang]);
+  }, [docs, query, kindFilter, lang]);
 
   const selectedDoc: ResourceDoc | undefined = selectedId
-    ? RESOURCE_DOCS.find((doc) => doc.id === selectedId)
+    ? docs.find((doc) => doc.id === selectedId)
     : undefined;
 
   const closeDoc = () => {
@@ -95,7 +112,17 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
 
   // ---- Reader ---------------------------------------------------------------
   if (selectedDoc) {
-    const content = getResourceContent(selectedDoc.id, lang);
+    const rawContent = getResourceContent(selectedDoc.id, lang);
+    const content =
+      rawContent && hidePricing
+        ? {
+            ...rawContent,
+            sections: rawContent.sections.map((section) => ({
+              ...section,
+              items: section.items?.filter((item) => !BILLING_LINE.test(item))
+            }))
+          }
+        : rawContent;
     const Icon = KIND_ICON[selectedDoc.kind];
     return (
       <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-6">
@@ -131,7 +158,9 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
             {content?.title ?? selectedDoc.id}
           </h1>
           {content && (
-            <p className="text-xs text-slate-600 break-keep leading-relaxed">{content.summary}</p>
+            <p className="text-xs text-slate-600 break-keep leading-relaxed">
+              {summaryOverrides?.[selectedDoc.id] ?? content.summary}
+            </p>
           )}
           {content && (
             <div className="inline-flex items-center gap-1 text-[11px] text-slate-500 pt-1">
@@ -144,7 +173,7 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
         {/* Documents that are really an interactive view render that view. */}
         {selectedDoc.component === 'architecture' ? (
           <div className="-mx-6 md:-mx-8">
-            <ArchitectureView lang={lang} />
+            <ArchitectureView lang={lang} hidePricing={hidePricing} />
           </div>
         ) : (
           <div className="space-y-5">
@@ -184,7 +213,7 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
             {t.navResourcesBadge}
           </span>
           <span className="text-xs text-slate-500">
-            {RESOURCE_DOCS.length}{t.resourcesCountLabel}
+            {docs.length}{t.resourcesCountLabel}
           </span>
         </div>
         <h1 className="text-2xl font-bold text-slate-900 mt-1 tracking-tight flex items-center gap-2">
@@ -207,7 +236,9 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
         </div>
 
         <div className="flex items-center gap-1.5 flex-wrap">
-          {(['all', 'whitepaper', 'manual', 'guide', 'spec'] as const).map((kind) => (
+          {(['all', 'whitepaper', 'manual', 'guide', 'spec'] as const)
+            .filter((kind) => kind === 'all' || docs.some((doc) => doc.kind === kind))
+            .map((kind) => (
             <button
               key={kind}
               onClick={() => setKindFilter(kind)}
@@ -267,7 +298,7 @@ export const ResourcesView: React.FC<ResourcesViewProps> = ({
                     {content?.title ?? doc.id}
                   </h2>
                   <p className="text-[11.5px] text-slate-600 mt-1 leading-relaxed break-keep">
-                    {content?.summary}
+                    {summaryOverrides?.[doc.id] ?? content?.summary}
                   </p>
                 </div>
 
