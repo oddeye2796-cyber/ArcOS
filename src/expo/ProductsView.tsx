@@ -194,20 +194,23 @@ const ProductDetail: React.FC<{
         </Card>
       )}
 
-      <Card title={copy.downloadsTitle}>
-        <div className="flex flex-wrap gap-2">
-          {(['brochure', 'manual'] as const).map((kind) => (
-            <button
-              key={kind}
-              onClick={() => setDownload({ kind, name: getLocalizedAppName(app, lang) })}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:border-blue-500 hover:text-blue-700 transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
-            </button>
-          ))}
-        </div>
-      </Card>
+      {/* Products with modules get a download pair per module instead. */}
+      {!app.groups && (
+        <Card title={copy.downloadsTitle}>
+          <div className="flex flex-wrap gap-2">
+            {(['brochure', 'manual'] as const).map((kind) => (
+              <button
+                key={kind}
+                onClick={() => setDownload({ kind, name: getLocalizedAppName(app, lang) })}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:border-blue-500 hover:text-blue-700 transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
+              </button>
+            ))}
+          </div>
+        </Card>
+      )}
 
       {download && (
         <DownloadModal
