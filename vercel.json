@@ -1,3 +1,10 @@
 {
-  "rewrites": [{ "source": "/expo", "destination": "/expo.html" }]
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "netx-tech-marketplace.impix.jp" }],
+      "destination": "/expo.html"
+    },
+    { "source": "/expo", "destination": "/expo.html" }
+  ]
 }
