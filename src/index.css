@@ -76,3 +76,14 @@
     transform: none !important;
   }
 }
+
+/*
+ * Exhibition edition: `break-keep` (word-break: keep-all) is right for Korean,
+ * which has spaces, but Japanese has none, so a long line never wraps and
+ * spills out of its card. Scoped to the expo root so the marketplace is
+ * unchanged.
+ */
+html[lang='ja'] .expo-root .break-keep {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
