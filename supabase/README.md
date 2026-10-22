@@ -5,7 +5,7 @@ email + consent form. Three pieces make that work:
 
 | Piece | Where |
 |---|---|
-| Table `expo_downloads` and the private bucket `expo-docs` | `migrations/20261022000000_expo_downloads.sql` |
+| Schema `expo` (table `expo.downloads`) and the private bucket `expo-docs` | `migrations/20261022000000_expo_downloads.sql` |
 | Edge Function `expo-download` (validates, records, returns a 5-minute signed URL) | `functions/expo-download/index.ts` |
 | The form | `src/expo/DownloadModal.tsx`, `src/expo/downloadRequest.ts` |
 
@@ -29,6 +29,16 @@ buttons open the form but report that downloads are not available yet.
 
 ## Reading the records
 
-`expo_downloads` has row-level security and no policies, so only the dashboard
-or the service role can read it: email, product, kind, language, consent flag
-and consent wording version (`CONSENT_VERSION` in `downloadRequest.ts`).
+In the SQL editor: `select * from expo.downloads order by created_at desc;`
+
+The table is in its own schema, not exposed through the REST API, with every
+privilege revoked from `anon` and `authenticated` and RLS on without policies,
+so it cannot be reached from a browser. Columns: email, product, kind, language,
+consent flag and the consent wording version (`CONSENT_VERSION` in
+`downloadRequest.ts`).
+
+## Sharing a database with another app
+
+The migration only adds the `expo` schema and the `expo-docs` bucket; it does
+not touch `public`. To remove everything: `drop schema expo cascade;`, delete
+the `expo-docs` bucket and the `expo-download` function.

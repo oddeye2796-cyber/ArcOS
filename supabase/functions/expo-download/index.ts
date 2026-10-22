@@ -1,9 +1,14 @@
 // Gate for the exhibition downloads: validates the email and the consent, files
-// them in `expo_downloads`, and returns a short-lived signed URL for the PDF.
+// them in `expo.downloads`, and returns a short-lived signed URL for the PDF.
+//
+// The table lives in the `expo` schema, which the REST API does not expose, so
+// the insert goes straight to Postgres over SUPABASE_DB_URL. Storage is only
+// used to sign URLs.
 //
 // The validation constants mirror src/expo/downloadRequest.ts; this file is
 // deployed on its own and cannot import from the app.
 import { createClient } from 'npm:@supabase/supabase-js@2';
+import postgres from 'npm:postgres@3';
 
 const BUCKET = 'expo-docs';
 const KINDS = ['brochure', 'manual'];
@@ -13,6 +18,9 @@ const PRODUCT_IDS = [
 ];
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SIGNED_URL_SECONDS = 300;
+
+// One connection, reused across requests while the instance is warm.
+const sql = postgres(Deno.env.get('SUPABASE_DB_URL')!, { max: 1, prepare: false });
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -68,16 +76,15 @@ Deno.serve(async (req: Request) => {
     if (error || !data?.signedUrl) continue;
 
     // The record is the point of the gate, so a failed insert withholds the file.
-    const { error: insertError } = await supabase.from('expo_downloads').insert({
-      email,
-      product_id: productId,
-      kind,
-      lang: l,
-      file_path: path,
-      consent: true,
-      consent_version: consentVersion
-    });
-    if (insertError) return json(500, { error: 'server' });
+    try {
+      await sql`
+        insert into expo.downloads (email, product_id, kind, lang, file_path, consent, consent_version)
+        values (${email}, ${productId}, ${kind}, ${l}, ${path}, true, ${consentVersion})
+      `;
+    } catch (error) {
+      console.error('expo-download insert failed', error);
+      return json(500, { error: 'server' });
+    }
 
     return json(200, { url: data.signedUrl, lang: l });
   }
