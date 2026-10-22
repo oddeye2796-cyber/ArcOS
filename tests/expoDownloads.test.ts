@@ -5,6 +5,7 @@
 import { readFileSync } from 'node:fs';
 import { APPS_DATA } from '../src/data/appsData';
 import {
+  DOWNLOADABLE_MODULE_IDS,
   DOWNLOADABLE_PRODUCT_IDS,
   isValidEmail,
   requestDownload
@@ -42,6 +43,15 @@ suite('expo downloads', () => {
     for (const app of APPS_DATA) {
       assert(DOWNLOADABLE_PRODUCT_IDS.includes(app.id), `client offers ${app.id}`);
       assert(source.includes(`'${app.id}'`), `Edge Function allowlist is missing ${app.id}`);
+    }
+  });
+
+  test('every module with its own files is on the Edge Function allowlist', () => {
+    const source = readFileSync('supabase/functions/expo-download/index.ts', 'utf8');
+    for (const [appId, ids] of Object.entries(DOWNLOADABLE_MODULE_IDS)) {
+      for (const id of ids) {
+        assert(source.includes(`'${id}'`), `Edge Function allowlist is missing ${appId}/${id}`);
+      }
     }
   });
 

@@ -17,7 +17,12 @@ Upload to the `expo-docs` bucket as `<productId>/<kind>_<lang>.pdf`:
 - `kind`: `brochure` or `manual`
 - `lang`: `ja`, `en` or `ko`
 
-For example `smartfactory/brochure_ja.pdf`. If the visitor's language is missing
+Smart Factory's modules have their own files, one folder per module:
+`smartfactory/<moduleId>/<kind>_<lang>.pdf` with `moduleId` one of `mes-pharma`,
+`mes-food`, `mes-general`, `ebrs`, `rems`, `scm`. The suite as a whole stays at
+`smartfactory/<kind>_<lang>.pdf`.
+
+For example `smartfactory/brochure_ja.pdf` or `smartfactory/ebrs/manual_ja.pdf`. If the visitor's language is missing
 the function falls back to `ja`, then `en`, then `ko`. A product with no file at
 all answers "not available yet" and records nothing.
 

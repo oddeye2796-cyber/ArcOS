@@ -8,6 +8,7 @@ import { DownloadKind, isValidEmail, requestDownload } from './downloadRequest';
 interface DownloadModalProps {
   lang: Language;
   productId: string;
+  moduleId?: string;
   productName: string;
   kind: DownloadKind;
   onClose: () => void;
@@ -27,6 +28,7 @@ type Phase =
 export const DownloadModal: React.FC<DownloadModalProps> = ({
   lang,
   productId,
+  moduleId,
   productName,
   kind,
   onClose
@@ -51,7 +53,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({
     setTouched(true);
     if (!canSubmit) return;
     setPhase({ name: 'sending' });
-    const result = await requestDownload({ email, consent, productId, kind, lang });
+    const result = await requestDownload({ email, consent, productId, moduleId, kind, lang });
     if (result.ok === false) {
       setPhase({ name: 'error', reason: result.reason });
       return;

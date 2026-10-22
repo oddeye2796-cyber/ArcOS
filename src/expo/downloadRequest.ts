@@ -18,10 +18,20 @@ export function isValidEmail(value: string): boolean {
 /** Product ids the Edge Function accepts; kept in step with APPS_DATA by a test. */
 export const DOWNLOADABLE_PRODUCT_IDS: readonly string[] = APPS_DATA.map((a) => a.id);
 
+/** Sub-module ids per product (Smart Factory's MES cores and extension modules); each has its own files. */
+export const DOWNLOADABLE_MODULE_IDS: Record<string, readonly string[]> = Object.fromEntries(
+  APPS_DATA.filter((a) => a.groups?.length).map((a) => [
+    a.id,
+    a.groups!.flatMap((g) => g.items.map((i) => i.id))
+  ])
+);
+
 export interface DownloadRequest {
   email: string;
   consent: boolean;
   productId: string;
+  /** Set for a sub-module's own brochure/manual; omitted for the product as a whole. */
+  moduleId?: string;
   kind: DownloadKind;
   lang: Language;
 }
@@ -53,6 +63,7 @@ export async function requestDownload(request: DownloadRequest): Promise<Downloa
         consent: request.consent,
         consentVersion: CONSENT_VERSION,
         productId: request.productId,
+        moduleId: request.moduleId,
         kind: request.kind,
         lang: request.lang
       })
