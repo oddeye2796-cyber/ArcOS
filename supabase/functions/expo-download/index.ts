@@ -16,6 +16,10 @@ const LANGS = ['ja', 'en', 'ko'];
 const PRODUCT_IDS = [
   'smartfactory', 'a2lab', 'orch', 'consensebot', 'aesg', 'twin', 'arcforge', 'b2lab'
 ];
+// Products that also have files per sub-module (Smart Factory's modules).
+const MODULE_IDS: Record<string, string[]> = {
+  smartfactory: ['mes-pharma', 'mes-food', 'mes-general', 'ebrs', 'rems', 'scm']
+};
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SIGNED_URL_SECONDS = 300;
 
@@ -46,13 +50,15 @@ Deno.serve(async (req: Request) => {
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
-  const { productId, kind, lang, consent, consentVersion } = body;
+  const { productId, moduleId, kind, lang, consent, consentVersion } = body;
 
   if (
     email.length === 0 || email.length > 254 || !EMAIL_PATTERN.test(email) ||
     consent !== true ||
     typeof consentVersion !== 'string' || consentVersion.length === 0 || consentVersion.length > 32 ||
     typeof productId !== 'string' || !PRODUCT_IDS.includes(productId) ||
+    (moduleId !== undefined && moduleId !== null &&
+      (typeof moduleId !== 'string' || !MODULE_IDS[productId]?.includes(moduleId))) ||
     typeof kind !== 'string' || !KINDS.includes(kind) ||
     typeof lang !== 'string' || !LANGS.includes(lang)
   ) {
@@ -65,21 +71,23 @@ Deno.serve(async (req: Request) => {
   );
 
   // The visitor's language first, then the languages the booth reads best.
+  const module = typeof moduleId === 'string' ? moduleId : null;
+  const dir = module ? `${productId}/${module}` : productId;
   const candidates = [lang, ...LANGS.filter((l) => l !== lang)].map(
-    (l) => ({ l, path: `${productId}/${kind}_${l}.pdf` })
+    (l) => ({ l, path: `${dir}/${kind}_${l}.pdf` })
   );
 
   for (const { l, path } of candidates) {
     const { data, error } = await supabase.storage
       .from(BUCKET)
-      .createSignedUrl(path, SIGNED_URL_SECONDS, { download: `${productId}_${kind}_${l}.pdf` });
+      .createSignedUrl(path, SIGNED_URL_SECONDS, { download: `${module ?? productId}_${kind}_${l}.pdf` });
     if (error || !data?.signedUrl) continue;
 
     // The record is the point of the gate, so a failed insert withholds the file.
     try {
       await sql`
-        insert into expo.downloads (email, product_id, kind, lang, file_path, consent, consent_version)
-        values (${email}, ${productId}, ${kind}, ${l}, ${path}, true, ${consentVersion})
+        insert into expo.downloads (email, product_id, module_id, kind, lang, file_path, consent, consent_version)
+        values (${email}, ${productId}, ${module}, ${kind}, ${l}, ${path}, true, ${consentVersion})
       `;
     } catch (error) {
       console.error('expo-download insert failed', error);
