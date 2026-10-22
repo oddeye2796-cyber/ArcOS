@@ -13,7 +13,7 @@ import { Language } from '../i18n/translations';
 import { AppItem } from '../types';
 import { EXPO_COPY } from './expoCopy';
 import { DownloadModal } from './DownloadModal';
-import { DownloadKind } from './downloadRequest';
+import { DOWNLOAD_KINDS, DownloadKind } from './downloadRequest';
 import { expoAppDesc, expoAppDetail, isPricingOutcome } from './pricingScrub';
 
 interface ProductsViewProps {
@@ -97,7 +97,7 @@ const ProductDetail: React.FC<{
 }> = ({ app, lang, onBack }) => {
   const copy = EXPO_COPY[lang];
   const value = expoValueProp(app.id, lang);
-  const [downloadKind, setDownloadKind] = useState<DownloadKind | null>(null);
+  const [download, setDownload] = useState<{ kind: DownloadKind; moduleId?: string; name: string } | null>(null);
 
   return (
     <article className="max-w-5xl mx-auto px-6 md:px-8 py-8 space-y-6">
@@ -167,6 +167,24 @@ const ProductDetail: React.FC<{
                       <p className="text-xs text-slate-600 mt-0.5 leading-relaxed break-keep">
                         {getLocalizedSubModuleDesc(item.id, item.desc, lang)}
                       </p>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {DOWNLOAD_KINDS.map((kind) => (
+                          <button
+                            key={kind}
+                            onClick={() =>
+                              setDownload({
+                                kind,
+                                moduleId: item.id,
+                                name: getLocalizedSubModuleName(item.id, item.name, lang)
+                              })
+                            }
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-slate-300 bg-white text-[11px] font-semibold text-slate-700 hover:border-blue-500 hover:text-blue-700 transition-colors"
+                          >
+                            <Download className="w-3 h-3" />
+                            {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
+                          </button>
+                        ))}
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -181,7 +199,7 @@ const ProductDetail: React.FC<{
           {(['brochure', 'manual'] as const).map((kind) => (
             <button
               key={kind}
-              onClick={() => setDownloadKind(kind)}
+              onClick={() => setDownload({ kind, name: getLocalizedAppName(app, lang) })}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:border-blue-500 hover:text-blue-700 transition-colors"
             >
               <Download className="w-4 h-4" />
@@ -191,13 +209,14 @@ const ProductDetail: React.FC<{
         </div>
       </Card>
 
-      {downloadKind && (
+      {download && (
         <DownloadModal
           lang={lang}
           productId={app.id}
-          productName={getLocalizedAppName(app, lang)}
-          kind={downloadKind}
-          onClose={() => setDownloadKind(null)}
+          moduleId={download.moduleId}
+          productName={download.name}
+          kind={download.kind}
+          onClose={() => setDownload(null)}
         />
       )}
 
