@@ -120,6 +120,13 @@ export const APPS_DATA: AppItem[] = [
     growthUnit: '추론 호출',
     price: 150,
     per: 'flat',
+    downloadModules: [
+      {
+        id: 'mlops',
+        name: 'MLOps 실행엔진',
+        desc: '생성한 AI 모듈을 컨테이너로 패키징해 온프레미스 도커 런타임에 배포하고, 추론·모델 버전을 운영 관리'
+      }
+    ],
     deps: [
       { name: 'B²LAB 데이터레이크', ok: true, desc: '온톨로지 스키마 정합성 검증 완료' },
       { name: 'MLOps 실행엔진', ok: true, desc: '온프레미스 도커 런타임 기본 탑재' }

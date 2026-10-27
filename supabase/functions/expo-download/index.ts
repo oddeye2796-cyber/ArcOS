@@ -16,9 +16,10 @@ const LANGS = ['ja', 'en', 'ko'];
 const PRODUCT_IDS = [
   'smartfactory', 'a2lab', 'orch', 'consensebot', 'aesg', 'twin', 'arcforge', 'b2lab'
 ];
-// Products that also have files per sub-module (Smart Factory's modules).
+// Products that also have files per sub-module (Smart Factory's modules, A²LAB's MLOps).
 const MODULE_IDS: Record<string, string[]> = {
-  smartfactory: ['mes-pharma', 'mes-food', 'mes-general', 'ebrs', 'rems', 'scm']
+  smartfactory: ['mes-pharma', 'mes-food', 'mes-general', 'ebrs', 'rems', 'scm'],
+  a2lab: ['mlops']
 };
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SIGNED_URL_SECONDS = 300;

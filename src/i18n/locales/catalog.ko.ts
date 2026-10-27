@@ -96,6 +96,11 @@ const CATALOG: CatalogStrings = {
       "name": "SCM (공급망 협업 연계)",
       "desc": "원자재 발주, 실시간 납기 트래킹, 1·2차 외주 협력사 포털 연동",
       "unitLabel": "기본 100만원/월 (협력사 10개사 포함, 10개사당 20% 증분)"
+    },
+    "mlops": {
+      "name": "MLOps 실행엔진",
+      "desc": "생성한 AI 모듈을 컨테이너로 패키징해 온프레미스 도커 런타임에 배포하고, 추론·모델 버전을 운영 관리",
+      "unitLabel": "A²LAB 기본 탑재"
     }
   },
   "groupLabels": {

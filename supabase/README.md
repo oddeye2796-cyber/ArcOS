@@ -22,6 +22,9 @@ Smart Factory's modules have their own files, one folder per module:
 `mes-food`, `mes-general`, `ebrs`, `rems`, `scm`. The suite as a whole stays at
 `smartfactory/<kind>_<lang>.pdf`.
 
+A²LAB's MLOps engine is the one module outside Smart Factory with its own files:
+`a2lab/mlops/<kind>_<lang>.pdf`.
+
 For example `smartfactory/brochure_ja.pdf` or `smartfactory/ebrs/manual_ja.pdf`. If the visitor's language is missing
 the function falls back to `ja`, then `en`, then `ko`. A product with no file at
 all answers "not available yet" and records nothing.

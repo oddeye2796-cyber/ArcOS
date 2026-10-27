@@ -28,6 +28,12 @@ export interface SubModuleItem {
   landing?: boolean;
 }
 
+export interface DownloadModule {
+  id: string;
+  name: string;
+  desc: string;
+}
+
 export interface ModuleGroup {
   label: string;
   type: 'radio' | 'check';
@@ -52,6 +58,11 @@ export interface AppItem {
   /** Featured as a recommended first module for a new tenant. */
   landing?: boolean;
   groups?: ModuleGroup[];
+  /**
+   * Parts of the product that have their own brochure and manual on the exhibition
+   * site but are not separately priced or orderable (unlike `groups`).
+   */
+  downloadModules?: DownloadModule[];
   deps: AppDependency[];
   dataScope: {
     domainDb: string;

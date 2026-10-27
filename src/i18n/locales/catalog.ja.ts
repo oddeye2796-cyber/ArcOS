@@ -96,6 +96,11 @@ const CATALOG: CatalogStrings = {
       "name": "SCM (サプライチェーン協業連携)",
       "desc": "原材料発注、リアルタイム納期追跡、1・2次外注協力会社ポータル連携",
       "unitLabel": "基本 100万円/月 (協力会社10社込み、10社ごとに20%加算)"
+    },
+    "mlops": {
+      "name": "MLOps 実行エンジン",
+      "desc": "生成したAIモジュールをコンテナ化してオンプレミスのDockerランタイムへ配備し、推論とモデルバージョンを運用管理",
+      "unitLabel": "A²LAB標準搭載"
     }
   },
   "groupLabels": {
