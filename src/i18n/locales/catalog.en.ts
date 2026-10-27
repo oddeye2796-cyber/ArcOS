@@ -96,6 +96,11 @@ const CATALOG: CatalogStrings = {
       "name": "SCM (Supply Chain Collaboration)",
       "desc": "Raw material procurement, lead time tracking, Tier 1 & 2 subcontractor portal integration",
       "unitLabel": "Base 1.0M KRW/mo (10 supplier accounts included, +20% per 10)"
+    },
+    "mlops": {
+      "name": "MLOps Execution Engine",
+      "desc": "Packages generated AI modules as containers, deploys them to the on-premises Docker runtime, and manages inference and model versions",
+      "unitLabel": "Included with A²LAB"
     }
   },
   "groupLabels": {

@@ -194,7 +194,43 @@ const ProductDetail: React.FC<{
         </Card>
       )}
 
-      {/* Products with modules get a download pair per module instead. */}
+      {app.downloadModules && (
+        <Card title={copy.includedModules}>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {app.downloadModules.map((item) => (
+              <li key={item.id} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                <div className="text-sm font-semibold text-slate-900 break-keep">
+                  {getLocalizedSubModuleName(item.id, item.name, lang)}
+                </div>
+                <p className="text-xs text-slate-600 mt-0.5 leading-relaxed break-keep">
+                  {getLocalizedSubModuleDesc(item.id, item.desc, lang)}
+                </p>
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {DOWNLOAD_KINDS.map((kind) => (
+                    <button
+                      key={kind}
+                      onClick={() =>
+                        setDownload({
+                          kind,
+                          moduleId: item.id,
+                          name: getLocalizedSubModuleName(item.id, item.name, lang)
+                        })
+                      }
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-slate-300 bg-white text-[11px] font-semibold text-slate-700 hover:border-blue-500 hover:text-blue-700 transition-colors"
+                    >
+                      <Download className="w-3 h-3" />
+                      {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
+                    </button>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+
+      {/* Suites get a download pair per module instead; a product with only a
+          part of its own (A²LAB's MLOps engine) keeps both. */}
       {!app.groups && (
         <Card title={copy.downloadsTitle}>
           <div className="flex flex-wrap gap-2">

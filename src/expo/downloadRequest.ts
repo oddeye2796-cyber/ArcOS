@@ -18,11 +18,11 @@ export function isValidEmail(value: string): boolean {
 /** Product ids the Edge Function accepts; kept in step with APPS_DATA by a test. */
 export const DOWNLOADABLE_PRODUCT_IDS: readonly string[] = APPS_DATA.map((a) => a.id);
 
-/** Sub-module ids per product (Smart Factory's MES cores and extension modules); each has its own files. */
+/** Sub-module ids per product (Smart Factory's modules, A²LAB's MLOps engine); each has its own files. */
 export const DOWNLOADABLE_MODULE_IDS: Record<string, readonly string[]> = Object.fromEntries(
-  APPS_DATA.filter((a) => a.groups?.length).map((a) => [
+  APPS_DATA.filter((a) => a.groups?.length || a.downloadModules?.length).map((a) => [
     a.id,
-    a.groups!.flatMap((g) => g.items.map((i) => i.id))
+    [...(a.groups?.flatMap((g) => g.items.map((i) => i.id)) ?? []), ...(a.downloadModules?.map((m) => m.id) ?? [])]
   ])
 );
 
