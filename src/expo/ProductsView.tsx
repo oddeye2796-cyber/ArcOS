@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, Boxes, CheckCircle2, Download } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Boxes, CheckCircle2, Download, ExternalLink, PlayCircle } from 'lucide-react';
 import { APPS_DATA } from '../data/appsData';
 import {
   getLocalizedAppCategory,
@@ -13,6 +13,7 @@ import { Language } from '../i18n/translations';
 import { AppItem } from '../types';
 import { EXPO_COPY } from './expoCopy';
 import { DownloadModal } from './DownloadModal';
+import { DEMO_VIDEO_URLS, NO_DOWNLOADS, POC_URLS, linkFor } from './productLinks';
 import { DOWNLOAD_KINDS, DownloadKind } from './downloadRequest';
 import { expoAppDesc, expoAppDetail, isPricingOutcome } from './pricingScrub';
 
@@ -89,6 +90,28 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
     </section>
   );
 };
+
+/** Opens the hosted PoC environment; shown but inert until its URL is filled in `productLinks.ts`. */
+const PocButton: React.FC<{ url: string | null; label: string; soonLabel: string }> = ({ url, label, soonLabel }) =>
+  url ? (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-700 text-sm font-semibold text-white hover:bg-blue-800 transition-colors"
+    >
+      <ExternalLink className="w-4 h-4" />
+      {label}
+    </a>
+  ) : (
+    <button
+      disabled
+      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-200 text-sm font-semibold text-slate-500 cursor-not-allowed"
+    >
+      <ExternalLink className="w-4 h-4" />
+      {soonLabel}
+    </button>
+  );
 
 const ProductDetail: React.FC<{
   app: AppItem;
@@ -231,7 +254,7 @@ const ProductDetail: React.FC<{
 
       {/* Suites get a download pair per module instead; a product with only a
           part of its own (A²LAB's MLOps engine) keeps both. */}
-      {!app.groups && (
+      {!app.groups && !NO_DOWNLOADS.has(app.id) && (
         <Card title={copy.downloadsTitle}>
           <div className="flex flex-wrap gap-2">
             {(['brochure', 'manual'] as const).map((kind) => (
@@ -246,6 +269,22 @@ const ProductDetail: React.FC<{
             ))}
           </div>
         </Card>
+      )}
+
+      {app.id in POC_URLS && (
+        <PocButton url={linkFor(POC_URLS, app.id)} label={copy.pocButton} soonLabel={copy.pocSoon} />
+      )}
+
+      {linkFor(DEMO_VIDEO_URLS, app.id) && (
+        <a
+          href={linkFor(DEMO_VIDEO_URLS, app.id)!}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:border-blue-500 hover:text-blue-700 transition-colors"
+        >
+          <PlayCircle className="w-4 h-4" />
+          {copy.demoVideoButton}
+        </a>
       )}
 
       {download && (

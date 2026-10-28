@@ -599,8 +599,8 @@ export const PatchNotesView: React.FC<PatchNotesViewProps> = ({
                 <option value={lang === 'ja' ? 'B²LAB オントロジーエンジン (v4.2)' : lang === 'en' ? 'B²LAB Ontology Engine (v4.2)' : 'B²LAB 온톨로지 엔진 (v4.2)'}>
                   {lang === 'ja' ? 'B²LAB オントロジーエンジン (v4.2.2 → v4.2.3)' : lang === 'en' ? 'B²LAB Ontology Engine (v4.2.2 → v4.2.3)' : 'B²LAB 온톨로지 엔진 (v4.2.2 → v4.2.3)'}
                 </option>
-                <option value={lang === 'ja' ? '製造特化MESコア (v4.2)' : lang === 'en' ? 'Manufacturing MES Core (v4.2)' : '제약 특화 MES 코어 (v4.2)'}>
-                  {lang === 'ja' ? '製造特化MESコア (v4.2.2 → v4.2.3)' : lang === 'en' ? 'Manufacturing MES Core (v4.2.2 → v4.2.3)' : '제약 특화 MES 코어 (v4.2.2 → v4.2.3)'}
+                <option value={lang === 'ja' ? '製造特化MESコア (v4.2)' : lang === 'en' ? 'Manufacturing MES Core (v4.2)' : '사출 특화 MES 코어 (v4.2)'}>
+                  {lang === 'ja' ? '製造特化MESコア (v4.2.2 → v4.2.3)' : lang === 'en' ? 'Manufacturing MES Core (v4.2.2 → v4.2.3)' : '사출 특화 MES 코어 (v4.2.2 → v4.2.3)'}
                 </option>
                 <option value={lang === 'ja' ? 'ArcTunnel mTLS ゲートウェイ' : lang === 'en' ? 'ArcTunnel mTLS Gateway' : 'ArcTunnel mTLS 게이트웨이'}>
                   {lang === 'ja' ? 'ArcTunnel mTLS ゲートウェイ (v4.2.3 鍵更新)' : lang === 'en' ? 'ArcTunnel mTLS Gateway (v4.2.3 Key Rotation)' : 'ArcTunnel mTLS 게이트웨이 (v4.2.3 키 갱신)'}

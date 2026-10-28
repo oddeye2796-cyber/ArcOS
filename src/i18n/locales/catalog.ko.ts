@@ -67,9 +67,9 @@ const CATALOG: CatalogStrings = {
     }
   },
   "subModules": {
-    "mes-pharma": {
-      "name": "제약 특화 MES",
-      "desc": "GMP 기준 배치(Batch) 관리, 일탈(Deviation) 처리, 밸리데이션 데이터 추적",
+    "mes-injection": {
+      "name": "사출 특화 MES",
+      "desc": "플라스틱 사출 성형 조건(온도·압력·사이클타임) 실시간 기록, 금형별 LOT 추적, 불량·재작업 관리",
       "unitLabel": "라인당 80만원/월"
     },
     "mes-food": {
@@ -92,11 +92,6 @@ const CATALOG: CatalogStrings = {
       "desc": "차압, 온습도, 미립자 부유 농도 실시간 수집 및 경보 발령",
       "unitLabel": "기본 90만원/월 (계측점 200개 포함, 100개당 15% 증분)"
     },
-    "scm": {
-      "name": "SCM (공급망 협업 연계)",
-      "desc": "원자재 발주, 실시간 납기 트래킹, 1·2차 외주 협력사 포털 연동",
-      "unitLabel": "기본 100만원/월 (협력사 10개사 포함, 10개사당 20% 증분)"
-    },
     "mlops": {
       "name": "MLOps 실행엔진",
       "desc": "생성한 AI 모듈을 컨테이너로 패키징해 온프레미스 도커 런타임에 배포하고, 추론·모델 버전을 운영 관리",
@@ -105,7 +100,7 @@ const CATALOG: CatalogStrings = {
   },
   "groupLabels": {
     "MES 코어 (상호 배타적 · 1종 필수 선택)": "MES 코어 (상호 배타적 · 1종 필수 선택)",
-    "품질 · 기록 · 공급망 확장 모듈 (자유 조합)": "품질 · 기록 · 공급망 확장 모듈 (자유 조합)"
+    "품질 · 기록 확장 모듈 (자유 조합)": "품질 · 기록 확장 모듈 (자유 조합)"
   },
   "deps": {
     "B²LAB 온톨로지 데이터레이크": {
@@ -280,13 +275,6 @@ const CATALOG: CatalogStrings = {
       "badge": "자체 IT 전용",
       "desc": "기성 제조 운영 스위트(MES)를 도입하지 않고, 사내 IT 인력이 ARCFORGE(No-Code/Low-Code)로 공정 화면·작업 지시서·모바일 뷰를 직접 개발합니다. 기성 MES 구독료 없이 B²LAB 온톨로지 위에서 100% 사내 맞춤형 플랫폼을 내재화합니다.",
       "targetAudience": "자체 IT/전산 인력을 보유하여 기성 MES 대신 사내 스마트팩토리를 직접 개발하는 제조기업"
-    },
-    "preset-scm-audit": {
-      "title": "공급망 & 협력사 품질 통합 연계 (SCM & Audit)",
-      "subtitle": "협력사 발주 · 실시간 납기 트래킹 · 전자기록 증적",
-      "badge": "공급망 연계",
-      "desc": "사내 공정과 1·2차 외주 협력사 포털을 실시간 연계하고, 납품 품질 및 발주 검수 이력을 전자 기록으로 보존하여 고객사 실사에 즉각 대응합니다.",
-      "targetAudience": "외주 가공 비중이 높고 협력사 감사가 필수인 제조사"
     }
   },
   "facilities": {
@@ -317,9 +305,8 @@ const CATALOG: CatalogStrings = {
   },
   "workspace": {
     "B²LAB 온톨로지 데이터레이크": "B²LAB 온톨로지 데이터레이크",
-    "제약 특화 MES (Smart Factory)": "제약 특화 MES (Smart Factory)",
+    "사출 특화 MES (Smart Factory)": "사출 특화 MES (Smart Factory)",
     "EBRS (전자 제조기록)": "EBRS (전자 제조기록)",
-    "SCM (공급망 협업 연계)": "SCM (공급망 협업 연계)",
     "AI Vision 결함 탐지 (ArcVision)": "AI Vision 결함 탐지 (ArcVision)",
     "A²LAB (AI 모듈 생성기)": "A²LAB (AI 모듈 생성기)",
     "다중 AI Agent 슈퍼바이저": "다중 AI Agent 슈퍼바이저",

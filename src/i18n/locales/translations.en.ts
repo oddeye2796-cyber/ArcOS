@@ -421,7 +421,7 @@ const EN_TRANSLATIONS: Translations = {
   archUpstreamTitle: '↑ Reported from on-premises up to SaaS:',
   archUpstreamDesc: 'Runtime heartbeats, uptime performance metrics, security audit logs, metered usage counters for billing',
   archSuiteSec1Title: '1. Structural Rationale for the 24 Smart Factory Combinations',
-  archSuiteSec1Desc: 'The three MES editions (pharma-specific, food/cosmetics-specific, general manufacturing) differ in process regulation and validation requirements, which makes them **mutually exclusive (pick exactly one)**. EBRS, REMS and SCM — covering quality, records and supply chain — are **freely combinable**.',
+  archSuiteSec1Desc: 'The three MES editions (injection-molding-specific, food/cosmetics-specific, general manufacturing) differ in process regulation and validation requirements, which makes them **mutually exclusive (pick exactly one)**. EBRS and REMS — covering quality and records — are **freely combinable**.',
   archSuiteFormula: 'Effective combinations = MES (1 of 3) × extension modules (2³ = 8) = **24 in total**',
   archSuiteSec1Note: 'Fixed industry bundles alone cannot satisfy all 24 demand profiles, which is the structural rationale for adopting **per-module pricing**.',
   archSuiteSec2Title: '2. Splitting the AI Tier into Two SKUs (A²LAB vs Supervisor)',
@@ -468,7 +468,7 @@ const EN_TRANSLATIONS: Translations = {
   archPolicy3Desc: 'Production lines running around the clock cannot accept maintenance downtime. **Zero-downtime hotfixes** are applied through Blue/Green and on-premise node rolling updates, and the in-platform “Zero-Downtime Patch Notes” menu tracks change history and rollback guarantees instantly.',
 
   archPolicy4Title: '4. Minimum commitment term per module',
-  archPolicy4Desc: 'Adoption cost and churn risk differ by module, so the commitment unit differs too. **The three MES cores are annual**, **regulated domain extensions such as EBRS, REMS and SCM are quarterly**, and **AI modules such as A²LAB, the orchestrator and ConsenseBot may be cancelled monthly, subject to a {floor}/month minimum charge**. When terms are mixed in one quote, the longest one binds the whole subscription.',
+  archPolicy4Desc: 'Adoption cost and churn risk differ by module, so the commitment unit differs too. **The three MES cores are annual**, **regulated domain extensions such as EBRS and REMS are quarterly**, and **AI modules such as A²LAB, the orchestrator and ConsenseBot may be cancelled monthly, subject to a {floor}/month minimum charge**. When terms are mixed in one quote, the longest one binds the whole subscription.',
 
   commitmentTermAnnual: 'Annual (12 months)',
   commitmentTermQuarterly: 'Quarterly (3 months)',

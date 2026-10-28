@@ -24,6 +24,9 @@ export interface ExpoCopy {
   downloadsTitle: string;
   downloadBrochure: string;
   downloadManual: string;
+  pocButton: string;
+  pocSoon: string;
+  demoVideoButton: string;
   dlModalTitle: string;
   dlModalIntro: string;
   dlEmailLabel: string;
@@ -64,6 +67,9 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     downloadsTitle: '資料ダウンロード',
     downloadBrochure: '製品紹介書',
     downloadManual: 'マニュアル',
+    pocButton: 'PoC環境を体験',
+    pocSoon: 'PoC環境 (準備中)',
+    demoVideoButton: 'デモ動画を見る',
     dlModalTitle: '資料のダウンロード',
     dlModalIntro: 'メールアドレスをご入力のうえ、同意にチェックしてください。ダウンロードが始まります。',
     dlEmailLabel: 'メールアドレス',
@@ -102,6 +108,9 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     downloadsTitle: 'Downloads',
     downloadBrochure: 'Product brochure',
     downloadManual: 'Manual',
+    pocButton: 'Try the PoC environment',
+    pocSoon: 'PoC environment (coming soon)',
+    demoVideoButton: 'Watch the demo video',
     dlModalTitle: 'Download',
     dlModalIntro: 'Enter your email address and tick the consent box. The download will start.',
     dlEmailLabel: 'Email address',
@@ -140,6 +149,9 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     downloadsTitle: '자료 다운로드',
     downloadBrochure: '제품소개서',
     downloadManual: '매뉴얼',
+    pocButton: 'PoC 환경 체험',
+    pocSoon: 'PoC 환경 (준비 중)',
+    demoVideoButton: '예시 영상 보기',
     dlModalTitle: '자료 다운로드',
     dlModalIntro: '이메일 주소를 입력하고 동의에 체크하면 다운로드가 시작됩니다.',
     dlEmailLabel: '이메일 주소',

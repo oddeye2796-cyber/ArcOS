@@ -67,9 +67,9 @@ const CATALOG: CatalogStrings = {
     }
   },
   "subModules": {
-    "mes-pharma": {
-      "name": "Pharma-Specific MES",
-      "desc": "GMP batch tracking, deviation handling, and validation data auditing",
+    "mes-injection": {
+      "name": "Injection Molding MES",
+      "desc": "Real-time capture of molding conditions (temperature, pressure, cycle time), mold-level LOT tracing, and defect and rework management",
       "unitLabel": "800k KRW/line/mo"
     },
     "mes-food": {
@@ -92,11 +92,6 @@ const CATALOG: CatalogStrings = {
       "desc": "Real-time differential pressure, temperature/humidity, particle count collection & alarms",
       "unitLabel": "Base 900k KRW/mo (200 measurement points included, +15% per 100)"
     },
-    "scm": {
-      "name": "SCM (Supply Chain Collaboration)",
-      "desc": "Raw material procurement, lead time tracking, Tier 1 & 2 subcontractor portal integration",
-      "unitLabel": "Base 1.0M KRW/mo (10 supplier accounts included, +20% per 10)"
-    },
     "mlops": {
       "name": "MLOps Execution Engine",
       "desc": "Packages generated AI modules as containers, deploys them to the on-premises Docker runtime, and manages inference and model versions",
@@ -105,7 +100,7 @@ const CATALOG: CatalogStrings = {
   },
   "groupLabels": {
     "MES 코어 (상호 배타적 · 1종 필수 선택)": "MES Core (Mutually Exclusive · 1 Required Selection)",
-    "품질 · 기록 · 공급망 확장 모듈 (자유 조합)": "Quality, Record & SCM Addon Modules (Flexible Combination)"
+    "품질 · 기록 확장 모듈 (자유 조합)": "Quality & Record Addon Modules (Flexible Combination)"
   },
   "deps": {
     "B²LAB 온톨로지 데이터레이크": {
@@ -241,7 +236,7 @@ const CATALOG: CatalogStrings = {
     },
     "preset-food": {
       "title": "Food/Cosmetics HACCP Hygiene & Traceability",
-      "subtitle": "HACCP Auto Logging · Raw Material Traceability · SCM",
+      "subtitle": "HACCP Auto Logging · Raw Material Traceability · Supplier Linkage",
       "badge": "Hygiene & Trace",
       "desc": "Automates CCP logging in mixing/filling processes with forward/backward traceability connecting suppliers to finished goods and safety checks.",
       "targetAudience": "F&B / Nutraceuticals / Cosmetics Manufacturers"
@@ -280,13 +275,6 @@ const CATALOG: CatalogStrings = {
       "badge": "In-House IT",
       "desc": "Instead of adopting an off-the-shelf MES suite, in-house IT staff build process screens, work instructions and mobile views themselves with ARCFORGE (No-Code/Low-Code) — a 100% custom platform on top of the B²LAB ontology, with no MES subscription fee.",
       "targetAudience": "Manufacturers with in-house IT staff who build their own smart factory instead of buying an off-the-shelf MES"
-    },
-    "preset-scm-audit": {
-      "title": "Supply Chain & Supplier Quality Integration (SCM & Audit)",
-      "subtitle": "Supplier purchase orders · Real-time delivery tracking · Electronic record evidence",
-      "badge": "Supply Chain",
-      "desc": "Links in-house processes with tier-1 and tier-2 supplier portals in real time and preserves delivery quality and PO inspection history as electronic records, so customer audits can be answered immediately.",
-      "targetAudience": "Manufacturers with heavy outsourced machining and mandatory supplier audits"
     }
   },
   "facilities": {
@@ -317,9 +305,8 @@ const CATALOG: CatalogStrings = {
   },
   "workspace": {
     "B²LAB 온톨로지 데이터레이크": "B²LAB Ontology Datalake",
-    "제약 특화 MES (Smart Factory)": "Pharma-Specific MES (Smart Factory)",
+    "사출 특화 MES (Smart Factory)": "Injection Molding MES (Smart Factory)",
     "EBRS (전자 제조기록)": "EBRS (Electronic Batch Records)",
-    "SCM (공급망 협업 연계)": "SCM (Supply Chain Collaboration)",
     "AI Vision 결함 탐지 (ArcVision)": "AI Vision Defect Detection (ArcVision)",
     "A²LAB (AI 모듈 생성기)": "A²LAB (AI Model Generator)",
     "다중 AI Agent 슈퍼바이저": "Multi-AI Agent Supervisor",

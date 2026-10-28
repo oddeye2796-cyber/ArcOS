@@ -72,13 +72,13 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
     recommendedLines: 4,
     recommendedModules: [
       {
-        id: 'mes-pharma',
+        id: 'mes-general',
         appId: 'smartfactory',
-        name: '제약 특화 MES',
+        name: '일반 제조 MES',
         category: 'Smart Factory',
-        price: 80,
+        price: 40,
         per: 'line',
-        unitLabel: '라인당 80만원/월'
+        unitLabel: '라인당 40만원/월'
       },
       {
         id: 'ebrs',
@@ -142,15 +142,6 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
         price: 120,
         per: 'flat',
         unitLabel: '기본 120만원/월'
-      },
-      {
-        id: 'scm',
-        appId: 'smartfactory',
-        name: 'SCM (공급망 협업 연계)',
-        category: 'Smart Factory',
-        price: 100,
-        per: 'flat',
-        unitLabel: '기본 100만원/월'
       },
       {
         id: 'aesg',
@@ -422,59 +413,6 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
         price: 110,
         per: 'flat',
         unitLabel: '사업장당'
-      }
-    ]
-  },
-  {
-    id: 'preset-scm-audit',
-    title: '공급망 & 협력사 품질 통합 연계 (SCM & Audit)',
-    subtitle: '협력사 발주 · 실시간 납기 트래킹 · 전자기록 증적',
-    type: 'requirement',
-    targetAudience: '외주 가공 비중이 높고 협력사 감사가 필수인 제조사',
-    badge: '공급망 연계',
-    desc: '사내 공정과 1·2차 외주 협력사 포털을 실시간 연계하고, 납품 품질 및 발주 검수 이력을 전자 기록으로 보존하여 고객사 실사에 즉각 대응합니다.',
-    highlights: [
-      '원자재 발주부터 협력사 입고 검수 실시간 공유',
-      '전자기록 감사추적 체계로 위변조 방지',
-      'ERP 연동 없이도 B²LAB 온톨로지를 통한 독립 연계'
-    ],
-    recommendedLines: 4,
-    recommendedModules: [
-      {
-        id: 'mes-general',
-        appId: 'smartfactory',
-        name: '일반 제조 MES',
-        category: 'Smart Factory',
-        price: 40,
-        per: 'line',
-        unitLabel: '라인당 40만원/월'
-      },
-      {
-        id: 'scm',
-        appId: 'smartfactory',
-        name: 'SCM (공급망 협업 연계)',
-        category: 'Smart Factory',
-        price: 100,
-        per: 'flat',
-        unitLabel: '기본 100만원/월'
-      },
-      {
-        id: 'ebrs',
-        appId: 'smartfactory',
-        name: 'EBRS (전자 제조기록)',
-        category: 'Smart Factory',
-        price: 120,
-        per: 'flat',
-        unitLabel: '기본 120만원/월'
-      },
-      {
-        id: 'consensebot',
-        appId: 'consensebot',
-        name: '컨센스봇 (ConsenseBot)',
-        category: 'LLM',
-        price: 180,
-        per: 'flat',
-        unitLabel: '사내 동시 사용자'
       }
     ]
   }

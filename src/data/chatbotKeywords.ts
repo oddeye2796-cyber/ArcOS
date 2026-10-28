@@ -2,8 +2,8 @@
  * Domain vocabulary for the module finder.
  *
  * The catalog copy already carries a lot of text, but end users rarely type the
- * words a product page uses: someone looking for `mes-pharma` types "GMP
- * 배치기록", not "제약 특화 MES". These lists close that gap, and they are the
+ * words a product page uses: someone looking for `ebrs` types "GMP
+ * 배치기록", not "전자 제조기록". These lists close that gap, and they are the
  * highest-weighted signal in `lib/moduleSearch` for exactly that reason.
  *
  * Every entry is written in normalized form — lowercase, punctuation stripped —
@@ -20,11 +20,11 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     'manufacturing execution', 'production management', 'shop floor', 'work order', 'traceability',
     '生産管理', '製造実行', '工程管理', '稼働率', 'スマート工場', '作業指示'
   ],
-  'mes-pharma': [
-    '제약', '바이오', '의약품', '원료의약품', 'gmp', '밸리데이션', '배치', '배치기록', '일탈',
-    '무균', '주사제', '완제의약품', '의료기기', 'deviation', 'validation', 'pharma',
-    'pharmaceutical', 'biotech', 'batch record', 'sterile',
-    '製薬', 'バイオ', '医薬品', '逸脱', 'バリデーション', '無菌', 'バッチ記録', '製造指図'
+  'mes-injection': [
+    '사출', '사출성형', '성형', '플라스틱', '수지', '금형', '사이클타임', '사이클 타임', '불량', '재작업',
+    '성형조건', '보압', '사출압', '플라스틱 가공',
+    'injection molding', 'injection', 'plastic', 'resin', 'mold', 'cycle time', 'molding', 'rework',
+    '射出成形', 'プラスチック', '樹脂', '金型', 'サイクルタイム', '成形条件'
   ],
   'mes-food': [
     '식품', '음료', '화장품', '건강기능식품', 'haccp', 'ccp', '위생', '유통기한', '소비기한',
@@ -43,19 +43,15 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     '전자기록', '전자제조기록', '제조기록', '제조기록서', '기록관리', '감사추적', '감사',
     '전자서명', '규제대응', '증적', '무서류', '페이퍼리스', 'part 11', '21 cfr', 'cfr',
     'audit trail', 'e signature', 'electronic record', 'compliance', 'paperless', 'fda',
-    '電子記録', '監査証跡', '電子署名', '記録管理', 'ペーパーレス'
+    '제약', '바이오', '의약품', 'gmp', '밸리데이션', '배치', '배치기록', '일탈', 'deviation', 'validation',
+    'pharma', 'pharmaceutical', 'biotech', 'batch record',
+    '電子記録', '監査証跡', '電子署名', '記録管理', 'ペーパーレス', '製薬', '医薬品', '逸脱', 'バリデーション', 'バッチ記録'
   ],
   rems: [
     '청정실', '클린룸', '환경모니터링', '차압', '온습도', '온도', '습도', '미립자', '부유균',
     '파티클', '계측점', '센서', '경보', '알람', 'cleanroom', 'environmental monitoring',
     'differential pressure', 'humidity', 'temperature', 'particle', 'sensor', 'alarm',
     'クリーンルーム', '環境モニタリング', '温湿度', '微粒子', '差圧'
-  ],
-  scm: [
-    '공급망', '협력사', '외주', '발주', '구매', '자재', '납기', '입고', '수급', '벤더',
-    '파트너', '포털', '2차 협력', 'scm', 'supply chain', 'procurement', 'purchase order',
-    'supplier', 'vendor', 'delivery', 'lead time', 'subcontract',
-    '供給網', 'サプライチェーン', '協力会社', '発注', '納期', '調達'
   ],
   a2lab: [
     'ai', '인공지능', '머신러닝', '딥러닝', '학습', '모델', '예측', '예지보전', '예지',
@@ -147,11 +143,6 @@ export const PRESET_KEYWORDS: Record<string, readonly string[]> = {
     '자율제조', '에이전트', '고도화', '등대공장', 'ai 전면', '무인',
     'autonomous', 'agent', 'advanced', 'lighthouse', 'full ai',
     '自律製造', 'エージェント', '高度化'
-  ],
-  'preset-scm-audit': [
-    '공급망', '협력사', '외주', '발주', '납기', '감사', '증적', '구매',
-    'supply chain', 'supplier', 'subcontract', 'audit', 'procurement',
-    'サプライチェーン', '協力会社', '監査', '発注'
   ]
 };
 
@@ -168,7 +159,6 @@ export type GoalId =
   | 'compliance'
   | 'energy'
   | 'visibility'
-  | 'supply'
   | 'knowledge'
   | 'buildOwn'
   | 'autonomous'
@@ -196,7 +186,7 @@ export const INDUSTRY_INTENTS: readonly IntentDefinition<IndustryId>[] = [
       '製薬', 'バイオ', '医薬品', '医療機器'
     ],
     presetId: 'preset-pharma',
-    moduleIds: ['mes-pharma', 'ebrs', 'rems', 'consensebot']
+    moduleIds: ['mes-general', 'ebrs', 'rems', 'consensebot']
   },
   {
     id: 'food',
@@ -206,7 +196,7 @@ export const INDUSTRY_INTENTS: readonly IntentDefinition<IndustryId>[] = [
       '食品', '飲料', '化粧品'
     ],
     presetId: 'preset-food',
-    moduleIds: ['mes-food', 'ebrs', 'scm', 'aesg']
+    moduleIds: ['mes-food', 'ebrs', 'aesg']
   },
   {
     id: 'precision',
@@ -291,16 +281,6 @@ export const GOAL_INTENTS: readonly IntentDefinition<GoalId>[] = [
     ],
     presetId: 'preset-precision',
     moduleIds: ['twin', 'mes-general', 'arcforge']
-  },
-  {
-    id: 'supply',
-    keywords: [
-      '협력사', '공급망', '발주', '납기', '자재', '외주', '구매', '재고',
-      'supplier', 'supply chain', 'purchase', 'delivery', 'material', 'inventory', 'outsourcing',
-      '協力会社', 'サプライ', '発注', '納期', '在庫'
-    ],
-    presetId: 'preset-scm-audit',
-    moduleIds: ['scm', 'ebrs']
   },
   {
     id: 'knowledge',

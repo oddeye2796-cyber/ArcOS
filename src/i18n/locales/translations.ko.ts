@@ -421,7 +421,7 @@ const KO_TRANSLATIONS: Translations = {
   archUpstreamTitle: '↑ 온프레미스에서 SaaS로 올라가는 것:',
   archUpstreamDesc: '실행 상태 하트비트, 가동률 성능 메트릭, 보안 감사 로그, 과금 정산용 사용량 카운터',
   archSuiteSec1Title: '1. Smart Factory 24가지 조합 구조적 근거',
-  archSuiteSec1Desc: 'MES 3종(제약 특화, 식품·화장품 특화, 일반 제조)은 공정 규제와 밸리데이션 요구사항이 상이하여 **상호 배타적(하나만 선택)**입니다. 반면 품질·기록·공급망을 담당하는 EBRS, REMS, SCM은 **자유 조합**입니다.',
+  archSuiteSec1Desc: 'MES 3종(사출 특화, 식품·화장품 특화, 일반 제조)은 공정 규제와 밸리데이션 요구사항이 상이하여 **상호 배타적(하나만 선택)**입니다. 반면 품질·기록을 담당하는 EBRS, REMS는 **자유 조합**입니다.',
   archSuiteFormula: '실질 조합 수 = MES (3종 중 1개) × 확장 모듈 (2³ = 8가지) = **총 24가지**',
   archSuiteSec1Note: '업종별 고정 번들 패키지만으로는 이 24가지 고객 수요를 모두 충족할 수 없으므로, **모듈 개별 과금**을 채택하는 구조적 근거가 됩니다.',
   archSuiteSec2Title: '2. AI 계층의 2개 SKU 분리 (A²LAB vs 슈퍼바이저)',
@@ -468,7 +468,7 @@ const KO_TRANSLATIONS: Translations = {
   archPolicy3Desc: '24시간 가동되는 제조 라인의 특성상 유지보수를 위한 다운타임은 허용되지 않습니다. Blue/Green 및 온프레미스 노드 롤링 업데이트로 **무중단 핫픽스**를 적용하며, 플랫폼 내 ‘무중단 패치노트’ 메뉴에서 변경 이력과 롤백 보증 상태를 즉시 추적합니다.',
 
   archPolicy4Title: '4. 모듈별 최소 약정 기간',
-  archPolicy4Desc: '모듈마다 도입 부담과 이탈 위험이 다르므로 약정 단위를 나눕니다. **MES 코어 3종은 연 단위**, **EBRS·REMS·SCM 등 규제 도메인 확장 모듈은 분기 단위**로 묶고, **A²LAB·오케스트레이션·컨센스봇 등 AI 모듈은 월 단위 해지를 허용하되 월 {floor} 최소 청구액**을 둡니다. 서로 다른 약정이 한 견적에 섞이면 가장 긴 약정이 구독 전체를 구속합니다.',
+  archPolicy4Desc: '모듈마다 도입 부담과 이탈 위험이 다르므로 약정 단위를 나눕니다. **MES 코어 3종은 연 단위**, **EBRS·REMS 등 규제 도메인 확장 모듈은 분기 단위**로 묶고, **A²LAB·오케스트레이션·컨센스봇 등 AI 모듈은 월 단위 해지를 허용하되 월 {floor} 최소 청구액**을 둡니다. 서로 다른 약정이 한 견적에 섞이면 가장 긴 약정이 구독 전체를 구속합니다.',
 
   commitmentTermAnnual: '연 약정 (12개월)',
   commitmentTermQuarterly: '분기 약정 (3개월)',

@@ -109,14 +109,14 @@ export default function App() {
     writeStored(STORAGE_KEYS.currency, next);
   }, []);
 
-  // Initial cart with Pharma MES + EBRS as specified in prototype.
+  // Initial cart with Injection Molding MES + EBRS as specified in prototype.
   // Persisted: losing a half-built quote to an accidental refresh was the single
   // most costly interaction in the simulator.
   const [cart, setCart] = usePersistentState<CartItem[]>(STORAGE_KEYS.cart, [
     {
-      id: 'mes-pharma',
+      id: 'mes-injection',
       appId: 'smartfactory',
-      name: '제약 특화 MES',
+      name: '사출 특화 MES',
       category: 'Smart Factory',
       price: 80,
       per: 'line',
