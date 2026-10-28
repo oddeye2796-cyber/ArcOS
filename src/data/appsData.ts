@@ -207,7 +207,7 @@ export const APPS_DATA: AppItem[] = [
   },
   {
     id: 'aesg',
-    name: 'A.ESG / A.Station',
+    name: 'A.ESG',
     category: '에너지',
     categoryLabel: '에너지 & ESG',
     status: 'need',

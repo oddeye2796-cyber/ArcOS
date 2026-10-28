@@ -38,7 +38,7 @@ const CATALOG: CatalogStrings = {
       "unit": "사내 동시 사용자 라이선스"
     },
     "aesg": {
-      "name": "A.ESG / A.Station",
+      "name": "A.ESG",
       "categoryLabel": "에너지 & ESG",
       "desc": "공장 내 전력·가스 계측 데이터를 실시간 수집해 탄소 배출량을 감축하고 최대 전력을 제어합니다",
       "detail": "전력 피크 제어와 온실가스 스코프 1·2 인벤토리를 자동 산출합니다. B²LAB 온톨로지의 설비 에너지 프로파일과 연계하여 생산 계획 대비 최적의 에너지 소비 스케줄을 수립합니다.",

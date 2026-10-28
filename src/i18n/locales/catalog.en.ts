@@ -38,7 +38,7 @@ const CATALOG: CatalogStrings = {
       "unit": "Concurrent user license"
     },
     "aesg": {
-      "name": "A.ESG / A.Station",
+      "name": "A.ESG",
       "categoryLabel": "Energy & ESG",
       "desc": "Collects real-time electricity and gas metrics to reduce carbon emissions and cap peak power",
       "detail": "Automates electrical peak shaving and greenhouse gas Scope 1 & 2 inventory reporting. Correlates with B²LAB ontology machine profiles to balance daily production schedules against energy peak tariffs.",
