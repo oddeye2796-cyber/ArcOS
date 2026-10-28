@@ -38,7 +38,7 @@ const CATALOG: CatalogStrings = {
       "unit": "社内同時ユーザーライセンス"
     },
     "aesg": {
-      "name": "A.ESG / A.Station",
+      "name": "A.ESG",
       "categoryLabel": "エネルギー＆ESG",
       "desc": "工場内の電力・ガス計測データをリアルタイム収集し、CO2排出量削減と最大電力を制御",
       "detail": "ピーク電力制御と温室効果ガスScope 1・2インベントリを自動算出。B²LABオントロジーの設備エネルギープロファイルと連係し、生産計画に対する最適なエネルギー消費スケジュールを策定します。",
