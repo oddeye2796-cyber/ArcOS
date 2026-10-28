@@ -25,9 +25,9 @@ export const APPS_DATA: AppItem[] = [
         type: 'radio',
         items: [
           {
-            id: 'mes-pharma',
-            name: '제약 특화 MES',
-            desc: 'GMP 기준 배치(Batch) 관리, 일탈(Deviation) 처리, 밸리데이션 데이터 추적',
+            id: 'mes-injection',
+            name: '사출 특화 MES',
+            desc: '플라스틱 사출 성형 조건(온도·압력·사이클타임) 실시간 기록, 금형별 LOT 추적, 불량·재작업 관리',
             price: 80,
             per: 'line',
             unitLabel: '라인당 80만원/월',
@@ -55,7 +55,7 @@ export const APPS_DATA: AppItem[] = [
         ]
       },
       {
-        label: '품질 · 기록 · 공급망 확장 모듈 (자유 조합)',
+        label: '품질 · 기록 확장 모듈 (자유 조합)',
         type: 'check',
         items: [
           {
@@ -75,15 +75,6 @@ export const APPS_DATA: AppItem[] = [
             per: 'point',
             unitLabel: '기본 90만원/월 (계측점 200개 포함, 100개당 15% 증분)',
             tagMappingPercent: 88
-          },
-          {
-            id: 'scm',
-            name: 'SCM (공급망 협업 연계)',
-            desc: '원자재 발주, 실시간 납기 트래킹, 1·2차 외주 협력사 포털 연동',
-            price: 100,
-            per: 'partner',
-            unitLabel: '기본 100만원/월 (협력사 10개사 포함, 10개사당 20% 증분)',
-            tagMappingPercent: 85
           }
         ]
       }
@@ -370,8 +361,8 @@ export const INITIAL_INSTALLED_MODULES: WorkspaceInstalledModule[] = [
     localResource: 'CPU 12% | RAM 4.2GB / 16GB'
   },
   {
-    id: 'mes-pharma',
-    name: '제약 특화 MES (Smart Factory)',
+    id: 'mes-injection',
+    name: '사출 특화 MES (Smart Factory)',
     category: '스위트 코어',
     location: '[충북/오송] 제약·바이오 GMP 사업장 (라인 #1~#4)',
     runtimeVersion: 'v4.2',
@@ -393,17 +384,7 @@ export const INITIAL_INSTALLED_MODULES: WorkspaceInstalledModule[] = [
   }
 ];
 
-export const INITIAL_DECOMMISSIONED_MODULES: DecommissionedModule[] = [
-  {
-    id: 'scm-archive',
-    name: 'SCM (공급망 협업 연계)',
-    retainedData: '협력사 발주 및 납기 검수 이력 12,480건 (암호화 압축)',
-    retentionExpiry: '2029년 03월 31일 (의무 보존 5년)',
-    retentionFee: 15, // 만원/월
-    status: 'read_only_retained',
-    reason: '사내 구매팀 ERP 직접 이관에 따른 구독 해지 후 감사용 읽기전용 보존 전환'
-  }
-];
+export const INITIAL_DECOMMISSIONED_MODULES: DecommissionedModule[] = [];
 
 export const INITIAL_POC_TRIALS: PoCTrial[] = [
   {

@@ -194,15 +194,15 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
   'smartfactory-manual': {
     ko: {
       title: 'Smart Factory 스위트 운영 매뉴얼',
-      summary: 'MES 코어와 EBRS·REMS·SCM 확장 모듈의 일상 운영 절차와 규제 대응 방법입니다.',
+      summary: 'MES 코어와 EBRS·REMS 확장 모듈의 일상 운영 절차와 규제 대응 방법입니다.',
       audience: '생산관리 · QA/QC',
       sections: [
         {
           heading: '모듈 구성 규칙',
           body: 'MES 코어는 상호 배타적이며, 확장 모듈은 자유롭게 조합합니다.',
           items: [
-            'MES 코어 3종(제약 특화 / 식품·화장품 특화 / 일반 제조) 중 반드시 1종만 선택합니다',
-            'EBRS·REMS·SCM은 필요한 만큼 추가하며, 나중에 개별 해지도 가능합니다',
+            'MES 코어 3종(사출 특화 / 식품·화장품 특화 / 일반 제조) 중 반드시 1종만 선택합니다',
+            'EBRS·REMS는 필요한 만큼 추가하며, 나중에 개별 해지도 가능합니다',
             '코어를 변경하려면 기존 코어를 해지해야 하므로, 업종 규제 요건을 먼저 확정하세요'
           ]
         },
@@ -236,7 +236,7 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
     en: {
       title: 'Smart Factory Suite Operating Manual',
       summary:
-        'Day-to-day operating procedures for the MES core and the EBRS, REMS and SCM extensions, and how to handle inspections.',
+        'Day-to-day operating procedures for the MES core and the EBRS and REMS extensions, and how to handle inspections.',
       audience: 'Production management · QA/QC',
       sections: [
         {
@@ -244,7 +244,7 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
           body: 'MES cores are mutually exclusive; extensions combine freely.',
           items: [
             'Exactly one of the three MES cores (pharma / food & cosmetics / general manufacturing)',
-            'Add EBRS, REMS and SCM as needed; each can be cancelled independently later',
+            'Add EBRS and REMS as needed; each can be cancelled independently later',
             'Changing core means cancelling the current one, so settle the regulatory requirement first'
           ]
         },
@@ -278,15 +278,15 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
     ja: {
       title: 'Smart Factory スイート運用マニュアル',
       summary:
-        'MESコアおよびEBRS・REMS・SCM拡張モジュールの日常運用手順と、規制対応の方法です。',
+        'MESコアおよびEBRS・REMS拡張モジュールの日常運用手順と、規制対応の方法です。',
       audience: '生産管理 · QA/QC',
       sections: [
         {
           heading: 'モジュール構成ルール',
           body: 'MESコアは相互排他的で、拡張モジュールは自由に組み合わせます。',
           items: [
-            'MESコア3種(製薬特化 / 食品・化粧品特化 / 一般製造)のうち必ず1種のみ選択します',
-            'EBRS・REMS・SCMは必要な分だけ追加し、後から個別解約も可能です',
+            'MESコア3種(射出成形特化 / 食品・化粧品特化 / 一般製造)のうち必ず1種のみ選択します',
+            'EBRS・REMSは必要な分だけ追加し、後から個別解約も可能です',
             'コアを変更するには既存コアの解約が必要なため、業種の規制要件を先に確定してください'
           ]
         },

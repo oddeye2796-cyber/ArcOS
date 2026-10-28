@@ -67,9 +67,9 @@ const CATALOG: CatalogStrings = {
     }
   },
   "subModules": {
-    "mes-pharma": {
-      "name": "製薬特化 MES",
-      "desc": "GMP基準バッチ(Batch)管理、逸脱(Deviation)処理、バリデーション追跡",
+    "mes-injection": {
+      "name": "射出成形特化 MES",
+      "desc": "射出成形条件(温度・圧力・サイクルタイム)のリアルタイム記録、金型別LOT追跡、不良・手直し管理",
       "unitLabel": "ライン毎 80万円/月"
     },
     "mes-food": {
@@ -92,11 +92,6 @@ const CATALOG: CatalogStrings = {
       "desc": "差圧、温湿度、浮遊微粒子濃度リアルタイム収集および警報発令",
       "unitLabel": "基本 90万円/月 (計測点200点込み、100点ごとに15%加算)"
     },
-    "scm": {
-      "name": "SCM (サプライチェーン協業連携)",
-      "desc": "原材料発注、リアルタイム納期追跡、1・2次外注協力会社ポータル連携",
-      "unitLabel": "基本 100万円/月 (協力会社10社込み、10社ごとに20%加算)"
-    },
     "mlops": {
       "name": "MLOps 実行エンジン",
       "desc": "生成したAIモジュールをコンテナ化してオンプレミスのDockerランタイムへ配備し、推論とモデルバージョンを運用管理",
@@ -105,7 +100,7 @@ const CATALOG: CatalogStrings = {
   },
   "groupLabels": {
     "MES 코어 (상호 배타적 · 1종 필수 선택)": "MESコア (相互排他的・1種必須選択)",
-    "품질 · 기록 · 공급망 확장 모듈 (자유 조합)": "品質・記録・サプライチェーン拡張モジュール (自由構成)"
+    "품질 · 기록 확장 모듈 (자유 조합)": "品質・記録拡張モジュール (自由構成)"
   },
   "deps": {
     "B²LAB 온톨로지 데이터레이크": {
@@ -280,13 +275,6 @@ const CATALOG: CatalogStrings = {
       "badge": "自社IT専用",
       "desc": "既製の製造運用スイート(MES)を導入せず、社内IT要員がARCFORGE(No-Code/Low-Code)で工程画面・作業指示書・モバイルビューを直接開発します。既製MESの購読料なしにB²LABオントロジー上で100%自社カスタムのプラットフォームを内製化します。",
       "targetAudience": "自社IT/情報システム要員を擁し、既製MESの代わりに社内スマートファクトリーを自ら開発する製造企業"
-    },
-    "preset-scm-audit": {
-      "title": "サプライチェーン & 協力会社品質の統合連係 (SCM & Audit)",
-      "subtitle": "協力会社発注・リアルタイム納期トラッキング・電子記録証跡",
-      "badge": "サプライチェーン連係",
-      "desc": "社内工程と1次・2次外注協力会社ポータルをリアルタイムで連係し、納品品質および発注検収履歴を電子記録として保存することで、顧客の実地監査に即応します。",
-      "targetAudience": "外注加工の比率が高く、協力会社監査が必須の製造業"
     }
   },
   "facilities": {
@@ -317,9 +305,8 @@ const CATALOG: CatalogStrings = {
   },
   "workspace": {
     "B²LAB 온톨로지 데이터레이크": "B²LAB オントロジーデータレイク",
-    "제약 특화 MES (Smart Factory)": "製薬特化MES (Smart Factory)",
+    "사출 특화 MES (Smart Factory)": "射出成形特化MES (Smart Factory)",
     "EBRS (전자 제조기록)": "EBRS (電子製造記録)",
-    "SCM (공급망 협업 연계)": "SCM (サプライチェーン協業連係)",
     "AI Vision 결함 탐지 (ArcVision)": "AI Vision 欠陥検知 (ArcVision)",
     "A²LAB (AI 모듈 생성기)": "A²LAB (AIモデル生成)",
     "다중 AI Agent 슈퍼바이저": "マルチAI Agent スーパーバイザー",

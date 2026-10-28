@@ -43,7 +43,7 @@ export const RESOURCE_DOCS: ResourceDoc[] = [
   {
     id: 'smartfactory-manual',
     kind: 'manual',
-    relatedModuleIds: ['smartfactory', 'mes-pharma', 'mes-food', 'mes-general', 'ebrs', 'rems', 'scm'],
+    relatedModuleIds: ['smartfactory', 'mes-injection', 'mes-food', 'mes-general', 'ebrs', 'rems'],
     updatedAt: '2026-02-18',
     readingMinutes: 9
   },

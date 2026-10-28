@@ -18,7 +18,7 @@ const PRODUCT_IDS = [
 ];
 // Products that also have files per sub-module (Smart Factory's modules, A²LAB's MLOps).
 const MODULE_IDS: Record<string, string[]> = {
-  smartfactory: ['mes-pharma', 'mes-food', 'mes-general', 'ebrs', 'rems', 'scm'],
+  smartfactory: ['mes-injection', 'mes-food', 'mes-general', 'ebrs', 'rems'],
   a2lab: ['mlops']
 };
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

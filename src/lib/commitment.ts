@@ -26,7 +26,7 @@ const TERM_RANK: Record<CommitmentTerm, number> = { annual: 3, quarterly: 2, mon
 
 const TERM_BY_MODULE: Record<string, CommitmentTerm> = {
   // MES cores: annual, matching the plant's own production planning cycle.
-  'mes-pharma': 'annual',
+  'mes-injection': 'annual',
   'mes-food': 'annual',
   'mes-general': 'annual',
   // The data spine every other module reads through cannot be torn down
@@ -35,7 +35,6 @@ const TERM_BY_MODULE: Record<string, CommitmentTerm> = {
   // Regulated domain extensions: quarterly.
   ebrs: 'quarterly',
   rems: 'quarterly',
-  scm: 'quarterly',
   aesg: 'quarterly',
   twin: 'quarterly',
   arcforge: 'quarterly',
