@@ -87,3 +87,14 @@ html[lang='ja'] .expo-root .break-keep {
   word-break: normal;
   overflow-wrap: anywhere;
 }
+
+/*
+ * Exhibition edition, Japanese only: Noto Sans JP, the free web font most Japanese
+ * sites use, loaded in expo.html. Korean and English keep the system fonts. The
+ * system Japanese fonts stay in the stack so text shows at once while the web
+ * font loads and if it fails to.
+ */
+html[lang='ja'] body,
+html[lang='ja'] .expo-root {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, 'Yu Gothic', sans-serif;
+}
