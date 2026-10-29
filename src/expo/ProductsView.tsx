@@ -13,7 +13,7 @@ import { Language } from '../i18n/translations';
 import { AppItem } from '../types';
 import { EXPO_COPY } from './expoCopy';
 import { DownloadModal } from './DownloadModal';
-import { DEMO_VIDEO_URLS, NO_DOWNLOADS, POC_URLS, linkFor } from './productLinks';
+import { DEMO_VIDEO_URLS, NO_DOWNLOADS, POC_URLS, demoLinksFor, linkFor } from './productLinks';
 import { DOWNLOAD_KINDS, DownloadKind } from './downloadRequest';
 import { expoAppDesc, expoAppDetail, isPricingOutcome } from './pricingScrub';
 
@@ -113,6 +113,32 @@ const PocButton: React.FC<{ url: string | null; label: string; soonLabel: string
     </button>
   );
 
+/** One button per demo site of a product or module. */
+const DemoButtons: React.FC<{ id: string; label: string; small?: boolean }> = ({ id, label, small }) => {
+  const links = demoLinksFor(id);
+  if (!links.length) return null;
+  return (
+    <>
+      {links.map((d) => (
+        <a
+          key={d.url}
+          href={d.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={
+            small
+              ? 'inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-blue-700 text-[11px] font-semibold text-white hover:bg-blue-800 transition-colors'
+              : 'inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-700 text-sm font-semibold text-white hover:bg-blue-800 transition-colors'
+          }
+        >
+          <ExternalLink className={small ? 'w-3 h-3' : 'w-4 h-4'} />
+          {d.tag ? `${label} (${d.tag})` : label}
+        </a>
+      ))}
+    </>
+  );
+};
+
 const ProductDetail: React.FC<{
   app: AppItem;
   lang: Language;
@@ -207,6 +233,7 @@ const ProductDetail: React.FC<{
                             {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
                           </button>
                         ))}
+                        <DemoButtons id={item.id} label={copy.demoButton} small />
                       </div>
                     </li>
                   ))}
@@ -245,6 +272,7 @@ const ProductDetail: React.FC<{
                       {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
                     </button>
                   ))}
+                  <DemoButtons id={item.id} label={copy.demoButton} small />
                 </div>
               </li>
             ))}
@@ -270,6 +298,8 @@ const ProductDetail: React.FC<{
           </div>
         </Card>
       )}
+
+      <DemoButtons id={app.id} label={copy.demoButton} />
 
       {app.id in POC_URLS && (
         <PocButton url={linkFor(POC_URLS, app.id)} label={copy.pocButton} soonLabel={copy.pocSoon} />
