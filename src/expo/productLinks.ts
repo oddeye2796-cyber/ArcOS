@@ -27,7 +27,8 @@ export const DEMO_LINKS: Readonly<Record<string, readonly DemoLink[]>> = {
   ],
   ebrs: [{ url: 'https://oddeye2796-cyber.github.io/bio_EBRS/' }],
   orch: [{ url: 'https://oddeye2796-cyber.github.io/impix-ai-orchestration-platform/' }],
-  a2lab: [{ url: 'https://oddeye2796-cyber.github.io/a2lab/' }]
+  a2lab: [{ url: 'https://oddeye2796-cyber.github.io/a2lab/' }],
+  b2lab: [{ url: 'https://newlake.vercel.app' }]
 };
 
 /** Demo video (YouTube) per product. The button only appears once a URL is set. */
