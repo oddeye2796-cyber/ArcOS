@@ -21,6 +21,7 @@ export interface DemoLink {
  */
 export const DEMO_LINKS: Readonly<Record<string, readonly DemoLink[]>> = {
   'mes-food': [{ url: 'https://oddeye2796-cyber.github.io/hf-mes/' }],
+  'mes-cosmetics': [{ url: 'https://oddeye2796-cyber.github.io/cosmetics/' }],
   'mes-general': [
     { url: 'https://oddeye2796-cyber.github.io/M_MES/', tag: 'MES' },
     { url: 'https://oddeye2796-cyber.github.io/M_MES_POP/pop/', tag: 'POP' }
