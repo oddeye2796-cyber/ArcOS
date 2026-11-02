@@ -33,9 +33,9 @@ export const DEMO_LINKS: Readonly<Record<string, readonly DemoLink[]>> = {
   b2lab: [{ url: 'https://newlake.vercel.app' }]
 };
 
-/** Demo video (YouTube) per product. The button only appears once a URL is set. */
+/** Promo video (Google Drive or YouTube) per product. The button only appears once a URL is set. */
 export const DEMO_VIDEO_URLS: Readonly<Record<string, string>> = {
-  twin: ''
+  twin: 'https://drive.google.com/file/d/1HrX3lyowDhQZfF-aaL-KrWo8qu7RTrzO/view?usp=drive_link'
 };
 
 /** Products whose page has no brochure and manual downloads. */
