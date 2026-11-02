@@ -27,6 +27,7 @@ export const DEMO_LINKS: Readonly<Record<string, readonly DemoLink[]>> = {
     { url: 'https://oddeye2796-cyber.github.io/M_MES_POP/pop/', tag: 'POP' }
   ],
   ebrs: [{ url: 'https://oddeye2796-cyber.github.io/bio_EBRS/' }],
+  rems: [{ url: 'https://oddeye2796-cyber.github.io/REMS/' }],
   orch: [{ url: 'https://oddeye2796-cyber.github.io/impix-ai-orchestration-platform/' }],
   a2lab: [{ url: 'https://oddeye2796-cyber.github.io/a2lab/' }],
   b2lab: [{ url: 'https://newlake.vercel.app' }]
