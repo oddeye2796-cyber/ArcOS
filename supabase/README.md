@@ -19,7 +19,7 @@ Upload to the `expo-docs` bucket as `<productId>/<kind>_<lang>.pdf`:
 
 Smart Factory's modules have their own files, one folder per module:
 `smartfactory/<moduleId>/<kind>_<lang>.pdf` with `moduleId` one of `mes-injection`,
-`mes-food`, `mes-general`, `ebrs`, `rems`. The suite as a whole stays at
+`mes-food`, `mes-cosmetics`, `mes-general`, `ebrs`, `rems`. The suite as a whole stays at
 `smartfactory/<kind>_<lang>.pdf`.
 
 A²LAB's MLOps engine is the one module outside Smart Factory with its own files:

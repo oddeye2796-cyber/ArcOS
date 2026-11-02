@@ -73,8 +73,13 @@ const CATALOG: CatalogStrings = {
       "unitLabel": "라인당 80만원/월"
     },
     "mes-food": {
-      "name": "식품·화장품 특화 MES",
+      "name": "식품 특화 MES",
       "desc": "HACCP 중요관리점(CCP) 실시간 자동 기록, 원료 역추적 및 유통기한 관리",
+      "unitLabel": "라인당 60만원/월"
+    },
+    "mes-cosmetics": {
+      "name": "화장품 특화 MES",
+      "desc": "충진·포장 실적, 현장 POP, 자재 수불, 설비 데이터 수집(OPC UA), OEE·비가동 분석, 전자검사기록서와 ERP 연계",
       "unitLabel": "라인당 60만원/월"
     },
     "mes-general": {

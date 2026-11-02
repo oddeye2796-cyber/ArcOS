@@ -128,7 +128,7 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
       {
         id: 'mes-food',
         appId: 'smartfactory',
-        name: '식품·화장품 특화 MES',
+        name: '식품 특화 MES',
         category: 'Smart Factory',
         price: 60,
         per: 'line',

@@ -27,10 +27,15 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     '射出成形', 'プラスチック', '樹脂', '金型', 'サイクルタイム', '成形条件'
   ],
   'mes-food': [
-    '식품', '음료', '화장품', '건강기능식품', 'haccp', 'ccp', '위생', '유통기한', '소비기한',
-    '원료', '역추적', '이력추적', '배합', '충진', 'food', 'beverage', 'cosmetics', 'hygiene',
+    '식품', '음료', '건강기능식품', 'haccp', 'ccp', '위생', '유통기한', '소비기한',
+    '원료', '역추적', '이력추적', '배합', 'food', 'beverage', 'hygiene',
     'shelf life', 'expiry', 'recall', 'lot tracing',
-    '食品', '化粧品', '衛生', '賞味期限', 'トレーサビリティ', '原料', '自動記録'
+    '食品', '健康機能食品', '衛生', '賞味期限', 'トレーサビリティ', '原料', '自動記録'
+  ],
+  'mes-cosmetics': [
+    '화장품', '충진', '충전', '포장', '화장품 제조', '전자검사기록', 'opc ua', 'oee', '비가동',
+    'cosmetics', 'cosmetic', 'filling', 'packaging', 'inspection record',
+    '化粧品', '充填', '包装', '電子検査記録'
   ],
   'mes-general': [
     '일반제조', '표준', '기계', '부품', '가공', '조립', '금속', '열처리', '자동차', '항공',
@@ -196,7 +201,7 @@ export const INDUSTRY_INTENTS: readonly IntentDefinition<IndustryId>[] = [
       '食品', '飲料', '化粧品'
     ],
     presetId: 'preset-food',
-    moduleIds: ['mes-food', 'ebrs', 'aesg']
+    moduleIds: ['mes-food', 'mes-cosmetics', 'ebrs', 'aesg']
   },
   {
     id: 'precision',

@@ -73,8 +73,13 @@ const CATALOG: CatalogStrings = {
       "unitLabel": "ライン毎 80万円/月"
     },
     "mes-food": {
-      "name": "食品・化粧品特化 MES",
+      "name": "食品特化 MES",
       "desc": "HACCP重要管理点(CCP)リアルタイム自動記録、原料逆追跡および賞味期限管理",
+      "unitLabel": "ライン毎 60万円/月"
+    },
+    "mes-cosmetics": {
+      "name": "化粧品特化 MES",
+      "desc": "充填・包装実績、現場POP、資材受払、設備データ収集(OPC UA)、OEE・非稼働分析、電子検査記録書とERP連携",
       "unitLabel": "ライン毎 60万円/月"
     },
     "mes-general": {

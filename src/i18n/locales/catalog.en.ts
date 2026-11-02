@@ -73,8 +73,13 @@ const CATALOG: CatalogStrings = {
       "unitLabel": "800k KRW/line/mo"
     },
     "mes-food": {
-      "name": "Food/Cosmetics MES",
+      "name": "Food MES",
       "desc": "HACCP critical control point (CCP) auto-logging, raw material traceability & expiry management",
+      "unitLabel": "600k KRW/line/mo"
+    },
+    "mes-cosmetics": {
+      "name": "Cosmetics MES",
+      "desc": "Filling & packaging results, shop-floor POP, material in/out, equipment data collection (OPC UA), OEE & downtime analysis, electronic inspection records and ERP integration",
       "unitLabel": "600k KRW/line/mo"
     },
     "mes-general": {

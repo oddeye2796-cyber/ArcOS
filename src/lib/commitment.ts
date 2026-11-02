@@ -28,6 +28,7 @@ const TERM_BY_MODULE: Record<string, CommitmentTerm> = {
   // MES cores: annual, matching the plant's own production planning cycle.
   'mes-injection': 'annual',
   'mes-food': 'annual',
+  'mes-cosmetics': 'annual',
   'mes-general': 'annual',
   // The data spine every other module reads through cannot be torn down
   // mid-year without taking the modules above with it.
