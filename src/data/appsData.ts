@@ -18,6 +18,7 @@ export const APPS_DATA: AppItem[] = [
     downloadModules: [
       {
         id: 'mes-cosmetics',
+        afterModuleId: 'mes-general',
         name: '화장품 특화 MES',
         desc: '충진·포장 실적, 현장 POP, 자재 수불, 설비 데이터 수집(OPC UA), OEE·비가동 분석, 전자검사기록서와 ERP 연계'
       }
