@@ -20,6 +20,7 @@ export interface DemoLink {
  * new tab from the product page (or from the module's card).
  */
 export const DEMO_LINKS: Readonly<Record<string, readonly DemoLink[]>> = {
+  'mes-injection': [{ url: 'https://oddeye2796-cyber.github.io/Injection/' }],
   'mes-food': [{ url: 'https://oddeye2796-cyber.github.io/hf-mes/' }],
   'mes-cosmetics': [{ url: 'https://oddeye2796-cyber.github.io/cosmetics/' }],
   'mes-general': [
