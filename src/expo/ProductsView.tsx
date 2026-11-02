@@ -295,11 +295,13 @@ const ProductDetail: React.FC<{
                 {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
               </button>
             ))}
+            <DemoButtons id={app.id} label={copy.demoButton} />
           </div>
         </Card>
       )}
 
-      <DemoButtons id={app.id} label={copy.demoButton} />
+      {/* Products with a downloads card show their demo next to it. */}
+      {(app.groups || NO_DOWNLOADS.has(app.id)) && <DemoButtons id={app.id} label={copy.demoButton} />}
 
       {app.id in POC_URLS && (
         <PocButton url={linkFor(POC_URLS, app.id)} label={copy.pocButton} soonLabel={copy.pocSoon} />
