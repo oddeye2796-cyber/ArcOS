@@ -79,8 +79,7 @@ const CATALOG: CatalogStrings = {
     },
     "mes-cosmetics": {
       "name": "化粧品特化 MES",
-      "desc": "充填・包装実績、現場POP、資材受払、設備データ収集(OPC UA)、OEE・非稼働分析、電子検査記録書とERP連携",
-      "unitLabel": "ライン毎 60万円/月"
+      "desc": "充填・包装実績、現場POP、資材受払、設備データ収集(OPC UA)、OEE・非稼働分析、電子検査記録書とERP連携"
     },
     "mes-general": {
       "name": "一般製造 MES",

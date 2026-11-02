@@ -32,11 +32,6 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     'shelf life', 'expiry', 'recall', 'lot tracing',
     '食品', '健康機能食品', '衛生', '賞味期限', 'トレーサビリティ', '原料', '自動記録'
   ],
-  'mes-cosmetics': [
-    '화장품', '충진', '충전', '포장', '화장품 제조', '전자검사기록', 'opc ua', 'oee', '비가동',
-    'cosmetics', 'cosmetic', 'filling', 'packaging', 'inspection record',
-    '化粧品', '充填', '包装', '電子検査記録'
-  ],
   'mes-general': [
     '일반제조', '표준', '기계', '부품', '가공', '조립', '금속', '열처리', '자동차', '항공',
     '정밀가공', '뿌리산업', '중소기업', '처음', '첫 도입', '최소', '기본',
@@ -201,7 +196,7 @@ export const INDUSTRY_INTENTS: readonly IntentDefinition<IndustryId>[] = [
       '食品', '飲料', '化粧品'
     ],
     presetId: 'preset-food',
-    moduleIds: ['mes-food', 'mes-cosmetics', 'ebrs', 'aesg']
+    moduleIds: ['mes-food', 'ebrs', 'aesg']
   },
   {
     id: 'precision',

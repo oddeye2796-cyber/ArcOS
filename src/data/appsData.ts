@@ -14,6 +14,14 @@ export const APPS_DATA: AppItem[] = [
     growthMetric: '생산 라인 수 / 계측점 수 / 협력사 수',
     growthUnit: '라인 · 계측점 · 협력사',
     suite: true,
+    // Brochure and manual only; no price has been set, so it is not orderable yet.
+    downloadModules: [
+      {
+        id: 'mes-cosmetics',
+        name: '화장품 특화 MES',
+        desc: '충진·포장 실적, 현장 POP, 자재 수불, 설비 데이터 수집(OPC UA), OEE·비가동 분석, 전자검사기록서와 ERP 연계'
+      }
+    ],
     deps: [
       { name: 'B²LAB 온톨로지 데이터레이크', ok: true, desc: '별도 구독 중 (공통 기반 모듈)' },
       { name: 'ArcTunnel mTLS 게이트웨이', ok: true, desc: '현장 온프레미스 노드 연결됨 (레이턴시 4ms)' },
@@ -37,15 +45,6 @@ export const APPS_DATA: AppItem[] = [
             id: 'mes-food',
             name: '식품 특화 MES',
             desc: 'HACCP 중요관리점(CCP) 실시간 자동 기록, 원료 역추적 및 유통기한 관리',
-            price: 60,
-            per: 'line',
-            unitLabel: '라인당 60만원/월',
-            tagMappingPercent: 89
-          },
-          {
-            id: 'mes-cosmetics',
-            name: '화장품 특화 MES',
-            desc: '충진·포장 실적, 현장 POP, 자재 수불, 설비 데이터 수집(OPC UA), OEE·비가동 분석, 전자검사기록서와 ERP 연계',
             price: 60,
             per: 'line',
             unitLabel: '라인당 60만원/월',
