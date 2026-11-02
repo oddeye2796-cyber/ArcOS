@@ -148,6 +148,42 @@ const ProductDetail: React.FC<{
   const value = expoValueProp(app.id, lang);
   const [download, setDownload] = useState<{ kind: DownloadKind; moduleId?: string; name: string } | null>(null);
 
+  // Download-only modules that name a neighbour appear inside that module's group.
+  const groupedIds = new Set(app.groups?.flatMap((g) => g.items.map((i) => i.id)));
+  const standaloneDownloadModules = (app.downloadModules ?? []).filter(
+    (m) => !(m.afterModuleId && groupedIds.has(m.afterModuleId))
+  );
+
+  const renderModule = (item: { id: string; name: string; desc: string }) => (
+    <li key={item.id} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+      <div className="text-sm font-semibold text-slate-900 break-keep">
+        {getLocalizedSubModuleName(item.id, item.name, lang)}
+      </div>
+      <p className="text-xs text-slate-600 mt-0.5 leading-relaxed break-keep">
+        {getLocalizedSubModuleDesc(item.id, item.desc, lang)}
+      </p>
+      <div className="flex flex-wrap gap-1.5 mt-2">
+        {DOWNLOAD_KINDS.map((kind) => (
+          <button
+            key={kind}
+            onClick={() =>
+              setDownload({
+                kind,
+                moduleId: item.id,
+                name: getLocalizedSubModuleName(item.id, item.name, lang)
+              })
+            }
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-slate-300 bg-white text-[11px] font-semibold text-slate-700 hover:border-blue-500 hover:text-blue-700 transition-colors"
+          >
+            <Download className="w-3 h-3" />
+            {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
+          </button>
+        ))}
+        <DemoButtons id={item.id} label={copy.demoButton} small />
+      </div>
+    </li>
+  );
+
   return (
     <article className="max-w-5xl mx-auto px-6 md:px-8 py-8 space-y-6">
       <button
@@ -208,35 +244,12 @@ const ProductDetail: React.FC<{
                   {getLocalizedGroupLabel(group.label, lang)}
                 </div>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {group.items.map((item) => (
-                    <li key={item.id} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                      <div className="text-sm font-semibold text-slate-900 break-keep">
-                        {getLocalizedSubModuleName(item.id, item.name, lang)}
-                      </div>
-                      <p className="text-xs text-slate-600 mt-0.5 leading-relaxed break-keep">
-                        {getLocalizedSubModuleDesc(item.id, item.desc, lang)}
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 mt-2">
-                        {DOWNLOAD_KINDS.map((kind) => (
-                          <button
-                            key={kind}
-                            onClick={() =>
-                              setDownload({
-                                kind,
-                                moduleId: item.id,
-                                name: getLocalizedSubModuleName(item.id, item.name, lang)
-                              })
-                            }
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-slate-300 bg-white text-[11px] font-semibold text-slate-700 hover:border-blue-500 hover:text-blue-700 transition-colors"
-                          >
-                            <Download className="w-3 h-3" />
-                            {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
-                          </button>
-                        ))}
-                        <DemoButtons id={item.id} label={copy.demoButton} small />
-                      </div>
-                    </li>
-                  ))}
+                  {group.items.flatMap((item) => [
+                    renderModule(item),
+                    ...(app.downloadModules ?? [])
+                      .filter((m) => m.afterModuleId === item.id)
+                      .map(renderModule)
+                  ])}
                 </ul>
               </div>
             ))}
@@ -244,38 +257,10 @@ const ProductDetail: React.FC<{
         </Card>
       )}
 
-      {app.downloadModules && (
+      {standaloneDownloadModules.length > 0 && (
         <Card title={copy.includedModules}>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {app.downloadModules.map((item) => (
-              <li key={item.id} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                <div className="text-sm font-semibold text-slate-900 break-keep">
-                  {getLocalizedSubModuleName(item.id, item.name, lang)}
-                </div>
-                <p className="text-xs text-slate-600 mt-0.5 leading-relaxed break-keep">
-                  {getLocalizedSubModuleDesc(item.id, item.desc, lang)}
-                </p>
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {DOWNLOAD_KINDS.map((kind) => (
-                    <button
-                      key={kind}
-                      onClick={() =>
-                        setDownload({
-                          kind,
-                          moduleId: item.id,
-                          name: getLocalizedSubModuleName(item.id, item.name, lang)
-                        })
-                      }
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-slate-300 bg-white text-[11px] font-semibold text-slate-700 hover:border-blue-500 hover:text-blue-700 transition-colors"
-                    >
-                      <Download className="w-3 h-3" />
-                      {kind === 'brochure' ? copy.downloadBrochure : copy.downloadManual}
-                    </button>
-                  ))}
-                  <DemoButtons id={item.id} label={copy.demoButton} small />
-                </div>
-              </li>
-            ))}
+            {standaloneDownloadModules.map(renderModule)}
           </ul>
         </Card>
       )}

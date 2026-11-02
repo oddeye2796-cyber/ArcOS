@@ -32,6 +32,8 @@ export interface DownloadModule {
   id: string;
   name: string;
   desc: string;
+  /** Shown right after this module, inside the group that holds it, instead of in its own card. */
+  afterModuleId?: string;
 }
 
 export interface ModuleGroup {
