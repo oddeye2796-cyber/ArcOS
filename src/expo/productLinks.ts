@@ -28,14 +28,14 @@ export const DEMO_LINKS: Readonly<Record<string, readonly DemoLink[]>> = {
   ],
   ebrs: [{ url: 'https://oddeye2796-cyber.github.io/bio_EBRS/' }],
   rems: [{ url: 'https://oddeye2796-cyber.github.io/REMS/' }],
-  orch: [{ url: 'https://oddeye2796-cyber.github.io/impix-ai-orchestration-platform/' }],
+  orch: [{ url: 'https://oddeye2796-cyber.github.io/impix-ai-orchestration-platform/tokyo/' }],
   a2lab: [{ url: 'https://oddeye2796-cyber.github.io/a2lab/' }],
   b2lab: [{ url: 'https://newlake.vercel.app' }]
 };
 
-/** Demo video (YouTube) per product. The button only appears once a URL is set. */
+/** Promo video (Google Drive or YouTube) per product. The button only appears once a URL is set. */
 export const DEMO_VIDEO_URLS: Readonly<Record<string, string>> = {
-  twin: ''
+  twin: 'https://drive.google.com/file/d/1HrX3lyowDhQZfF-aaL-KrWo8qu7RTrzO/view?usp=drive_link'
 };
 
 /** Products whose page has no brochure and manual downloads. */
