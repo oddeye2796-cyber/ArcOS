@@ -35,9 +35,18 @@ export const DEMO_LINKS: Readonly<Record<string, readonly DemoLink[]>> = {
   b2lab: [{ url: 'https://newlake.vercel.app' }]
 };
 
-/** Promo video (Google Drive or YouTube) per product. The button only appears once a URL is set. */
-export const DEMO_VIDEO_URLS: Readonly<Record<string, string>> = {
-  twin: 'https://drive.google.com/file/d/1HrX3lyowDhQZfF-aaL-KrWo8qu7RTrzO/view?usp=drive_link'
+/** A video (Google Drive or YouTube). `tag` replaces the default button label. */
+export interface VideoLink {
+  url: string;
+  tag?: string;
+}
+
+/** Videos per product. Each shows as a button next to the others once its URL is set. */
+export const DEMO_VIDEOS: Readonly<Record<string, readonly VideoLink[]>> = {
+  twin: [
+    { url: 'https://drive.google.com/file/d/1HrX3lyowDhQZfF-aaL-KrWo8qu7RTrzO/view?usp=drive_link' },
+    { url: 'https://drive.google.com/file/d/1P8s9bEvfO-y4M6MqPXB9yRcq1rGntjkj/view?usp=sharing', tag: 'DT(WMS)' }
+  ]
 };
 
 /** Products whose page has no brochure and manual downloads. */
@@ -47,6 +56,10 @@ export const NO_DOWNLOADS: ReadonlySet<string> = new Set(['twin']);
 export function linkFor(table: Readonly<Record<string, string>>, productId: string): string | null {
   const url = table[productId]?.trim();
   return url && /^https?:\/\//i.test(url) ? url : null;
+}
+
+export function videoLinksFor(id: string): readonly VideoLink[] {
+  return (DEMO_VIDEOS[id] ?? []).filter((v) => /^https?:\/\//i.test(v.url));
 }
 
 export function demoLinksFor(id: string): readonly DemoLink[] {
