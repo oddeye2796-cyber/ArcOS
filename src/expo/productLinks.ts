@@ -41,11 +41,11 @@ export interface VideoLink {
   tag?: string;
 }
 
-/** Videos per product. Each shows as a button next to the others once its URL is set. */
+/** Videos per product. Each shows as a button; while its URL is empty the button is disabled and marked as coming soon. */
 export const DEMO_VIDEOS: Readonly<Record<string, readonly VideoLink[]>> = {
   twin: [
-    { url: 'https://drive.google.com/file/d/1II1i8VM-uF58HFb7nXovke7xkWz2x65Z/view?usp=sharing' },
-    { url: 'https://drive.google.com/file/d/1P8s9bEvfO-y4M6MqPXB9yRcq1rGntjkj/view?usp=sharing', tag: 'DT(WMS)' }
+    { url: '' },
+    { url: '', tag: 'DT(WMS)' }
   ]
 };
 
@@ -59,7 +59,11 @@ export function linkFor(table: Readonly<Record<string, string>>, productId: stri
 }
 
 export function videoLinksFor(id: string): readonly VideoLink[] {
-  return (DEMO_VIDEOS[id] ?? []).filter((v) => /^https?:\/\//i.test(v.url));
+  return DEMO_VIDEOS[id] ?? [];
+}
+
+export function isWebUrl(url: string): boolean {
+  return /^https?:\/\//i.test(url);
 }
 
 export function demoLinksFor(id: string): readonly DemoLink[] {

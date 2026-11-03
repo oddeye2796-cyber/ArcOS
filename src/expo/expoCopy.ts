@@ -27,6 +27,7 @@ export interface ExpoCopy {
   pocButton: string;
   pocSoon: string;
   demoVideoButton: string;
+  videoSoon: string;
   demoButton: string;
   dlModalTitle: string;
   dlModalIntro: string;
@@ -71,6 +72,7 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     pocButton: 'PoC環境を体験',
     pocSoon: 'PoC環境 (準備中)',
     demoVideoButton: 'プロモーション動画を見る',
+    videoSoon: '準備中',
     demoButton: 'デモを体験',
     dlModalTitle: '資料のダウンロード',
     dlModalIntro: 'メールアドレスをご入力のうえ、同意にチェックしてください。ダウンロードが始まります。',
@@ -113,6 +115,7 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     pocButton: 'Try the PoC environment',
     pocSoon: 'PoC environment (coming soon)',
     demoVideoButton: 'Watch the promo video',
+    videoSoon: 'coming soon',
     demoButton: 'Try the demo',
     dlModalTitle: 'Download',
     dlModalIntro: 'Enter your email address and tick the consent box. The download will start.',
@@ -155,6 +158,7 @@ export const EXPO_COPY: Record<Language, ExpoCopy> = {
     pocButton: 'PoC 환경 체험',
     pocSoon: 'PoC 환경 (준비 중)',
     demoVideoButton: '홍보 영상 보기',
+    videoSoon: '준비 중',
     demoButton: '데모 체험',
     dlModalTitle: '자료 다운로드',
     dlModalIntro: '이메일 주소를 입력하고 동의에 체크하면 다운로드가 시작됩니다.',
