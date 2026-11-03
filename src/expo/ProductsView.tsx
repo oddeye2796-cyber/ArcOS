@@ -13,7 +13,7 @@ import { Language } from '../i18n/translations';
 import { AppItem } from '../types';
 import { EXPO_COPY } from './expoCopy';
 import { DownloadModal } from './DownloadModal';
-import { NO_DOWNLOADS, POC_URLS, demoLinksFor, linkFor, videoLinksFor } from './productLinks';
+import { NO_DOWNLOADS, POC_URLS, demoLinksFor, isWebUrl, linkFor, videoLinksFor } from './productLinks';
 import { DOWNLOAD_KINDS, DownloadKind } from './downloadRequest';
 import { expoAppDesc, expoAppDetail, isPricingOutcome } from './pricingScrub';
 
@@ -292,18 +292,29 @@ const ProductDetail: React.FC<{
         <PocButton url={linkFor(POC_URLS, app.id)} label={copy.pocButton} soonLabel={copy.pocSoon} />
       )}
 
-      {videoLinksFor(app.id).map((v) => (
-        <a
-          key={v.url}
-          href={v.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:border-blue-500 hover:text-blue-700 transition-colors"
-        >
-          <PlayCircle className="w-4 h-4" />
-          {v.tag ?? copy.demoVideoButton}
-        </a>
-      ))}
+      {videoLinksFor(app.id).map((v, i) =>
+        isWebUrl(v.url) ? (
+          <a
+            key={v.url}
+            href={v.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:border-blue-500 hover:text-blue-700 transition-colors"
+          >
+            <PlayCircle className="w-4 h-4" />
+            {v.tag ?? copy.demoVideoButton}
+          </a>
+        ) : (
+          <button
+            key={`soon-${i}`}
+            disabled
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-200 text-sm font-semibold text-slate-500 cursor-not-allowed"
+          >
+            <PlayCircle className="w-4 h-4" />
+            {v.tag ?? copy.demoVideoButton} ({copy.videoSoon})
+          </button>
+        )
+      )}
 
       {download && (
         <DownloadModal
