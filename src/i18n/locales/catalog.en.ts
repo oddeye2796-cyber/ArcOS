@@ -20,7 +20,7 @@ const CATALOG: CatalogStrings = {
       "name": "A²LAB",
       "categoryLabel": "AI Quality Prediction & Process Optimization",
       "desc": "Predicts product quality (OK/NG) from equipment data in advance, suggests process settings that raise the good-product probability, and manages model performance with metrics",
-      "detail": "Predicts OK/NG for every one-minute window from equipment process data (temperature, pressure, vacuum, cycle time and more) and checks it against the PLC verdict to track accuracy. The same model drives a genetic-algorithm search for the process settings with the highest good-product probability, and five performance metrics, the confusion matrix and feature importance explain why a prediction was made. The MLOps Execution Engine handles retraining-data loading and automatic retraining with model version replacement.",
+      "detail": "Predicts OK/NG for every one-minute window from equipment process data (temperature, pressure, vacuum, cycle time and more) and checks it against the PLC verdict to track accuracy. The same model drives a genetic-algorithm search for the process settings with the highest good-product probability, and five performance metrics, the confusion matrix and feature importance explain why a prediction was made.",
       "unit": "Base fee + Inference usage"
     },
     "orch": {
@@ -98,7 +98,7 @@ const CATALOG: CatalogStrings = {
     },
     "mlops": {
       "name": "MLOps Execution Engine",
-      "desc": "Runs retraining-data loading, automatic retraining and model version replacement, and manages inference on the on-premises Docker runtime",
+      "desc": "Packages generated AI modules as containers, deploys them to the on-premises Docker runtime, and manages inference and model versions",
       "unitLabel": "Included with A²LAB"
     }
   },
