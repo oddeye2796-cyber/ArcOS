@@ -46,8 +46,8 @@ export const DEMO_VIDEOS: Readonly<Record<string, readonly VideoLink[]>> = {
   twin: [
     { url: 'https://youtu.be/JgBSnetH5JQ' },
     { url: 'https://youtu.be/DpIDlv2eAcE', tag: 'DT(WMS)' },
-    { url: '', tag: 'DT(FAS)' },
-    { url: '', tag: 'DT(FEMS)' }
+    { url: 'https://youtu.be/5e5HX1ScSd8', tag: 'DT(FAS)' },
+    { url: 'https://youtu.be/KeVJR103EDs', tag: 'DT(FEMS)' }
   ]
 };
 
