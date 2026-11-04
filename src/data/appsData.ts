@@ -282,7 +282,7 @@ export const APPS_DATA: AppItem[] = [
     id: 'arcforge',
     name: 'ARCFORGE (노코드/로우코드 플랫폼 빌더)',
     category: '빌더',
-    categoryLabel: '자체 IT 플랫폼 빌더',
+    categoryLabel: 'AI 기반 플랫폼 빌더',
     status: 'ready',
     statusLabel: '설치 가능',
     desc: '자체 IT 인력을 보유한 기업이 기성 MES 도입 없이 No-Code / Low-Code로 기업 고유의 Smart Factory 플랫폼을 직접 구축하는 전용 빌더',

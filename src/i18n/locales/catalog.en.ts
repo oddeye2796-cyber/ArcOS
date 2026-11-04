@@ -53,7 +53,7 @@ const CATALOG: CatalogStrings = {
     },
     "arcforge": {
       "name": "ARCFORGE (No-Code Platform Builder)",
-      "categoryLabel": "In-House IT Platform Builder",
+      "categoryLabel": "AI-Based Platform Builder",
       "desc": "Dedicated builder for enterprises with in-house IT to build proprietary Smart Factory systems via No-Code/Low-Code without off-the-shelf MES",
       "detail": "A dedicated builder for enterprises with in-house IT engineering teams. Instead of purchasing off-the-shelf MES suites, internal IT teams build 100% tailored work order dispatchers, shopfloor views, daily KPI dashboards, and business logic using No-Code/Low-Code on top of standardized B²LAB ontology data.",
       "unit": "Enterprise builder license (Seats & authoring)"

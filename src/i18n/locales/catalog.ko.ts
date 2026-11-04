@@ -53,7 +53,7 @@ const CATALOG: CatalogStrings = {
     },
     "arcforge": {
       "name": "ARCFORGE (노코드/로우코드 플랫폼 빌더)",
-      "categoryLabel": "자체 IT 플랫폼 빌더",
+      "categoryLabel": "AI 기반 플랫폼 빌더",
       "desc": "자체 IT 인력을 보유한 기업이 기성 MES 도입 없이 No-Code / Low-Code로 기업 고유의 Smart Factory 플랫폼을 직접 구축하는 전용 빌더",
       "detail": "자체 IT/전산 인력을 보유한 엔터프라이즈를 위한 전용 빌더입니다. 기성 제조 운영 스위트(MES)를 도입하는 대신, B²LAB 온톨로지 데이터를 기반으로 노코드/로우코드를 통해 작업 지시서, 생산 공정 뷰, 일별 현황판, 로직을 사내 IT 인력이 100% 맞춤 제작합니다. 기성 Smart Factory 스위트와 중복 도입되지 않도록 독립된 자체 구축 경로로 제공됩니다.",
       "unit": "엔터프라이즈 빌더 라이선스 (시트 및 작성 권한)"
