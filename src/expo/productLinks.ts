@@ -45,7 +45,9 @@ export interface VideoLink {
 export const DEMO_VIDEOS: Readonly<Record<string, readonly VideoLink[]>> = {
   twin: [
     { url: 'https://youtu.be/JgBSnetH5JQ' },
-    { url: 'https://youtu.be/DpIDlv2eAcE', tag: 'DT(WMS)' }
+    { url: 'https://youtu.be/DpIDlv2eAcE', tag: 'DT(WMS)' },
+    { url: '', tag: 'DT(FAS)' },
+    { url: '', tag: 'DT(FEMS)' }
   ]
 };
 
