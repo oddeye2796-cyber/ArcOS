@@ -110,11 +110,11 @@ export const APPS_DATA: AppItem[] = [
     id: 'a2lab',
     name: 'A²LAB',
     category: 'AI',
-    categoryLabel: 'AI 모듈 생성',
+    categoryLabel: 'AI 품질예측·공정최적화',
     status: 'ready',
     statusLabel: '설치 가능',
-    desc: '노코드로 품질 예측, 설비 예지보전 같은 산업용 AI 에이전트 모듈을 제작·학습합니다',
-    detail: '현장 엔지니어가 코딩 없이도 B²LAB 온톨로지 데이터를 기반으로 AI 에이전트를 파이프라인 형태로 빌드합니다. MLOps 실행엔진과 결합하여 컨테이너화된 추론 모듈을 온프레미스 런타임에 즉각 배포합니다.',
+    desc: '설비 데이터로 제품 품질(OK/NG)을 미리 예측하고, 양품 확률을 높이는 공정 설정값을 제안하며, 예측 모델의 성능을 지표로 관리합니다',
+    detail: '설비에서 들어오는 공정 데이터(온도·압력·진공·사이클타임 등)로 1분 구간마다 OK/NG를 예측하고 PLC 판정과 대조해 정확도를 관리합니다. 같은 모델로 양품 확률이 가장 높은 공정 설정값을 유전알고리즘으로 찾아 제안하며, 5대 성능지표·혼동행렬·변수 중요도로 예측의 근거를 설명합니다.',
     unit: '기본료 + 추론 호출 종량',
     growthMetric: '월간 추론 호출 수 (단위: 만 건)',
     growthUnit: '추론 호출',
@@ -154,7 +154,7 @@ export const APPS_DATA: AppItem[] = [
     categoryLabel: 'AI 오케스트레이션',
     status: 'need',
     statusLabel: '선행 조건 확인',
-    desc: 'A²LAB에서 생성된 여러 도메인 특화 에이전트의 판단을 교차검증하고 공정 제어를 조율합니다',
+    desc: '여러 도메인 특화 AI 에이전트의 판단을 교차검증하고 공정 제어를 조율합니다',
     detail: '품질 예측, 설비 예지, 에너지 제어 에이전트의 충돌을 방지하고 상호 의존성을 오케스트레이션하는 상위 런타임입니다. 현업 에이전트가 3개 이상 운영될 때 필수적인 지휘 통제탑 역할을 수행합니다.',
     unit: '활성 에이전트 모듈 수',
     growthMetric: '연계 에이전트 수',
@@ -162,8 +162,8 @@ export const APPS_DATA: AppItem[] = [
     price: 200,
     per: 'flat',
     deps: [
-      { name: 'A²LAB (선행 모듈)', ok: false, desc: '선행 에이전트 제작 도구 필요 (함께 담기 권장)' },
-      { name: '등록된 에이전트 모듈 3개 이상', ok: false, desc: '현재 사업장에 1개 등록됨 (A²LAB 설치 후 생성 가능)' }
+      { name: 'A²LAB (선행 모듈)', ok: false, desc: '선행 모듈 A²LAB 필요 (함께 담기 권장)' },
+      { name: '등록된 에이전트 모듈 3개 이상', ok: false, desc: '현재 사업장에 1개 등록됨 (A²LAB 설치 후 등록 가능)' }
     ],
     dataScope: {
       domainDb: '에이전트 판단 신뢰도 벡터 및 결정 로그 (사내)',

@@ -18,15 +18,15 @@ const CATALOG: CatalogStrings = {
     },
     "a2lab": {
       "name": "A²LAB",
-      "categoryLabel": "AI Module Generation",
-      "desc": "Build and train industrial AI agent modules like predictive quality and maintenance with no-code",
-      "detail": "Empowers domain engineers to upload datasets and run automated AutoML pipelines directly in a web UI without Python code. Generated lightweight models are packaged to on-premise nodes for sub-millisecond real-time inference.",
+      "categoryLabel": "AI Quality Prediction & Process Optimization",
+      "desc": "Predicts product quality (OK/NG) from equipment data in advance, suggests process settings that raise the good-product probability, and manages model performance with metrics",
+      "detail": "Predicts OK/NG for every one-minute window from equipment process data (temperature, pressure, vacuum, cycle time and more) and checks it against the PLC verdict to track accuracy. The same model drives a genetic-algorithm search for the process settings with the highest good-product probability, and five performance metrics, the confusion matrix and feature importance explain why a prediction was made.",
       "unit": "Base fee + Inference usage"
     },
     "orch": {
       "name": "Multi-AI Agent Supervisor",
       "categoryLabel": "AI Orchestration",
-      "desc": "Cross-verifies decisions of domain-specific agents from A²LAB and orchestrates process control",
+      "desc": "Cross-verifies decisions of domain-specific AI agents and orchestrates process control",
       "detail": "Monitors and arbitrates conflicting decisions between quality inspection, energy saving, and AGV dispatch agents. Control commands exceeding safety thresholds strictly require on-site operator approval gates.",
       "unit": "Per active agent module"
     },
@@ -127,8 +127,8 @@ const CATALOG: CatalogStrings = {
       "name": "GPU Acceleration Node (NVIDIA TensorRT)",
       "desc": "On-premises edge server ready (L4 GPU)"
     },
-    "A²LAB (사전 생성된 도메인 모델)": {
-      "name": "A²LAB (Pre-generated domain models)",
+    "A²LAB (사전 학습된 도메인 모델)": {
+      "name": "A²LAB (Pre-trained domain models)",
       "desc": "Requires at least 1 domain model (3 currently deployed)"
     },
     "온프레미스 GPU 추론 서버": {
@@ -157,11 +157,11 @@ const CATALOG: CatalogStrings = {
     },
     "A²LAB (선행 모듈)": {
       "name": "A²LAB (Prerequisite Module)",
-      "desc": "Requires the prerequisite agent authoring tool (bundling recommended)"
+      "desc": "Requires the prerequisite A²LAB module (bundling recommended)"
     },
     "등록된 에이전트 모듈 3개 이상": {
       "name": "At Least 3 Registered Agent Modules",
-      "desc": "1 registered at this facility (more can be created after installing A²LAB)"
+      "desc": "1 registered at this facility (more can be registered after installing A²LAB)"
     },
     "MLOps 실행엔진": {
       "name": "MLOps Execution Engine",
@@ -270,7 +270,7 @@ const CATALOG: CatalogStrings = {
       "title": "Autonomous AI Manufacturing (Full Agent Architecture)",
       "subtitle": "AI agent generation · Supervisor orchestration · sLM regulatory analysis",
       "badge": "Autonomous AI",
-      "desc": "The Multi-AI Agent Supervisor orchestrates the quality, equipment and energy agents generated in A²LAB, combined with the air-gapped ConsenseBot sLM and a 3D digital twin.",
+      "desc": "The Multi-AI Agent Supervisor orchestrates the quality, equipment and energy agents, combined with the air-gapped ConsenseBot sLM and a 3D digital twin.",
       "targetAudience": "Lighthouse factory programs / large multi-process production sites"
     },
     "preset-inhouse-diy": {

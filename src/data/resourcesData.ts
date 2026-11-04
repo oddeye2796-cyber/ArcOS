@@ -51,7 +51,7 @@ export const RESOURCE_DOCS: ResourceDoc[] = [
     id: 'a2lab-manual',
     kind: 'manual',
     relatedModuleIds: ['a2lab', 'orch'],
-    updatedAt: '2026-01-25',
+    updatedAt: '2026-11-04',
     readingMinutes: 8
   },
   {

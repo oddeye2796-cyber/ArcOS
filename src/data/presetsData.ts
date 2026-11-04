@@ -164,7 +164,7 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
     desc: '설비 PLC 시계열 데이터를 실시간 수집해 공구 마모 및 치수 불량을 사전에 예측하고, 3D 웹 캔버스로 공장 전체를 가상 순찰합니다.',
     highlights: [
       '생산 실행 및 설비 종합 효율(OEE) 분석',
-      'A²LAB 노코드 AI 에이전트 품질 불량 사전 예측',
+      'A²LAB AI 품질예측으로 불량 사전 예측',
       '3차원 입체 공간 실시간 설비 가동 상태 렌더링',
       '현장 맞춤형 대시보드 코딩 없이 드래그앤드롭 제작'
     ],
@@ -360,7 +360,7 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
     type: 'requirement',
     targetAudience: '지능형 등대공장 추진 / 대형 복합 생산 사업장',
     badge: 'AI 자율제조',
-    desc: 'A²LAB에서 생성된 품질/설비/에너지 에이전트들을 다중 AI Agent 슈퍼바이저가 오케스트레이션하고, 폐쇄망 sLM 컨센스봇과 3D 트윈을 결합합니다.',
+    desc: '품질/설비/에너지 에이전트들을 다중 AI Agent 슈퍼바이저가 오케스트레이션하고, 폐쇄망 sLM 컨센스봇과 3D 트윈을 결합합니다.',
     highlights: [
       '도메인 에이전트 3개 이상 상호 교차 검증',
       '사내 규정서 342건 벡터 검색 기반 온프레미스 sLM',

@@ -57,7 +57,7 @@ export const MODULE_KEYWORDS: Record<string, readonly string[]> = {
     'ai', '인공지능', '머신러닝', '딥러닝', '학습', '모델', '예측', '예지보전', '예지',
     '불량', '불량률', '불량예측', '품질예측', '고장', '이상감지', '이상탐지', '수율',
     '검사', '결함', 'automl',
-    '노코드 ai', 'mlops', '추론', 'artificial intelligence', 'machine learning',
+    '공정최적화', '공정최적값', 'mlops', '추론', 'artificial intelligence', 'machine learning',
     'deep learning', 'predictive maintenance', 'anomaly detection', 'defect', 'yield',
     'inference', 'model training', 'downtime', 'machine failure', 'breakdown',
     'failure prediction', 'scrap rate',

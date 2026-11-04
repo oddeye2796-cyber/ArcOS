@@ -321,126 +321,130 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
 
   'a2lab-manual': {
     ko: {
-      title: 'A²LAB 에이전트 제작 가이드',
-      summary: '노코드로 예측 모델을 만들고, 슈퍼바이저에 등록해 운영하기까지의 절차입니다.',
+      title: 'A²LAB AI 품질예측·공정최적화 사용 가이드',
+      summary:
+        '품질 예측을 확인하고, 공정 최적값을 검토·적용하고, 모델 성능을 관리하는 절차입니다.',
       audience: '공정기술 · 품질 엔지니어',
       sections: [
         {
-          heading: '모델 제작 순서',
+          heading: 'AI 품질예측 확인',
           items: [
-            '학습에 사용할 온톨로지 태그를 선택합니다. 태그는 B²LAB 계층에서만 조회되며 원본 DB에 접근하지 않습니다',
-            '판단 목표(예: 압출 두께 불량 사전 예측)와 목표 지표를 정의합니다',
-            '기간을 지정해 학습 데이터를 구성합니다. 최소 3개월 이상을 권장합니다',
-            '오토ML 파이프라인을 실행하고, 후보 모델 중 오탐률 기준으로 선택합니다'
+            '통합 대시보드에서 공정그룹별 실시간 예측을 OK(초록)·NG(빨강) 카드로 확인합니다. 1분마다 갱신됩니다',
+            '실시간 품질예측 화면에서 설비를 선택하면 최근 구간의 AI 예측, PLC 판정, 일치 여부와 변수 평균 트렌드를 볼 수 있습니다',
+            'NG 예측 알림에 최근 1시간 내 NG 예측이 나온 설비가 모이며, 눌러서 해당 실시간 화면으로 이동합니다',
+            '품질예측이력에서 일자별 예측 건수와 PLC 대조 정확도를 확인하고, 정확도가 떨어진 날의 원인을 살펴봅니다'
           ]
         },
         {
-          heading: '배포와 운영',
+          heading: 'AI 공정최적값 활용',
           items: [
-            '선택한 모델은 온프레미스 노드에 컨테이너로 패키징되어 실시간 추론을 수행합니다',
-            '추론 호출량이 과금 기준이므로, 상시 가동 여부를 라인별로 설정하세요',
-            '정확도가 목표치 아래로 떨어지면 알림이 발생합니다. 데이터 분포 변화를 먼저 확인하세요'
+            '설비와 조회일을 고르고 계산을 실행하면 변수별 최적값이 현재값과 허용범위와 함께 표시됩니다',
+            '최적값은 AI의 제안입니다. 공정엔지니어가 차이가 큰 변수와 중요도 상위 변수부터 검토하고 설비 제약·안전 조건을 확인한 뒤 승인합니다',
+            '승인된 변수만 단계적으로 조정하고, 한 번에 많은 변수를 바꾸지 않습니다',
+            '적용 후에는 실시간 예측 화면으로 효과를 검증하고, 결과는 모델 버전과 함께 이력으로 저장됩니다'
           ]
         },
         {
-          heading: '슈퍼바이저 연계',
-          body: '에이전트가 3개 이상이 되면 오케스트레이션을 검토할 시점입니다.',
+          heading: 'AI 성능관리',
           items: [
-            '단일 에이전트는 슈퍼바이저 없이도 동작합니다',
-            '여러 에이전트가 같은 설비를 제어하면 판단 충돌이 생길 수 있어 중재가 필요합니다',
-            '안전 임계치를 넘는 제어 명령은 슈퍼바이저의 승인 게이트를 통과해야 발령됩니다'
+            'AI 성능 화면에서 기간을 선택하면 해당 기간에 학습된 모델 버전과 5대 지표(Recall·Precision·F1·Accuracy·AUC)가 표시됩니다',
+            '불량은 드물게 발생하므로 Accuracy만 보지 말고 Recall·Precision·F1을 함께 확인합니다',
+            '모델 행을 누르면 혼동행렬과 ROC 곡선이 나타납니다. 새 모델은 놓친 NG가 줄었는지 먼저 보고, AUC·F1이 기존보다 나을 때 교체를 검토합니다',
+            '변수중요도·순열중요도와 분포·상관관계 화면으로 판단 근거와 원인 변수를 확인합니다'
           ]
         },
         {
           heading: '재학습 기준',
           items: [
-            '제품 규격이나 설비가 변경되면 즉시 재학습하세요',
-            '계절성이 있는 공정은 분기 단위 재학습을 권장합니다',
-            '재학습 중에도 기존 모델이 추론을 계속하므로 공정 중단은 발생하지 않습니다'
+            '예측 정확도가 하락하거나 놓친 NG가 늘어나면 재학습을 검토합니다',
+            '제품 규격이나 설비, 공정 조건이 바뀌었을 때도 재학습합니다',
+            '재학습데이터는 주 단위로 적재되며, 새 모델은 기존 모델과 성능지표를 비교한 뒤 교체합니다'
           ]
         }
       ]
     },
     en: {
-      title: 'A²LAB Agent Authoring Guide',
+      title: 'A²LAB AI Quality Prediction & Process Optimization Guide',
       summary:
-        'Building a predictive model without code, then registering and operating it under the supervisor.',
+        'How to read quality predictions, review and apply optimal process settings, and manage model performance.',
       audience: 'Process and quality engineers',
       sections: [
         {
-          heading: 'Building a model',
+          heading: 'Reading AI quality prediction',
           items: [
-            'Choose the ontology tags to train on. Tags are read from the B²LAB layer only — never from the source database',
-            'Define the decision target (for example, predicting extrusion thickness defects) and the target metric',
-            'Select a date range for the training set. Three months or more is recommended',
-            'Run the AutoML pipeline and pick among the candidate models on false-positive rate'
+            'The integrated dashboard shows real-time predictions per process group as green (OK) and red (NG) cards, refreshed every minute',
+            'Pick a machine on the real-time prediction screen to see the latest window with the AI prediction, PLC verdict, match status and variable mean trends',
+            'The NG alert list gathers machines with an NG prediction in the last hour and links to their real-time screens',
+            'Use the prediction history to review daily prediction counts and PLC-match accuracy, and investigate the days when accuracy dropped'
           ]
         },
         {
-          heading: 'Deployment and operation',
+          heading: 'Using AI optimal process settings',
           items: [
-            'The chosen model is packaged as a container on the on-premise node and serves real-time inference',
-            'Inference call volume is the billing metric, so decide per line whether the agent runs continuously',
-            'You are alerted when accuracy drops below target. Check for a shift in data distribution first'
+            'Choose a machine and date, run the calculation, and each variable is shown with its optimal value, current value and allowed range',
+            'The result is a suggestion from the AI. A process engineer reviews the variables with the largest gap and the highest importance first, checks equipment and safety constraints, then approves',
+            'Only approved variables are adjusted, step by step, and not many at once',
+            'After applying, verify the effect on the real-time prediction screen; results are stored with the model version'
           ]
         },
         {
-          heading: 'Working with the supervisor',
-          body: 'Three or more agents is the point to consider orchestration.',
+          heading: 'Managing AI performance',
           items: [
-            'A single agent operates fine without a supervisor',
-            'Several agents controlling the same equipment can reach conflicting decisions, which needs arbitration',
-            'Control commands beyond a safety threshold only issue after passing the supervisor’s approval gate'
+            'Select a period on the AI performance screen to list the model versions trained in it with five metrics: Recall, Precision, F1, Accuracy and AUC',
+            'Defects are rare, so look at Recall, Precision and F1 together rather than Accuracy alone',
+            'Click a model to draw its confusion matrix and ROC curve. For a new model, check first that missed NG has decreased, then consider replacement when AUC and F1 beat the current one',
+            'Use feature importance, permutation importance and the distribution and correlation views to see what drove a decision'
           ]
         },
         {
           heading: 'When to retrain',
           items: [
-            'Retrain immediately after a product specification or equipment change',
-            'Quarterly retraining is recommended for processes with seasonality',
-            'The existing model keeps serving during retraining, so no production stop is involved'
+            'Consider retraining when prediction accuracy drops or missed NG increases',
+            'Retrain when a product specification, equipment or process condition changes',
+            'Retraining data is accumulated weekly, and a new model replaces the current one only after its metrics are compared'
           ]
         }
       ]
     },
     ja: {
-      title: 'A²LAB エージェント作成ガイド',
+      title: 'A²LAB AI品質予測・工程最適化 利用ガイド',
       summary:
-        'ノーコードで予測モデルを作成し、スーパーバイザーに登録して運用するまでの手順です。',
+        '品質予測の確認、工程最適値の検討・適用、モデル性能の管理までの手順です。',
       audience: '工程技術 · 品質エンジニア',
       sections: [
         {
-          heading: 'モデル作成の手順',
+          heading: 'AI品質予測の確認',
           items: [
-            '学習に使用するオントロジータグを選択します。タグはB²LAB層からのみ参照され、元のDBにはアクセスしません',
-            '判断目標(例: 押出厚み不良の事前予測)と目標指標を定義します',
-            '期間を指定して学習データを構成します。最低3か月以上を推奨します',
-            'AutoMLパイプラインを実行し、候補モデルの中から誤検知率を基準に選択します'
+            '統合ダッシュボードで、工程グループ別のリアルタイム予測をOK(緑)・NG(赤)のカードで確認します。1分ごとに更新されます',
+            'リアルタイム品質予測画面で設備を選ぶと、直近区間のAI予測、PLC判定、一致有無、変数平均のトレンドを確認できます',
+            'NG予測アラートには直近1時間にNG予測が出た設備が集まり、クリックで該当のリアルタイム画面へ移動します',
+            '品質予測履歴で日別の予測件数とPLC照合精度を確認し、精度が落ちた日の原因を調べます'
           ]
         },
         {
-          heading: '展開と運用',
+          heading: 'AI工程最適値の活用',
           items: [
-            '選択したモデルはオンプレミスノードにコンテナとしてパッケージ化され、リアルタイム推論を実行します',
-            '推論コール量が課金基準となるため、常時稼働の可否をラインごとに設定してください',
-            '精度が目標値を下回ると通知が発生します。まずデータ分布の変化を確認してください'
+            '設備と照会日を選んで計算を実行すると、変数ごとの最適値が現在値と許容範囲とともに表示されます',
+            '最適値はAIの提案です。工程エンジニアが差の大きい変数と重要度上位の変数から確認し、設備制約・安全条件を確かめて承認します',
+            '承認した変数のみを段階的に調整し、一度に多くの変数を変えません',
+            '適用後はリアルタイム予測画面で効果を検証し、結果はモデルバージョンとともに履歴として保存されます'
           ]
         },
         {
-          heading: 'スーパーバイザーとの連係',
-          body: 'エージェントが3個以上になったら、オーケストレーションを検討する時期です。',
+          heading: 'AI性能管理',
           items: [
-            '単一エージェントはスーパーバイザーなしでも動作します',
-            '複数のエージェントが同じ設備を制御すると判断の衝突が起こりうるため、調停が必要です',
-            '安全閾値を超える制御コマンドは、スーパーバイザーの承認ゲートを通過してから発令されます'
+            'AI性能画面で期間を選ぶと、その期間に学習したモデルバージョンと5大指標(Recall・Precision・F1・Accuracy・AUC)が表示されます',
+            '不良は稀にしか発生しないため、AccuracyだけでなくRecall・Precision・F1 を併せて確認します',
+            'モデル行をクリックすると混同行列とROC曲線が描かれます。新モデルは見逃しNGが減ったかを先に確認し、AUC・F1が既存より優れていれば入れ替えを検討します',
+            '変数重要度・順列重要度と分布・相関の画面で、判断の根拠と原因変数を確認します'
           ]
         },
         {
           heading: '再学習の基準',
           items: [
-            '製品規格や設備が変更された場合は直ちに再学習してください',
-            '季節性のある工程は四半期単位の再学習を推奨します',
-            '再学習中も既存モデルが推論を継続するため、工程停止は発生しません'
+            '予測精度が低下したり見逃しNGが増えたりした場合は再学習を検討します',
+            '製品規格・設備・工程条件が変わった場合も再学習します',
+            '再学習データは週単位で蓄積され、新モデルは既存モデルと性能指標を比較してから入れ替えます'
           ]
         }
       ]
