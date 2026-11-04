@@ -425,7 +425,7 @@ const EN_TRANSLATIONS: Translations = {
   archSuiteFormula: 'Effective combinations = MES (1 of 3) × extension modules (2³ = 8) = **24 in total**',
   archSuiteSec1Note: 'Fixed industry bundles alone cannot satisfy all 24 demand profiles, which is the structural rationale for adopting **per-module pricing**.',
   archSuiteSec2Title: '2. Splitting the AI Tier into Two SKUs (A²LAB vs Supervisor)',
-  archSuiteA2labTitle: 'A²LAB (Agent Module Generator)',
+  archSuiteA2labTitle: 'A²LAB',
   archSuiteA2labDesc: 'Acts as the **factory** that builds and trains domain agent modules such as quality prediction, equipment prognostics and regulatory review.',
   archSuiteOrchTitle: 'Multi-AI Agent Supervisor (Orchestration)',
   archSuiteOrchDesc: 'The **command runtime** that cross-verifies the decisions of individual agents and arbitrates conflicts between them.',

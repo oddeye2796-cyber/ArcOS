@@ -182,7 +182,7 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
       {
         id: 'a2lab',
         appId: 'a2lab',
-        name: 'A²LAB (AI 모듈 생성기)',
+        name: 'A²LAB',
         category: 'AI',
         price: 150,
         per: 'flat',
@@ -254,7 +254,7 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
       {
         id: 'a2lab',
         appId: 'a2lab',
-        name: 'A²LAB (AI 모듈 생성기)',
+        name: 'A²LAB',
         category: 'AI',
         price: 150,
         per: 'flat',
@@ -327,7 +327,7 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
       {
         id: 'a2lab',
         appId: 'a2lab',
-        name: 'A²LAB (AI 모듈 생성기)',
+        name: 'A²LAB',
         category: 'AI',
         price: 150,
         per: 'flat',
@@ -381,7 +381,7 @@ export const RECOMMENDATION_PRESETS: RecommendationPreset[] = [
       {
         id: 'a2lab',
         appId: 'a2lab',
-        name: 'A²LAB (AI 모듈 생성기)',
+        name: 'A²LAB',
         category: 'AI',
         price: 150,
         per: 'flat',

@@ -108,7 +108,7 @@ export const APPS_DATA: AppItem[] = [
   },
   {
     id: 'a2lab',
-    name: 'A²LAB (AI 모듈 생성기)',
+    name: 'A²LAB',
     category: 'AI',
     categoryLabel: 'AI 모듈 생성',
     status: 'ready',

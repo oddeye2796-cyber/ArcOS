@@ -425,7 +425,7 @@ const JA_TRANSLATIONS: Translations = {
   archSuiteFormula: '実質組合せ数 = MES (3種中1つ) × 拡張モジュール (2³ = 8通り) = **合計24通り**',
   archSuiteSec1Note: '業種別の固定バンドルパッケージだけではこの24通りの顧客需要をすべて満たせないため、**モジュール個別課金**を採用する構造的根拠となります。',
   archSuiteSec2Title: '2. AI階層の2SKU分離 (A²LAB vs スーパーバイザー)',
-  archSuiteA2labTitle: 'A²LAB (エージェントモジュール生成器)',
+  archSuiteA2labTitle: 'A²LAB',
   archSuiteA2labDesc: '品質予測、設備予知、規程レビューなどのドメインエージェントモジュールを制作・学習させる**工場**の役割です。',
   archSuiteOrchTitle: 'マルチAI Agent スーパーバイザー (オーケストレーション)',
   archSuiteOrchDesc: '生成された個々のエージェントの判断を相互検証し、衝突を調停する**指揮ランタイム**です。',
