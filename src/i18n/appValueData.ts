@@ -73,43 +73,43 @@ const APP_VALUE_PROPS: Record<string, LocalizedValueProp> = {
 
   a2lab: {
     ko: {
-      headline: '현장 엔지니어가 파이썬 없이 품질·설비 예측 모델을 직접 만들어 배포합니다.',
+      headline: '불량을 검사 전에 예측하고, 양품 확률이 높은 공정 설정값을 제안하며, 예측의 신뢰도까지 관리합니다.',
       outcomes: [
-        { value: '노코드', label: '모델 제작 방식' },
-        { value: '사내', label: '학습 데이터 처리 위치' },
-        { value: '분 단위', label: '모델 재학습 주기' }
+        { value: '1분 단위', label: 'OK/NG 실시간 예측' },
+        { value: '99% 이상', label: '목표 양품 확률 설정값 탐색' },
+        { value: '5대 지표', label: '모델 버전별 성능 관리' }
       ],
       useCases: [
-        '압출·사출 공정의 두께 불량을 사전 예측해 폐기 물량을 줄임',
-        '설비 진동·전류 패턴으로 고장 시점을 예측해 계획 정비로 전환',
-        '데이터 사이언스 인력 없이 도메인 엔지니어가 모델을 유지보수'
+        '공정 진행 중 NG 가능성을 미리 알려 후공정·재작업 손실을 줄임',
+        '경험 대신 양품 확률 기준의 설정값을 제안받아 조건을 조정',
+        'PLC 판정과 매 구간 대조한 일자별 예측 정확도로 AI 결과의 신뢰도를 확인'
       ]
     },
     en: {
       headline:
-        'Let process engineers build and ship quality and maintenance models themselves, without writing Python.',
+        'Predict defects before inspection, get process settings with a higher good-product probability, and keep the prediction itself accountable.',
       outcomes: [
-        { value: 'No-code', label: 'model authoring' },
-        { value: 'On-prem', label: 'training data stays put' },
-        { value: 'Minutes', label: 'retraining cycle' }
+        { value: '1-minute', label: 'real-time OK/NG prediction' },
+        { value: '99%+', label: 'target good-product probability search' },
+        { value: '5 metrics', label: 'performance per model version' }
       ],
       useCases: [
-        'Predict thickness defects in extrusion and injection lines before scrap is produced',
-        'Turn unplanned failures into scheduled maintenance using vibration and current patterns',
-        'Keep models maintained by domain engineers, with no data science headcount'
+        'Flag likely NG while the process is running to cut downstream and rework losses',
+        'Adjust conditions from settings suggested by good-product probability instead of experience',
+        'Check daily prediction accuracy against the PLC verdict to see how far the AI can be trusted'
       ]
     },
     ja: {
-      headline: '現場エンジニアがPythonなしで品質・設備予測モデルを自ら作成し展開できます。',
+      headline: '検査前に不良を予測し、良品確率の高い工程設定値を提案し、予測の信頼度まで管理します。',
       outcomes: [
-        { value: 'ノーコード', label: 'モデル作成方式' },
-        { value: '社内', label: '学習データの処理場所' },
-        { value: '分単位', label: 'モデル再学習の周期' }
+        { value: '1分単位', label: 'OK/NGリアルタイム予測' },
+        { value: '99%以上', label: '目標良品確率の設定値探索' },
+        { value: '5大指標', label: 'モデルバージョン別性能管理' }
       ],
       useCases: [
-        '押出・射出工程の厚み不良を事前予測し廃棄量を削減',
-        '設備の振動・電流パターンから故障時期を予測し計画保全へ移行',
-        'データサイエンス要員なしでドメインエンジニアがモデルを保守'
+        '工程の進行中にNGの可能性を事前に知らせ、後工程・手直しの損失を削減',
+        '経験ではなく良品確率に基づく設定値の提案で条件を調整',
+        'PLC判定と毎区間照合した日別予測精度でAI結果の信頼度を確認'
       ]
     }
   },
