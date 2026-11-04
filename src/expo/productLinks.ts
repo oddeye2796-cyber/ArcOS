@@ -5,8 +5,8 @@
 
 /** Hosted PoC environment per product. The button shows as "coming soon" while the URL is empty. */
 export const POC_URLS: Readonly<Record<string, string>> = {
-  arcforge: '',
-  aesg: ''
+  arcforge: 'https://next-tech-aesg.a2lab.co.kr/',
+  aesg: 'https://aesg-impix-dev.a2lab.co.kr/'
 };
 
 /** A live demo site; `tag` tells apart several demos on one product or module. */
