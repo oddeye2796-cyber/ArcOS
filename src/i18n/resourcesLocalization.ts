@@ -358,7 +358,7 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
           items: [
             '예측 정확도가 하락하거나 놓친 NG가 늘어나면 재학습을 검토합니다',
             '제품 규격이나 설비, 공정 조건이 바뀌었을 때도 재학습합니다',
-            '재학습데이터는 주 단위로 적재되며, 새 모델은 기존 모델과 성능지표를 비교한 뒤 교체합니다'
+            '재학습 데이터는 주 단위로 적재되며, MLOps 실행엔진이 자동 재학습을 수행합니다','새 모델은 기존 모델과 성능지표를 비교한 뒤 교체합니다'
           ]
         }
       ]
@@ -401,7 +401,7 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
           items: [
             'Consider retraining when prediction accuracy drops or missed NG increases',
             'Retrain when a product specification, equipment or process condition changes',
-            'Retraining data is accumulated weekly, and a new model replaces the current one only after its metrics are compared'
+            'Retraining data is accumulated weekly, and the MLOps Execution Engine retrains automatically','A new model replaces the current one only after its metrics are compared'
           ]
         }
       ]
@@ -444,7 +444,7 @@ const RESOURCE_CONTENT: Record<string, LocalizedDoc> = {
           items: [
             '予測精度が低下したり見逃しNGが増えたりした場合は再学習を検討します',
             '製品規格・設備・工程条件が変わった場合も再学習します',
-            '再学習データは週単位で蓄積され、新モデルは既存モデルと性能指標を比較してから入れ替えます'
+            '再学習データは週単位で蓄積され、MLOps実行エンジンが自動で再学習を行います','新モデルは既存モデルと性能指標を比較してから入れ替えます'
           ]
         }
       ]
