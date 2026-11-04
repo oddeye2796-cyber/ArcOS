@@ -29,7 +29,7 @@ export const DEMO_LINKS: Readonly<Record<string, readonly DemoLink[]>> = {
   ],
   ebrs: [{ url: 'https://oddeye2796-cyber.github.io/bio_EBRS/' }],
   rems: [{ url: 'https://oddeye2796-cyber.github.io/REMS/' }],
-  consensebot: [{ url: 'http://192.168.110.20:3001/ja' }],
+  consensebot: [{ url: 'https://consensebot.vercel.app' }],
   orch: [{ url: 'https://oddeye2796-cyber.github.io/impix-ai-orchestration-platform/tokyo/' }],
   a2lab: [{ url: 'https://oddeye2796-cyber.github.io/a2lab/' }],
   b2lab: [{ url: 'https://newlake.vercel.app' }]
