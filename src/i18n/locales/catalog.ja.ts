@@ -17,7 +17,7 @@ const CATALOG: CatalogStrings = {
       "unit": "モジュール別従量課金"
     },
     "a2lab": {
-      "name": "A²LAB (AIモデル生成)",
+      "name": "A²LAB",
       "categoryLabel": "AIモデル生成",
       "desc": "ノーコードで品質予測や設備予知保全などの産業用AIエージェントモジュールを作成・学習",
       "detail": "ドメインエンジニアがPythonコーディングなしでWeb画面から直感的にデータセットをアップロードし、AutoMLパイプラインを実行。生成された軽量モデルはオンプレミスノードにパッケージ化されリアルタイム推論を実行します。",
@@ -312,7 +312,7 @@ const CATALOG: CatalogStrings = {
     "사출 특화 MES (Smart Factory)": "射出成形特化MES (Smart Factory)",
     "EBRS (전자 제조기록)": "EBRS (電子製造記録)",
     "AI Vision 결함 탐지 (ArcVision)": "AI Vision 欠陥検知 (ArcVision)",
-    "A²LAB (AI 모듈 생성기)": "A²LAB (AIモデル生成)",
+    "A²LAB": "A²LAB",
     "다중 AI Agent 슈퍼바이저": "マルチAI Agent スーパーバイザー",
     "컨센스봇 (ConsenseBot)": "コンセンスボット (ConsenseBot)",
     "디지털 트윈 (Digital Twin)": "デジタルツイン (Digital Twin)",

@@ -17,7 +17,7 @@ const CATALOG: CatalogStrings = {
       "unit": "Per-module pricing"
     },
     "a2lab": {
-      "name": "A²LAB (AI Model Generator)",
+      "name": "A²LAB",
       "categoryLabel": "AI Module Generation",
       "desc": "Build and train industrial AI agent modules like predictive quality and maintenance with no-code",
       "detail": "Empowers domain engineers to upload datasets and run automated AutoML pipelines directly in a web UI without Python code. Generated lightweight models are packaged to on-premise nodes for sub-millisecond real-time inference.",
@@ -312,7 +312,7 @@ const CATALOG: CatalogStrings = {
     "사출 특화 MES (Smart Factory)": "Injection Molding MES (Smart Factory)",
     "EBRS (전자 제조기록)": "EBRS (Electronic Batch Records)",
     "AI Vision 결함 탐지 (ArcVision)": "AI Vision Defect Detection (ArcVision)",
-    "A²LAB (AI 모듈 생성기)": "A²LAB (AI Model Generator)",
+    "A²LAB": "A²LAB",
     "다중 AI Agent 슈퍼바이저": "Multi-AI Agent Supervisor",
     "컨센스봇 (ConsenseBot)": "ConsenseBot (Regulatory sLM)",
     "디지털 트윈 (Digital Twin)": "Digital Twin",

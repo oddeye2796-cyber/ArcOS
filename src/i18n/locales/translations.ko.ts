@@ -425,7 +425,7 @@ const KO_TRANSLATIONS: Translations = {
   archSuiteFormula: '실질 조합 수 = MES (3종 중 1개) × 확장 모듈 (2³ = 8가지) = **총 24가지**',
   archSuiteSec1Note: '업종별 고정 번들 패키지만으로는 이 24가지 고객 수요를 모두 충족할 수 없으므로, **모듈 개별 과금**을 채택하는 구조적 근거가 됩니다.',
   archSuiteSec2Title: '2. AI 계층의 2개 SKU 분리 (A²LAB vs 슈퍼바이저)',
-  archSuiteA2labTitle: 'A²LAB (에이전트 모듈 생성기)',
+  archSuiteA2labTitle: 'A²LAB',
   archSuiteA2labDesc: '품질 예측, 설비 예지, 규정 검토 같은 도메인 에이전트 모듈을 제작·학습시키는 **공장** 역할입니다.',
   archSuiteOrchTitle: '다중 AI Agent 슈퍼바이저 (오케스트레이션)',
   archSuiteOrchDesc: '만들어진 개별 에이전트들의 판단을 교차 검증하고 충돌을 조율하는 **지휘 런타임**입니다.',
