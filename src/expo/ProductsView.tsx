@@ -29,6 +29,12 @@ function expoValueProp(appId: string, lang: Language) {
   return { ...value, outcomes: value.outcomes.filter((o) => !isPricingOutcome(o.value, o.label)) };
 }
 
+/** Expo display order: ARCFORGE first, the rest keep their APPS_DATA order. */
+const EXPO_APPS = [
+  ...APPS_DATA.filter((a) => a.id === 'arcforge'),
+  ...APPS_DATA.filter((a) => a.id !== 'arcforge')
+];
+
 /** Product introduction. Deliberately shows no price, unit or trial controls. */
 export const ProductsView: React.FC<ProductsViewProps> = ({
   lang,
@@ -50,7 +56,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {APPS_DATA.map((app) => {
+        {EXPO_APPS.map((app) => {
           const value = expoValueProp(app.id, lang);
           return (
             <button
